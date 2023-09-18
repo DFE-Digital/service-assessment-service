@@ -1,0 +1,8 @@
+﻿// @import "../..node_modules/govuk-frontend/govuk/all.css";
+h1 {
+  color: red;
+
+  &:hover {
+    color: blue;
+  }
+}
