@@ -46,7 +46,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v3.8.1
+        uses: actions/setup-node@v4.0.0
         with:
           ## NOTE: dfe-frontend-alpha advertises requirement of node 16, with console warnings/errors if using more recent version
           node-version: 16 
