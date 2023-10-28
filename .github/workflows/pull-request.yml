@@ -54,6 +54,8 @@ jobs:
       working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
       run: npm run build
 
+    ## TODO: npm run test
+
     - name: Restore dependencies
       run: dotnet restore
       
