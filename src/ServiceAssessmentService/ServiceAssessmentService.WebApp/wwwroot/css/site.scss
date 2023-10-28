@@ -76,7 +76,7 @@ $govuk-global-styles: true;
     background-color: #252b36;
     width: 255px;
     padding: 40px 0px 0 0px;
-    height: 100v;
+    height: 100vh;
     border-right: 8px solid $color_dfe-secondary-blue;
     position: relative;
 
@@ -180,7 +180,6 @@ $govuk-global-styles: true;
     .main--content {
       padding: 40px 0px;
       background: #fff;
-      height: 100v;
       height: 100vh;
     }
 
@@ -191,7 +190,7 @@ $govuk-global-styles: true;
 
     .toggle-icon {
       font-style: normal;
-      font-weight: 400;
+      font-weight: 600;
       font-variant: normal;
       text-transform: none;
       line-height: 1;
@@ -200,7 +199,6 @@ $govuk-global-styles: true;
       width: 32px;
       height: 32px;
       border: none;
-      font-weight: 600;
       font-size: 22px;
       margin-right: 20px;
       background-color: $color_dfe-grey-3;
