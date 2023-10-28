@@ -19,7 +19,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      
+      ## Include all git history (fetch depth 0) for enhanced SonarCloud analysis (default is 1 for most recent commit)
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -64,14 +68,6 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
-      - name: Begin SonarCloud analysis (start before any build/test steps)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: pwsh
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"DFE-Digital_service-assessment-service" /o:"dfe-digital" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-      
       
       ####
       ## Build and test the Web UI code
@@ -112,6 +108,15 @@ jobs:
         working-directory: ./src/ServiceAssessmentService
         run: dotnet restore
 
+      - name: Begin SonarCloud analysis (start before any build/test steps)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: ./src/ServiceAssessmentService
+        shell: pwsh
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"DFE-Digital_service-assessment-service" /o:"dfe-digital" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+      
       - name: Build with dotnet
         working-directory: ./src/ServiceAssessmentService
         run: dotnet build --no-restore --configuration Release
@@ -125,6 +130,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: ./src/ServiceAssessmentService
         shell: pwsh
         run: |
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
