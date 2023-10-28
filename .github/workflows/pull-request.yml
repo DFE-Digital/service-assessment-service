@@ -6,7 +6,7 @@ name: Build and Test
 env:
   DOTNET_VERSION: '7.x'
   NODE_VERSION: '16'       ## NOTE: dfe-frontend-alpha advertises requirement of node 16, with console warnings/errors if using more recent version
-  
+
 on:
   push:
     branches: [ "main" ]
@@ -19,50 +19,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Cache node_modules
-      id: node_modules-cache-webapp
-      uses: actions/cache@v3
-      with:
-        path: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp/node_modules
-        key: ${{ runner.os }}-node_modules-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v4.0.0
-      with:
-        node-version:  ${{ env.NODE_VERSION }}
-
-    - name: Install NPM dependencies (Web UI)
-      working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
-      run: npm install
-
-    - name: Set up dependency caching for faster builds
-      uses: actions/cache@v3
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-
-    - name: Build Web UI (webpack) 
-      working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
-      run: npm run build
-
-    ## TODO: npm run test
-
-    - name: Restore dependencies
-      run: dotnet restore
+      - uses: actions/checkout@v4
       
-    - name: Build with dotnet
-      working-directory: ./src/ServiceAssessmentService
-      run: dotnet build --no-restore --configuration Release
+      ####
+      ## Build and test the Web UI code
+      ####
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      - name: Cache node_modules
+        id: node_modules-cache-webapp
+        uses: actions/cache@v3
+        with:
+          path: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp/node_modules
+          key: ${{ runner.os }}-node_modules-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install NPM dependencies (Web UI)
+        working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
+        run: npm install
+
+      - name: Set up dependency caching for faster builds
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Build Web UI (webpack)
+        working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
+        run: npm run build
+      
+      ## TODO: npm run test
+      
+      
+      ####
+      ## Build and test the Backend which serves the Web UI
+      ####
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        working-directory: ./src/ServiceAssessmentService
+        run: dotnet restore
+
+      - name: Build with dotnet
+        working-directory: ./src/ServiceAssessmentService
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        working-directory: ./src/ServiceAssessmentService
+        run: dotnet test --no-build --verbosity normal
 
