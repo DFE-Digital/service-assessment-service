@@ -19,7 +19,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      
+      ## Include all git history (fetch depth 0) for enhanced SonarCloud analysis (default is 1 for most recent commit)
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      
+      ####
+      ## Setup for SonarCloud
+      ####
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: pwsh
+        working-directory: ./src/ServiceAssessmentService
+        run: |
+          dotnet tool install --global dotnet-sonarscanner      
+      
       
       ####
       ## Build and test the Web UI code
@@ -32,10 +72,6 @@ jobs:
           path: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp/node_modules
           key: ${{ runner.os }}-node_modules-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4.0.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install NPM dependencies (Web UI)
         working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
@@ -60,15 +96,19 @@ jobs:
       ## Build and test the Backend which serves the Web UI
       ####
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
       - name: Restore dependencies
         working-directory: ./src/ServiceAssessmentService
         run: dotnet restore
 
+      - name: Begin SonarCloud analysis (start before any build/test steps)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: ./src/ServiceAssessmentService
+        shell: pwsh
+        run: |
+          dotnet-sonarscanner begin /k:"DFE-Digital_service-assessment-service" /o:"dfe-digital" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+      
       - name: Build with dotnet
         working-directory: ./src/ServiceAssessmentService
         run: dotnet build --no-restore --configuration Release
@@ -76,4 +116,14 @@ jobs:
       - name: Test
         working-directory: ./src/ServiceAssessmentService
         run: dotnet test --no-build --verbosity normal
+
+
+      - name: End SonarCloud analysis and upload results (end after all build/test steps)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: ./src/ServiceAssessmentService
+        shell: pwsh
+        run: |
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
