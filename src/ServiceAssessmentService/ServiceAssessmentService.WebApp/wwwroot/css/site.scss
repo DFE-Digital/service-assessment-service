@@ -1,5 +1,6 @@
 ﻿@import "node_modules/govuk-frontend/govuk/all";
 @import "node_modules/dfe-frontend-alpha/packages/dfefrontend";
+
 .govuk-width-container {
   max-width: 1200px;
 }
@@ -24,7 +25,7 @@ dt,
 dd,
 tr {
   font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
-    Cantarell, "Helvetica Neue", sans-serif !important;
+  Cantarell, "Helvetica Neue", sans-serif !important;
 }
 
 $govuk-global-styles: true;
@@ -158,6 +159,7 @@ $govuk-global-styles: true;
       min-height: 52px;
       background: #f1f2f3;
       border-bottom: 1px solid #b1b4b6;
+
       h1 {
         margin-bottom: 0px;
         color: $govuk-secondary-text-colour;
@@ -632,18 +634,22 @@ $govuk-global-styles: true;
   background-color: #ffdd00;
   color: $color_dfe-black;
 }
+
 .govuk-tag--amber {
   background-color: #f47738;
   color: $color_dfe-black;
 }
+
 .govuk-tag--green {
   background-color: #00703c;
   color: $color_dfe-white;
 }
+
 .govuk-tag--grey {
   background-color: #b1b4b6;
   color: $color_dfe-black;
 }
+
 .govuk-tag--red {
   background-color: #d4351c;
   color: $color_dfe-white;
@@ -723,6 +729,7 @@ $govuk-global-styles: true;
   flex-direction: column;
   grid-gap: 15px;
 }
+
 @include govuk-media-query($from: tablet) {
   .dfe-grid-container {
     display: grid;
@@ -761,6 +768,7 @@ $govuk-global-styles: true;
 
   &.dfe-card--blog-card {
     border-radius: 12px 12px 0 0;
+
     img {
       border-radius: 12px 12px 0 0;
     }
@@ -796,10 +804,12 @@ $govuk-global-styles: true;
 .dfe-card-container {
   padding: 20px;
 }
+
 .dfe-card:hover,
 .dfe-card:focus-within {
   background-color: $color_dfe-blue;
 }
+
 .dfe-card:hover a,
 .dfe-card:focus-within a,
 .dfe-card:hover p,
@@ -815,14 +825,17 @@ $govuk-global-styles: true;
 .dfe-card-container .dfe-card-link--header:focus {
   color: $color_dfe-black;
 }
+
 .dfe-card-link--retake {
   position: relative;
   z-index: 2;
 }
+
 .dfe-card-link--header {
   text-decoration: none;
   color: $color_dfe-secondary-blue;
 }
+
 .dfe-card-link--header:after {
   position: absolute;
   content: "";
@@ -840,6 +853,7 @@ $govuk-global-styles: true;
 .main--content {
   background: #f1f1f1;
 }
+
 .govuk-summary-card__title-wrapper {
   background-color: #d9d9d9;
 }
@@ -855,6 +869,7 @@ $govuk-global-styles: true;
 .outcomes-centred {
   text-align: center;
 }
+
 .outcomes .govuk-tag {
   min-width: 20px;
   text-align: center;
