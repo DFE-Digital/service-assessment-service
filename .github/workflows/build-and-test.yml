@@ -107,7 +107,7 @@ jobs:
         working-directory: ./src/ServiceAssessmentService
         shell: pwsh
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"DFE-Digital_service-assessment-service" /o:"dfe-digital" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet-sonarscanner begin /k:"DFE-Digital_service-assessment-service" /o:"dfe-digital" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
       
       - name: Build with dotnet
         working-directory: ./src/ServiceAssessmentService
@@ -125,5 +125,5 @@ jobs:
         working-directory: ./src/ServiceAssessmentService
         shell: pwsh
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
