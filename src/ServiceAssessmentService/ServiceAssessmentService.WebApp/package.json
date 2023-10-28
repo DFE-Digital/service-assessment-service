@@ -18,7 +18,9 @@
     "webpack-cli": "^4.9.2"
   },
   "scripts": {
-    "build": "webpack",
-    "build:watch": "webpack --watch"
+    "build": "webpack --mode=production --progress",
+    "buildCi": "webpack --mode=production progress --env=ci",
+    "buildDev": "webpack --mode=development --progress=profile",
+    "buildDev:watch": "webpack --mode=development --progress=profile --watch"
   }
 }

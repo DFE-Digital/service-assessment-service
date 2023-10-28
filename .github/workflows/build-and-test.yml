@@ -87,7 +87,7 @@ jobs:
 
       - name: Build Web UI (webpack)
         working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
-        run: npm run build
+        run: npm run buildCi
       
       ## TODO: npm run test
       
