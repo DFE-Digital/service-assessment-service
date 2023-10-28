@@ -76,7 +76,6 @@ $govuk-global-styles: true;
     background-color: #252b36;
     width: 255px;
     padding: 40px 0px 0 0px;
-    height: 100vh;
     border-right: 8px solid $color_dfe-secondary-blue;
     position: relative;
 
@@ -180,7 +179,6 @@ $govuk-global-styles: true;
     .main--content {
       padding: 40px 0px;
       background: #fff;
-      height: 100vh;
     }
 
     .main--inside-container {
