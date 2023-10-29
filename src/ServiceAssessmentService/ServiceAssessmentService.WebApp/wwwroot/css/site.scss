@@ -1,10 +1,39 @@
 ﻿@import "node_modules/govuk-frontend/govuk/all";
 @import "node_modules/dfe-frontend-alpha/packages/dfefrontend";
 
+
+// By default, the GOV.UK styles must be explicitly added to paragraph (`<p>`) and link (`<a>`) tags.
+// This variable allows us to apply the styles to these tags by default without explicit classes.
+// https://frontend.design-system.service.gov.uk/sass-api-reference/#govuk-global-styles
 $govuk-global-styles: true;
 
+// The DfE Frontend uses a 1200px max width (overriding the GOV.UK template default of 960px max width).
+// https://design.education.gov.uk/design-system/dfe-frontend
 .govuk-width-container {
   max-width: 1200px;
 }
 
+// Services hosted on education.gov.uk must not use the GOV.UK header or the GDS Transport typeface.
+// https://design.education.gov.uk/design-system/dfe-frontend
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+span,
+div,
+table,
+th,
+td,
+blockquote,
+li,
+dt,
+dd,
+tr {
+  font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
+}
 
