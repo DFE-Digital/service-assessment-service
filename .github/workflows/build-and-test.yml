@@ -100,6 +100,10 @@ jobs:
         working-directory: ./src/ServiceAssessmentService
         run: dotnet restore
 
+      - name: Verify formatting
+        working-directory: ./src/ServiceAssessmentService
+        run: dotnet format --no-restore --verify-no-changes
+
       - name: Begin SonarCloud analysis (start before any build/test steps)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -108,7 +112,7 @@ jobs:
         shell: pwsh
         run: |
           dotnet-sonarscanner begin /k:"DFE-Digital_service-assessment-service" /o:"dfe-digital" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-      
+
       - name: Build with dotnet
         working-directory: ./src/ServiceAssessmentService
         run: dotnet build --no-restore --configuration Release

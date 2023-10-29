@@ -74,6 +74,10 @@ jobs:
         working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
         run: npm run buildCi
 
+      - name: Verify formatting
+        working-directory: ./src/ServiceAssessmentService
+        run: dotnet format --no-restore  --verify-no-changes
+
       - name: Build with dotnet
         working-directory: ./src/ServiceAssessmentService
         run: dotnet build --configuration Release
