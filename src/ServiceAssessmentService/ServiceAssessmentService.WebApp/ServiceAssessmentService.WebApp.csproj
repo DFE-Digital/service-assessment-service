@@ -6,9 +6,25 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-Recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Needed for Visual Studio to "see" local App Insights data in debug output. -->
+    <!-- https://github.com/MicrosoftDocs/azure-docs/issues/39361#issuecomment-1113667253 -->
+    <ApplicationInsightsResourceId>dummy-value</ApplicationInsightsResourceId>
+  </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.4.0" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="StronglyTypedId" Version="1.0.0-beta06" />
   </ItemGroup>
 </Project>

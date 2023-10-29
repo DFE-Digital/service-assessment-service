@@ -1,0 +1,48 @@
+@model IncompleteBookingRequest;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form asp-controller="BookingRequest" asp-action="PortfolioSubmit" asp-route-id="@Model.RequestId">
+                    <govuk-radios name="portfolio_name">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                                Which DfE group or arms-length body is your discovery for?
+                            </govuk-radios-fieldset-legend>
+
+                            <govuk-radios-hint>
+                                You may know these as portfolios.
+                            </govuk-radios-hint>
+
+                            <govuk-radios-item value="families_group">Families group</govuk-radios-item>
+                            <govuk-radios-item value="funding_group">Funding group</govuk-radios-item>
+                            <govuk-radios-item value="operations_and_infrastructure_group">Operations and Infrastructure group</govuk-radios-item>
+                            <govuk-radios-item value="regions_group">Regions group</govuk-radios-item>
+                            <govuk-radios-item value="schools_group">Schools group, includes teacher services</govuk-radios-item>
+                            <govuk-radios-item value="skills_group">Skills group</govuk-radios-item>
+
+                            <govuk-radios-divider>or</govuk-radios-divider>
+
+                            <govuk-radios-item value="standards_and_testing_agency">Standards and Testing Agency</govuk-radios-item>
+                            <govuk-radios-item value="student_loans_company">Student Loans Company</govuk-radios-item>
+                            <govuk-radios-item value="teaching_regulation_agency">Teaching Regulation Agency</govuk-radios-item>
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

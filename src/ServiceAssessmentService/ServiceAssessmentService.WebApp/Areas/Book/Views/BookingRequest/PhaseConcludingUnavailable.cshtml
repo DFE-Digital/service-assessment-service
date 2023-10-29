@@ -1,0 +1,44 @@
+@using Humanizer
+@model ServiceAssessmentService.WebApp.Models.Phase;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1>Assessment type unavailable</h1>
+
+                @if (Model is null)
+                {
+                    <p>Model is null</p>
+                }
+                else
+                {
+                    <p>
+                        We see that you want to book an assessment for a service that is in @Model.DisplayNameWithIndefiniteArticleLowerCase phase.
+                    </p>
+                    <p>
+                        Bookings for projects within its @Model.DisplayNameLowerCase phase are available to be booked via existing processes, but cannot currently be booked through this system.
+                    </p>
+                    <p>
+                        To arrange this assessment, contact x@example.com and we will assist you!
+                    </p>
+                    <p>
+                        In the meanwhile, here are some additional resources which will assist:
+                    </p>
+                    <ul>
+                        <li>Resource 1</li>
+                        <li>Resource 2</li>
+                        <li>Resource 3</li>
+                        <li>Resource 4</li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>

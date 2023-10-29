@@ -1,0 +1,28 @@
+@model IncompleteBookingRequest;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <form asp-controller="BookingRequest" asp-action="DeputyDirectorSubmit" asp-route-id="@Model.RequestId">
+                    <govuk-input name="deputy_director-name">
+                        <govuk-input-label is-page-heading="true" class="govuk-label--l">
+                            Who is the digital deputy director of your portfolio?
+                        </govuk-input-label>
+                    </govuk-input>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

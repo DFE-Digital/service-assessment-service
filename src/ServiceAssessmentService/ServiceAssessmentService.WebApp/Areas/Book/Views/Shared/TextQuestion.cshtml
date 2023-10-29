@@ -1,0 +1,37 @@
+@model ServiceAssessmentService.WebApp.Areas.Book.Views.Shared.TextQuestionModel;
+
+@{
+    ViewData["Title"] = Model.QuestionText;
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <form asp-controller="@Model.FormController" asp-action="@Model.FormAction" asp-route-id="@Model.BookingRequestId">
+                    <govuk-input name="@Model.InputName" value="@Model.Value">
+                        <govuk-input-label is-page-heading="true" class="govuk-label--l">@Model.QuestionText</govuk-input-label>
+                        @if (!string.IsNullOrWhiteSpace(Model.QuestionHintText))
+                        {
+                            <govuk-input-hint>@Model.QuestionHintText</govuk-input-hint>
+                        }
+
+                        @if (Model.Errors.Any())
+                        {
+                            <govuk-input-error-message>
+                                @string.Join(", ", Model.Errors)
+                            </govuk-input-error-message>
+                        }
+                    </govuk-input>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.BookingRequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

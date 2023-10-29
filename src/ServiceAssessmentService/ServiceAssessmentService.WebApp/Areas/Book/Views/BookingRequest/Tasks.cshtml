@@ -1,0 +1,280 @@
+﻿@model IncompleteBookingRequest;
+
+@{
+    ViewData["Title"] = "Index";
+
+    const string notYetSupplied = "Not yet supplied";
+
+    var phaseName = (ViewData["phase_type_human_name"] as Phase)?.DisplayNameLowerCase ?? "unknown assessment type";
+
+    var assessmentTypeName = (ViewData["assessment_type_human_name"] as AssessmentType)?.DisplayNameLowerCase ?? "unknown assessment type";
+
+
+    //var assessmentDisplayName = $"{phaseName} {assessmentTypeName}";
+
+    var assessmentTypeNameIndefiniteArticle = (ViewData["assessment_type_human_name"] as AssessmentType)?.DisplayNameWithIndefiniteArticleLowerCase ?? "an unknown assessment type";
+    //var assessmentTypeHumanised = Humanizer.
+
+}
+
+<div class="main--content">
+    <div class="main--inside-container">
+
+        @* <div class="govuk-grid-row"> *@
+        @*     <div class="govuk-grid-column-full"> *@
+        @*         <h1 class="govuk-heading-l ">@(($"Booking an end of {phaseName} {assessmentTypeName}").Transform(To.SentenceCase))</h1> *@
+        @*     </div> *@
+        @* </div> *@
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h2 class="govuk-heading-l">
+                    @(Model.Name ?? "Untitled") <small>(@Model.GetAssessmentName())</small>
+                </h2>
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-2"> Request incomplete</h2>
+                <p class="govuk-body govuk-!-margin-bottom-7">You have completed @Model.CountOfCompleted() of @Model.StepCount() sections.</p>
+                <ol class="app-task-list">
+                    <li>
+                        <h2 class="app-task-list__section">
+                            <span class="app-task-list__section-number">1. </span> Details of your @phaseName @assessmentTypeName
+                        </h2>
+                        <ul class="app-task-list__items">
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="Name" asp-route-id="@Model.RequestId">Name</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                    @(Model.Name ?? notYetSupplied)
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    @if (Model.IsNameComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
+                                </span>
+                            </li>
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="Description" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Summary</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                    @(Model.Description ?? notYetSupplied)
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    @if (Model.IsDescriptionComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
+                                </span>
+                            </li>
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="ProjectCode" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Project code</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                    @{
+                                        if (Model.IsProjectCodeKnown == false)
+                                        {
+                                            <span>Not known</span>
+                                        }
+                                        else if (Model.IsProjectCodeKnown == true)
+                                        {
+                                            @Model.ProjectCode
+                                        }
+                                        else
+                                        {
+                                            <span>@notYetSupplied</span>
+                                        }
+                                    }
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    @if (Model.IsProjectCodeComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
+                                </span>
+                            </li>
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="StartDate" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Start date</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                    @((Model.StartDate is null) ? notYetSupplied : Model.StartDate)
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    @if (Model.IsStartDateComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
+                                </span>
+                            </li>
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="EndDate" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">End date</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                    @((Model.EndDate is null) ? notYetSupplied : Model.EndDate)
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    @if (Model.IsEndDateComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
+                                </span>
+                            </li>
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="ReviewDates" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Requested review weeks</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                    @*
+                                        TODO: Consider scenario where user might:
+                                        1. select an end date,
+                                        2. then select review dates,
+                                        3. then time passes and the end date is now within the next five weeks, and previously selected values are now invalid
+                                    *@
+                                    
+                                    @if (Model.IsEndDateWithinNextFiveWeeks)
+                                    {
+                                        <span>None available as end date is within next 5 weeks</span>
+                                    }
+                                    else if ( /*Model.IsEndDateKnown == true &&*/ Model.ReviewDates.Any())
+                                    {
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @foreach (var date in Model.ReviewDates)
+                                            {
+                                                <li>@date</li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span>@notYetSupplied</span>
+                                    }
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    @if (Model.IsReviewDatesComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
+
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h2 class="app-task-list__section">
+                            <span class="app-task-list__section-number">2. </span> Product and delivery
+                        </h2>
+                        <ul class="app-task-list__items">
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="Portfolio" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Portfolio</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                </span>
+                            </li>
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="DeputyDirector" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Deputy director</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                </span>
+                            </li>
+
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="SeniorResponsibleOfficer" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Senior responsible officer</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                </span>
+                            </li>
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="ProductOwnerManager" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Product manager</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                </span>
+                            </li>
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a asp-controller="BookingRequest" asp-action="DeliveryManager" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Delivery manager</a>
+                                </span>
+                                <span class="app-task-list__task-value">
+                                </span>
+                                <span class="app-task-list__task-tag">
+                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <h2 class="app-task-list__section">
+                            <span class="app-task-list__section-number">3. </span> Submit
+                        </h2>
+
+                        <ul class="app-task-list__items">
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-value">Submit request</span>
+                                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="submit-pay-status">Cannot start yet</strong>
+                            </li>
+                        </ul>
+
+
+                    </li>
+                </ol>
+
+                <h2 class="govuk-heading-m">Delete draft</h2>
+                <p>If you no longer want to proceed with this request, you can delete it.</p>
+                <form action="/book/request/delete/rece6zEGl2IvHZoi0" method="get">
+                    <button class="govuk-button govuk-button--warning" data-module="govuk-button">Delete draft</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
