@@ -2,6 +2,7 @@ using Bogus;
 using ServiceAssessmentService.WebApp.Core;
 using ServiceAssessmentService.WebApp.Models;
 using ServiceAssessmentService.WebApp.Services.Lookups;
+using Person = ServiceAssessmentService.WebApp.Models.Person;
 
 namespace ServiceAssessmentService.WebApp.Services.Book;
 
@@ -66,6 +67,22 @@ public class DummyDataStore : IDummyDataStore
                     return dates;
                 })
                 .RuleFor(o => o.Portfolio, f => f.PickRandom(availablePortfolios).OrNull(f, 0.4f))
+                .RuleFor(o => o.DeputyDirector, f =>
+                {
+                    if (f.Random.Bool(0.2f))
+                    {
+                        return null;
+                    }
+
+                    var firstName = f.Name.FirstName();
+                    var lastName = f.Name.LastName();
+                    
+                    var person = new Person();
+                    person.Name = $"{firstName} {lastName}";
+                    person.Email = f.Internet.Email(firstName, lastName);
+
+                    return person;
+                })
             ;
 
         var incompleteBookingRequests = x.Generate(10);

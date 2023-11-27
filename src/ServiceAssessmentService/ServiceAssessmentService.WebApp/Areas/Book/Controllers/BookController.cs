@@ -111,34 +111,6 @@ public partial class BookingRequestController : Controller
     }
 
 
-    [HttpGet]
-    public async Task<IActionResult> DeputyDirector(Guid id)
-    {
-        var bookingRequestId = new BookingRequestId(id);
-        var bookingRequest = await _bookingRequestReadService.GetByIdAsync(bookingRequestId);
-
-        if (bookingRequest is null)
-        {
-            return NotFound($"Booking request with ID {bookingRequestId} not found");
-        }
-
-        return View(bookingRequest);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeputyDirectorSubmit(Guid id)
-    {
-        var bookingRequestId = new BookingRequestId(id);
-        var bookingRequest = await _bookingRequestReadService.GetByIdAsync(bookingRequestId);
-
-        if (bookingRequest is null)
-        {
-            return NotFound($"Booking request with ID {bookingRequestId} not found");
-        }
-
-        return RedirectToAction(nameof(SeniorResponsibleOfficer), new { id = bookingRequestId });
-    }
 
     [HttpGet]
     public async Task<IActionResult> SeniorResponsibleOfficer(Guid id)

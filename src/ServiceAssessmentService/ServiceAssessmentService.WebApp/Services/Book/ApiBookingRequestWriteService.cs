@@ -58,4 +58,10 @@ public class ApiBookingRequestWriteService : IBookingRequestWriteService
     {
         throw new NotImplementedException();
     }
+
+    public Task<ChangeRequestModel> UpdateDeputyDirector(BookingRequestId bookingRequestId, string proposedDeputyDirectorName,
+        string proposedDeputyDirectorEmail)
+    {
+        throw new NotImplementedException();
+    }
 }

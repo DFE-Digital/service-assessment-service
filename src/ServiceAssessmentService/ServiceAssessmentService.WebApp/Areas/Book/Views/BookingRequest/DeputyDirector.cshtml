@@ -1,4 +1,4 @@
-@model IncompleteBookingRequest;
+@model ServiceAssessmentService.WebApp.Controllers.Book.DeputyDirectorViewModel;
 
 @{
     ViewData["Title"] = "Index";
@@ -10,11 +10,34 @@
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
-                <form asp-controller="BookingRequest" asp-action="DeputyDirectorSubmit" asp-route-id="@Model.RequestId">
-                    <govuk-input name="deputy_director-name">
-                        <govuk-input-label is-page-heading="true" class="govuk-label--l">
-                            Who is the digital deputy director of your portfolio?
+                <h1 class="govuk-header-l">Who is the digital deputy director of your portfolio?</h1>
+                
+                <form asp-controller="BookingRequest" asp-action="DeputyDirector" asp-route-id="@Model.RequestId">
+                    
+                    <govuk-input name="@Model.FormElementNameDeputyDirectorName" value="@Model.DeputyDirectorName">
+                        <govuk-input-label is-page-heading="false">
+                            What is your digital deputy director's name?
                         </govuk-input-label>
+                        
+                        @if(Model.NameErrors.Any())
+                        {
+                            <govuk-input-error-message>
+                                @string.Join(", ", Model.NameErrors)
+                            </govuk-input-error-message>
+                        }
+                    </govuk-input>
+                    
+                    <govuk-input name="@Model.FormElementNameDeputyDirectorEmail" value="@Model.DeputyDirectorEmail">
+                        <govuk-input-label is-page-heading="false">
+                            What is your digital deputy director's email address?
+                        </govuk-input-label>
+                        
+                        @if(Model.EmailErrors.Any())
+                        {
+                            <govuk-input-error-message>
+                                @string.Join(", ", Model.EmailErrors)
+                            </govuk-input-error-message>
+                        }
                     </govuk-input>
 
                     <div class="govuk-button-group">

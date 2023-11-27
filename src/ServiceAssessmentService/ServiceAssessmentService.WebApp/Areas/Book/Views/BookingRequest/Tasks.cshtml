@@ -222,9 +222,17 @@
                                     <a asp-controller="BookingRequest" asp-action="DeputyDirector" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Deputy director</a>
                                 </span>
                                 <span class="app-task-list__task-value">
+                                    @(Model.DeputyDirector?.Name ?? notYetSupplied)
                                 </span>
                                 <span class="app-task-list__task-tag">
-                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    @if (Model.IsDeputyDirectorComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
                                 </span>
                             </li>
 

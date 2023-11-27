@@ -18,6 +18,7 @@ public class IncompleteBookingRequest
         { nameof(EndDate), x => x.IsEndDateComplete() },
         { nameof(ReviewDates), x => x.IsReviewDatesComplete() },
         { nameof(Portfolio), x => x.IsPortfolioComplete() },
+        { nameof(DeputyDirector), x => x.IsDeputyDirectorComplete() },
     };
 
     public IncompleteBookingRequest(BookingRequestId requestId)
@@ -94,6 +95,10 @@ public class IncompleteBookingRequest
 
 
     public Portfolio? Portfolio { get; set; } = null;
+    
+    public Person? DeputyDirector { get; set; } = null;
+    
+    
 
     public string GetDiscoveryOrService()
     {
@@ -191,6 +196,13 @@ public class IncompleteBookingRequest
     {
         return Portfolio is not null;
     }
+    
+    public bool IsDeputyDirectorComplete()
+    {
+        return DeputyDirector is not null
+               && !string.IsNullOrWhiteSpace(DeputyDirector.Name)
+               && !string.IsNullOrWhiteSpace(DeputyDirector.Email);
+    }
 
     public string GetOverallCompletionStatusDescription()
     {
@@ -236,4 +248,11 @@ public class IncompleteBookingRequest
     {
         return _completionStatus.Count(x => x.Value(this));
     }
+}
+
+
+public class Person
+{
+    public string? Name { get; set; }
+    public string? Email { get; set; }
 }

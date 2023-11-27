@@ -554,4 +554,97 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
         return response;
 
     }
+
+    public async Task<ChangeRequestModel> UpdateDeputyDirector(BookingRequestId id, string proposedDeputyDirectorName,
+        string proposedDeputyDirectorEmail)
+    {
+        var response = new ChangeRequestModel();
+        response.IsSuccessful = true;
+
+        // Check if the request we're attempting to edit, exists.
+        var bookingRequest = await _dummyDataStore.GetByIdAsync(id);
+        if (bookingRequest is null)
+        {
+            response.IsSuccessful = false;
+            response.Errors.Add(new ChangeRequestModel.Error($"Attempting to edit a request which does not appear to exist (ID: {id}) - unable to continue"));
+        }
+
+        var proposedDeputyDirector = new Person()
+        {
+            Name = proposedDeputyDirectorName,
+            Email = proposedDeputyDirectorEmail,
+        };
+        
+        // Validations
+        if (string.IsNullOrWhiteSpace(proposedDeputyDirectorName))
+        {
+            response.IsSuccessful = false;
+            response.Errors.Add(new ChangeRequestModel.Error("Enter a name, or skip and return to this question later"));
+        }
+        
+        if (string.IsNullOrWhiteSpace(proposedDeputyDirectorEmail))
+        {
+            response.IsSuccessful = false;
+            response.Errors.Add(new ChangeRequestModel.Error("Enter an email address, or skip and return to this question later"));
+        }
+        else
+        {
+            var permittedEmailDomains = new List<string>()
+            {
+                "digital.education.gov.uk",
+                "education.gov.uk",
+                "example.com",
+                "example.org",
+            };
+            
+            // TODO: Validate format of email address
+            // TODO: Consider allow-listing email address domains (e.g., requiring `.gov.uk` or `@education.gov.uk`)
+
+            // TODO: Consider extracting email validation logic out to shared component?
+            try
+            {
+                // Rely on C#'s implementation of email validations (as opposed to, e.g., implementing regex)
+                var emailAddress = new System.Net.Mail.MailAddress(proposedDeputyDirectorEmail);
+
+                if (!emailAddress.Host.EndsWith(".gov.uk", StringComparison.OrdinalIgnoreCase) && !permittedEmailDomains.Contains(emailAddress.Host))
+                {
+                    response.IsSuccessful = false;
+                    response.Errors.Add(new ChangeRequestModel.Error($"Enter a valid work email address"));
+                }
+            }
+            catch (FormatException)
+            {
+                response.IsSuccessful = false;
+                response.Errors.Add(new ChangeRequestModel.Error("Enter a valid email address - email address format not recognised"));
+            }
+            catch (ArgumentNullException)
+            {
+                // Programmer error if reaching here as ArgumentNullException is documented as being thrown for a null value
+                _logger.LogError("Unexpected ArgumentNullException when validating email address for email address {ProposedDeputyDirectorEmailAddress}", proposedDeputyDirectorEmail);
+                response.IsSuccessful = false;
+                response.Errors.Add(new ChangeRequestModel.Error("Enter a valid email address"));
+            }
+            catch (ArgumentException)
+            {
+                // Programmer error if reaching here as ArgumentException is documented as being thrown for empty string
+                _logger.LogError("Unexpected ArgumentException when validating email address for email address {ProposedDeputyDirectorEmailAddress}", proposedDeputyDirectorEmail);
+                response.IsSuccessful = false;
+                response.Errors.Add(new ChangeRequestModel.Error("Enter a valid email address"));
+            }
+        }
+
+        
+        
+        
+        
+        // If request found and no validation issues found, actually "do" the update
+        if (bookingRequest is not null && response.IsSuccessful)
+        {
+            bookingRequest.DeputyDirector = proposedDeputyDirector;
+
+            await _dummyDataStore.Put(id, bookingRequest);
+        }
+
+        return response;
+    }
 }
