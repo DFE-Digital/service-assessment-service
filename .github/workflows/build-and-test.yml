@@ -100,9 +100,9 @@ jobs:
         working-directory: ./src/ServiceAssessmentService
         run: dotnet restore
 
-#      - name: Verify formatting
-#        working-directory: ./src/ServiceAssessmentService
-#        run: dotnet format --no-restore --verify-no-changes
+      - name: Verify formatting
+        working-directory: ./src/ServiceAssessmentService
+        run: dotnet format --no-restore --verify-no-changes
 
       - name: Begin SonarCloud analysis (start before any build/test steps)
         env:
