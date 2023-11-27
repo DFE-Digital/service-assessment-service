@@ -1,6 +1,7 @@
 ﻿using ServiceAssessmentService.WebApp.Controllers.Book;
 using ServiceAssessmentService.WebApp.Core;
 using ServiceAssessmentService.WebApp.Models;
+using ServiceAssessmentService.WebApp.Services.Lookups;
 
 namespace ServiceAssessmentService.WebApp.Services.Book;
 
@@ -8,6 +9,9 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
 {
     private readonly ILogger<DummyInMemoryBookingRequestWriteService> _logger;
     private readonly IDummyDataStore _dummyDataStore;
+
+    // Workaround -- likely shouldn't be calling API from within API...?
+    private readonly ILookupsReadService _lookupsReadService;
 
     private static readonly Dictionary<string, int> MonthNameToNumberMapping = new Dictionary<string, int>()
     {
@@ -27,11 +31,11 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
 
     public DummyInMemoryBookingRequestWriteService(
         ILogger<DummyInMemoryBookingRequestWriteService> logger,
-        IDummyDataStore dummyDataStore
-    )
+        IDummyDataStore dummyDataStore, ILookupsReadService lookupsReadService)
     {
         _logger = logger;
         _dummyDataStore = dummyDataStore;
+        _lookupsReadService = lookupsReadService;
     }
 
     public async Task<IncompleteBookingRequest> CreateRequestAsync(Phase phaseConcluding, AssessmentType assessmentType)
@@ -507,5 +511,47 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
         }
 
         return response;
+    }
+
+    public async Task<ChangeRequestModel> UpdatePortfolio(BookingRequestId id, string proposedPortfolioId)
+    {
+        var response = new ChangeRequestModel();
+        response.IsSuccessful = true;
+
+        // Check if the request we're attempting to edit, exists.
+        var bookingRequest = await _dummyDataStore.GetByIdAsync(id);
+        if (bookingRequest is null)
+        {
+            response.IsSuccessful = false;
+            response.Errors.Add(new ChangeRequestModel.Error($"Attempting to edit a request which does not appear to exist (ID: {id}) - unable to continue"));
+        }
+
+        var availablePortfolios = await _lookupsReadService.GetPortfolioOptions();
+
+        // Validations
+        if (string.IsNullOrWhiteSpace(proposedPortfolioId))
+        {
+            response.IsSuccessful = false;
+            response.Errors.Add(new ChangeRequestModel.Error("Select a portfolio, or skip and return to this question later"));
+        }
+
+
+        var proposedPortfolio = availablePortfolios.SingleOrDefault(x => x.Id.Equals(proposedPortfolioId, StringComparison.Ordinal));
+        if (proposedPortfolio is null)
+        {
+            response.IsSuccessful = false;
+            response.Errors.Add(new ChangeRequestModel.Error("Select a valid portfolio, or skip and return to this question later"));
+        }
+
+        // If request found and no validation issues found, actually "do" the update
+        if (bookingRequest is not null && response.IsSuccessful)
+        {
+            bookingRequest.Portfolio = proposedPortfolio;
+
+            await _dummyDataStore.Put(id, bookingRequest);
+        }
+
+        return response;
+
     }
 }

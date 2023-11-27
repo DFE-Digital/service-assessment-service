@@ -32,6 +32,9 @@ public class DummyDataStore : IDummyDataStore
         var availablePhases = (await _lookupsReadService.GetPhases())
             // .Where(x => x.IsEnabled)
             ;
+        var availablePortfolios = (await _lookupsReadService.GetPortfolioOptions())
+            // .Where(x => x.IsEnabled)
+            ;
 
         var x = new Faker<IncompleteBookingRequest>()
                 .StrictMode(true)
@@ -55,13 +58,14 @@ public class DummyDataStore : IDummyDataStore
                 .RuleFor(o => o.EndDateDay, (f, current) => current.EndDate?.Day)
                 .RuleFor(o => o.EndDateMonth, (f, current) => current.EndDate?.Month)
                 .RuleFor(o => o.EndDateYear, (f, current) => current.EndDate?.Year)
+                // TODO: Review dates should be based on the end date (or 5-10 weeks into the future) // TODO: Should be the "Monday" for a "week beginning" date
                 .RuleFor(o => o.ReviewDates, f =>
                 {
                     var dates = Enumerable.Range(1, f.Random.Int(0, 5)).Select(x => f.Date.FutureDateOnly()).ToList();
                     dates.Add(new DateOnly(2024, 1, 1));
                     return dates;
                 })
-            // TODO: Should be based on the end date (or 5-10 weeks into the future) // TODO: Should be the "Monday" for a "week beginning" date
+                .RuleFor(o => o.Portfolio, f => f.PickRandom(availablePortfolios).OrNull(f, 0.4f))
             ;
 
         var incompleteBookingRequests = x.Generate(10);

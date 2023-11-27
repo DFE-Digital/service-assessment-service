@@ -6,4 +6,5 @@ public interface ILookupsReadService
 {
     Task<IEnumerable<Phase>> GetPhases();
     Task<IEnumerable<AssessmentType>> GetAssessmentTypes();
+    Task<IEnumerable<Portfolio>> GetPortfolioOptions();
 }

@@ -1,4 +1,5 @@
-@model IncompleteBookingRequest;
+@using ServiceAssessmentService.WebApp.Controllers.Book
+@model PortfolioViewModel;
 
 @{
     ViewData["Title"] = "Index";
@@ -11,8 +12,8 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form asp-controller="BookingRequest" asp-action="PortfolioSubmit" asp-route-id="@Model.RequestId">
-                    <govuk-radios name="portfolio_name">
+                <form asp-controller="BookingRequest" asp-action="Portfolio" asp-route-id="@Model.RequestId">
+                    <govuk-radios name="@Model.FormElementName">
                         <govuk-radios-fieldset>
                             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
                                 Which DfE group or arms-length body is your discovery for?
@@ -21,19 +22,29 @@
                             <govuk-radios-hint>
                                 You may know these as portfolios.
                             </govuk-radios-hint>
+                            
+                            @if (Model.Errors.Any())
+                            {
+                                <govuk-radios-error-message>
+                                    @string.Join(", ", Model.Errors)
+                                </govuk-radios-error-message>
+                            }
 
-                            <govuk-radios-item value="families_group">Families group</govuk-radios-item>
-                            <govuk-radios-item value="funding_group">Funding group</govuk-radios-item>
-                            <govuk-radios-item value="operations_and_infrastructure_group">Operations and Infrastructure group</govuk-radios-item>
-                            <govuk-radios-item value="regions_group">Regions group</govuk-radios-item>
-                            <govuk-radios-item value="schools_group">Schools group, includes teacher services</govuk-radios-item>
-                            <govuk-radios-item value="skills_group">Skills group</govuk-radios-item>
+                            @foreach (var option in Model.MainPortfolioOptions.OrderBy( p => p.SortOrder))
+                            {
+                                <govuk-radios-item value="@option.Id" checked="@option.Id.Equals(Model.PortfolioId)">@option.DisplayName</govuk-radios-item>
+                            }
+                            
+                            @if (Model.OtherPortfolioOptions.Any())
+                            {
+                                <govuk-radios-divider>or</govuk-radios-divider>
 
-                            <govuk-radios-divider>or</govuk-radios-divider>
-
-                            <govuk-radios-item value="standards_and_testing_agency">Standards and Testing Agency</govuk-radios-item>
-                            <govuk-radios-item value="student_loans_company">Student Loans Company</govuk-radios-item>
-                            <govuk-radios-item value="teaching_regulation_agency">Teaching Regulation Agency</govuk-radios-item>
+                                @foreach (var option in Model.OtherPortfolioOptions.OrderBy(p => p.SortOrder))
+                                {
+                                    <govuk-radios-item value="@option.Id" checked="@option.Id.Equals(Model.PortfolioId)">@option.DisplayName</govuk-radios-item>
+                                }
+                            }
+                            
                         </govuk-radios-fieldset>
                     </govuk-radios>
 

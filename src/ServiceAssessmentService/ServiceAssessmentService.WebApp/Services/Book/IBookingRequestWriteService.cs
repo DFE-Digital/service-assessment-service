@@ -14,4 +14,5 @@ public interface IBookingRequestWriteService
     Task<ChangeRequestModel> UpdateStartDate(BookingRequestId id, string? proposedYear, string? proposedMonth, string? proposedDayOfMonth);
     Task<ChangeRequestModel> UpdateEndDate(BookingRequestId id, bool? isEndDateKnown, string? proposedYear, string? proposedMonth, string? proposedDayOfMonth);
     Task<ChangeRequestModel> UpdateReviewDates(BookingRequestId id, List<DateOnly> proposedReviewDates);
+    Task<ChangeRequestModel> UpdatePortfolio(BookingRequestId id, string dtoValue);
 }

@@ -54,4 +54,8 @@ public class ApiBookingRequestWriteService : IBookingRequestWriteService
         throw new NotImplementedException();
     }
 
+    public Task<ChangeRequestModel> UpdatePortfolio(BookingRequestId id, string dtoValue)
+    {
+        throw new NotImplementedException();
+    }
 }

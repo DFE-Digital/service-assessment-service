@@ -21,4 +21,9 @@ public class FakeNotImplementedLookupsReadService : ILookupsReadService
     {
         throw new NotImplementedException();
     }
+
+    public Task<IEnumerable<Portfolio>> GetPortfolioOptions()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -13,4 +13,9 @@ public class ApiLookupsReadService : ILookupsReadService
     {
         throw new NotImplementedException();
     }
+
+    public Task<IEnumerable<Portfolio>> GetPortfolioOptions()
+    {
+        throw new NotImplementedException();
+    }
 }

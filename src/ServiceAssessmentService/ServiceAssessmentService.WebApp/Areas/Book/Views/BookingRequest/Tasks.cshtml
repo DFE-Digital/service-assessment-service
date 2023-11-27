@@ -203,9 +203,17 @@
                                     <a asp-controller="BookingRequest" asp-action="Portfolio" asp-route-id="@Model.RequestId" aria-describedby="read-declaration-status">Portfolio</a>
                                 </span>
                                 <span class="app-task-list__task-value">
+                                    @(Model.Portfolio?.DisplayName ?? notYetSupplied)
                                 </span>
                                 <span class="app-task-list__task-tag">
-                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    @if (Model.IsPortfolioComplete())
+                                    {
+                                        <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                    }
                                 </span>
                             </li>
 

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using ServiceAssessmentService.WebApp.Core;
+using ServiceAssessmentService.WebApp.Services.Lookups;
 
 namespace ServiceAssessmentService.WebApp.Models;
 
@@ -16,6 +17,7 @@ public class IncompleteBookingRequest
         { nameof(StartDate), x => x.IsStartDateComplete() },
         { nameof(EndDate), x => x.IsEndDateComplete() },
         { nameof(ReviewDates), x => x.IsReviewDatesComplete() },
+        { nameof(Portfolio), x => x.IsPortfolioComplete() },
     };
 
     public IncompleteBookingRequest(BookingRequestId requestId)
@@ -90,6 +92,8 @@ public class IncompleteBookingRequest
     public List<DateOnly> ReviewDates { get; set; } = new();
     public bool IsEndDateWithinNextFiveWeeks => EndDate is not null && EndDate.Value <= DateOnly.FromDateTime(DateTime.Today.AddDays(5 * 7));
 
+
+    public Portfolio? Portfolio { get; set; } = null;
 
     public string GetDiscoveryOrService()
     {
@@ -181,6 +185,11 @@ public class IncompleteBookingRequest
 
         // User should be able to select at least one date
         return ReviewDates.Any();
+    }
+
+    public bool IsPortfolioComplete()
+    {
+        return Portfolio is not null;
     }
 
     public string GetOverallCompletionStatusDescription()

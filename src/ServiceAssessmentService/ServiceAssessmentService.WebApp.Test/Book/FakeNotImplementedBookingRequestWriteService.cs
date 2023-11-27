@@ -51,6 +51,11 @@ public class FakeNotImplementedBookingRequestWriteService : IBookingRequestWrite
         throw new NotImplementedException();
     }
 
+    public Task<ChangeRequestModel> UpdatePortfolio(BookingRequestId bookingRequestId, string dtoValue)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<ChangeRequestModel> UpdateReviewDate(BookingRequestId bookingRequestId, DateOnly? proposedReviewDate)
     {
         throw new NotImplementedException();
