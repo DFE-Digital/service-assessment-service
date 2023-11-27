@@ -6,8 +6,8 @@ namespace ServiceAssessmentService.WebApp.Controllers.Book;
 
 public partial class BookingRequestController : Controller
 {
-    
-    
+
+
     [HttpGet]
     public async Task<IActionResult> ReviewDates(Guid id)
     {
@@ -32,7 +32,7 @@ public partial class BookingRequestController : Controller
 
         return View(model);
     }
-    
+
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -45,11 +45,11 @@ public partial class BookingRequestController : Controller
             return NotFound($"Booking request with ID {bookingRequestId} not found");
         }
 
-        
+
         var submittedDates = (dto.Value is null)
             ? new List<DateOnly>()
             : dto.Value.Select(DateOnly.Parse).ToList();
-        
+
         var bookingRequestChangeResult = await _bookingRequestWriteService.UpdateReviewDates(bookingRequestId, submittedDates);
 
         if (bookingRequestChangeResult.HasErrors)
@@ -80,10 +80,10 @@ public sealed class ReviewDatesViewModel
 {
     public BookingRequestId RequestId { get; set; }
     public DateOnly? EndDate { get; set; }
-    public List<DateOnly> SelectedReviewDates { get; set; }
-    public List<DateOnly> AvailableReviewDates { get; set; }
-    public List<string> ReviewDateErrors { get; set; }
-    
+    public List<DateOnly>? SelectedReviewDates { get; set; }
+    public List<DateOnly>? AvailableReviewDates { get; set; }
+    public List<string>? ReviewDateErrors { get; set; }
+
     public bool IsReviewDateWithinNextFiveWeeks => EndDate is not null && EndDate.Value <= DateOnly.FromDateTime(DateTime.Today.AddDays(5 * 7));
 }
 
@@ -93,6 +93,6 @@ public sealed class ReviewDateDto
     public const string ReviewDateFormName = "review-date";
 
     [FromForm(Name = ReviewDateFormName)]
-    public List<string> Value { get; init; } = null;
+    public List<string>? Value { get; init; } = null;
 }
 

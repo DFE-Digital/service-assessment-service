@@ -35,8 +35,8 @@ public class DummyInMemoryBookingRequestReadService : IBookingRequestReadService
         }
 
         var availableDates = new List<DateOnly>();
-        var startOfThisWeek = DateOnly.FromDateTime(DateTime.Today.AddDays((-(int) DateTime.Today.DayOfWeek) + 1));
-        
+        var startOfThisWeek = DateOnly.FromDateTime(DateTime.Today.AddDays((-(int)DateTime.Today.DayOfWeek) + 1));
+
         var endDate = request.EndDate;
         if (endDate is null)
         {
@@ -50,7 +50,7 @@ public class DummyInMemoryBookingRequestReadService : IBookingRequestReadService
         else
         {
             // If known end date, return dates within the next 5-10weeks, starting from the monday of the week of the end date
-            var endDateStartOfWeek = endDate.Value.AddDays((-(int) endDate.Value.DayOfWeek) + 1);
+            var endDateStartOfWeek = endDate.Value.AddDays((-(int)endDate.Value.DayOfWeek) + 1);
             // "week beginning" dates that the mondays of each week, for the range 5-10 weeks from the end date 
             for (var i = 0; i <= 5; i++)
             {
@@ -61,10 +61,10 @@ public class DummyInMemoryBookingRequestReadService : IBookingRequestReadService
 
         // TODO: In the actual API implementation, the DateTime.Today should be injected or similar as a "reference date" 
         var earliestPermittedReviewDate = DateOnly.FromDateTime(startOfThisWeek.ToDateTime(TimeOnly.MinValue).AddDays(5 * 7));
-        
+
         // filter out any dates that are before the earliest permitted review date
         availableDates = availableDates.Where(d => d >= earliestPermittedReviewDate).ToList();
-        
+
         return availableDates;
     }
 }

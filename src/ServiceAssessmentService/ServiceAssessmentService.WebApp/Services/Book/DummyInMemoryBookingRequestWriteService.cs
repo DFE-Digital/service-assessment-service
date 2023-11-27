@@ -484,20 +484,20 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
 
 
         // Validations
-        if(proposedReviewDates is null || proposedReviewDates.Count == 0)
+        if (proposedReviewDates is null || proposedReviewDates.Count == 0)
         {
             response.IsSuccessful = false;
             response.Errors.Add(new ChangeRequestModel.Error("Select at least one review date, or skip and return to this question later"));
         }
-        
+
         // TODO: More validations
         // TODO: Should be "week beginning" dates, not midweek?
         // TODO: Should be within permissible date range
         // TODO: Consider what happens if a previously valid value is no longer valid (e.g., end date is now within 5weeks and no selections are valid)
         // TODO: Consider what happens if the end date changes and the selected value is no longer valid (e.g., newly inputted end date is after (or otherwise incompatible with) a selected review date)
         // TODO: Reject (or discard) duplicated values
-        
-        
+
+
         // If request found and no validation issues found, actually "do" the update
         if (bookingRequest is not null && response.IsSuccessful)
         {

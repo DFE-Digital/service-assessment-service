@@ -60,8 +60,8 @@ public class DummyDataStore : IDummyDataStore
                     var dates = Enumerable.Range(1, f.Random.Int(0, 5)).Select(x => f.Date.FutureDateOnly()).ToList();
                     dates.Add(new DateOnly(2024, 1, 1));
                     return dates;
-                }) 
-                    // TODO: Should be based on the end date (or 5-10 weeks into the future) // TODO: Should be the "Monday" for a "week beginning" date
+                })
+            // TODO: Should be based on the end date (or 5-10 weeks into the future) // TODO: Should be the "Monday" for a "week beginning" date
             ;
 
         var incompleteBookingRequests = x.Generate(10);

@@ -178,7 +178,7 @@ public class IncompleteBookingRequest
             // End date too soon - user cannot select review dates
             return true;
         }
-        
+
         // User should be able to select at least one date
         return ReviewDates.Any();
     }
