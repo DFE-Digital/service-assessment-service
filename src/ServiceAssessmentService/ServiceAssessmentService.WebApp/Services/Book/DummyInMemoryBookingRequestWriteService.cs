@@ -574,14 +574,14 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
             Name = proposedDeputyDirectorName,
             Email = proposedDeputyDirectorEmail,
         };
-        
+
         // Validations
         if (string.IsNullOrWhiteSpace(proposedDeputyDirectorName))
         {
             response.IsSuccessful = false;
             response.Errors.Add(new ChangeRequestModel.Error("Enter a name, or skip and return to this question later"));
         }
-        
+
         if (string.IsNullOrWhiteSpace(proposedDeputyDirectorEmail))
         {
             response.IsSuccessful = false;
@@ -596,9 +596,10 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
                 "example.com",
                 "example.org",
             };
-            
+
             // TODO: Validate format of email address
             // TODO: Consider allow-listing email address domains (e.g., requiring `.gov.uk` or `@education.gov.uk`)
+            // TODO: Check MS Graph API to see if email address is valid (i.e., exists in the directory)
 
             // TODO: Consider extracting email validation logic out to shared component?
             try
@@ -633,10 +634,10 @@ public class DummyInMemoryBookingRequestWriteService : IBookingRequestWriteServi
             }
         }
 
-        
-        
-        
-        
+
+
+
+
         // If request found and no validation issues found, actually "do" the update
         if (bookingRequest is not null && response.IsSuccessful)
         {

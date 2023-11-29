@@ -76,7 +76,7 @@ public class DummyDataStore : IDummyDataStore
 
                     var firstName = f.Name.FirstName();
                     var lastName = f.Name.LastName();
-                    
+
                     var person = new Person();
                     person.Name = $"{firstName} {lastName}";
                     person.Email = f.Internet.Email(firstName, lastName);

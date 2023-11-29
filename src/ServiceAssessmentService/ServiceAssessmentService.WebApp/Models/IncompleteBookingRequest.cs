@@ -95,10 +95,10 @@ public class IncompleteBookingRequest
 
 
     public Portfolio? Portfolio { get; set; } = null;
-    
+
     public Person? DeputyDirector { get; set; } = null;
-    
-    
+
+
 
     public string GetDiscoveryOrService()
     {
@@ -196,7 +196,7 @@ public class IncompleteBookingRequest
     {
         return Portfolio is not null;
     }
-    
+
     public bool IsDeputyDirectorComplete()
     {
         return DeputyDirector is not null

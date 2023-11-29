@@ -49,7 +49,7 @@ public partial class BookingRequestController : Controller
             var model = new DeputyDirectorViewModel()
             {
                 RequestId = bookingRequestId,
-                
+
                 // When prompting the user to correct any errors, pre-fill the form with the previously the submitted invalid value (i.e., not overwrite the form value from the database):
                 DeputyDirectorName = dto.Name,
                 DeputyDirectorEmail = dto.Email,
@@ -70,11 +70,11 @@ public partial class BookingRequestController : Controller
 public sealed class DeputyDirectorViewModel
 {
     public BookingRequestId RequestId { get; init; }
-    
+
     public string? DeputyDirectorName { get; set; }
     public string? DeputyDirectorEmail { get; set; }
 
-    
+
     public string FormElementNameDeputyDirectorName => DeputyDirectorDto.FormNameDeputyDirectorName;
     public string FormElementNameDeputyDirectorEmail => DeputyDirectorDto.FormNameDeputyDirectorEmail;
 
@@ -94,7 +94,7 @@ public sealed class DeputyDirectorDto
     // Validations (e.g., length, allowable characters, etc.) are implemented via API
     [FromForm(Name = FormNameDeputyDirectorName)]
     public string Name { get; init; } = null!;
-    
+
     /*
      * This is the name of the form field that the value will be bound to.
      * It is specified here to avoid divergence between the form and the controller/model.
