@@ -41,12 +41,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4.0.0
+        uses: actions/setup-node@v4.0.1
         with:
           ## NOTE: dfe-frontend-alpha advertises requirement of node 16, with console warnings/errors if using more recent version
           node-version: 16 
@@ -87,7 +87,7 @@ jobs:
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_NAME }}
           path: ${{env.DOTNET_ROOT}}/myapp
@@ -103,7 +103,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.APP_NAME }}
 
