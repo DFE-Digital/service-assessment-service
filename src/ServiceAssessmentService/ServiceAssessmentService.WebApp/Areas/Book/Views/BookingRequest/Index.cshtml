@@ -30,8 +30,7 @@
 
                 <p>You can book a discovery peer review for your own project or on behalf of a team.</p>
 
-                @* <govuk-button-link is-start-button="true" asp-controller="Home" asp-action="Confirm"> *@
-                <govuk-button-link is-start-button="true" href="/book/request/name-of-discovery">
+                <govuk-button-link is-start-button="true" asp-area="Book" asp-controller="BookingRequest" asp-action="PhaseConcluding">
                     Start now
                 </govuk-button-link>
 

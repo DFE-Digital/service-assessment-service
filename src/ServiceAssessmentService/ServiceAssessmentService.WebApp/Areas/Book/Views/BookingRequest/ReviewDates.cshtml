@@ -1,0 +1,153 @@
+@using ServiceAssessmentService.WebApp.Controllers.Book
+@using Humanizer
+@using System.ComponentModel
+@using System.Globalization
+@using Humanizer.Localisation
+@model ServiceAssessmentService.WebApp.Controllers.Book.ReviewDatesViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <h1 class="govuk-heading-l ">When would you like your discovery peer review?</h1>
+                    </div>
+                </div>
+
+                
+                @*
+                    If the end date is not provided:
+                        - display: "As you have not provided an estimated end date for your discovery, you can choose date ranges between 5 and 10 weeks from now."
+                        - list all the weeks between 5 and 10 weeks from now
+                    If the provided end date is before the end of five weeks from now, 
+                        - display: "Your end date is within 5 weeks, you can submit a request and the service assessment team will contact you to arrange a date."
+                        - list no selectable options
+                    If the provided end date is beyond five weeks from now, 
+                        - display: "Based on your anticipated end date of 1 Dec 2024 we suggest the following weeks for your peer review."
+                        - list all the weeks starting from the first week after the end date, up to and including the week that is 10 weeks from now (but not further)
+                *@
+                
+                @*
+                    TODO: Consider scenario where user might:
+                    1. select an end date,
+                    2. then select review dates,
+                    3. then time passes and the end date is now within the next five weeks, and previously selected values are now invalid
+                *@
+                
+                
+                
+                @* 
+                    TODO: Fully consider scenario where user might: 
+                    1. select an end date, 
+                    2. then select review dates,
+                    3. then edit the end date to be inconsistent with or otherwise invalidate the previously selected review dates. 
+                *@
+                @if (Model.SelectedReviewDates.Any())
+                {
+                    @* TODO: Only show this if any of the selections are no longer valid (if all valid, just don't display this). *@
+                    <p class="govuk-body">
+                        You have previously selected the following dates.
+                    </p>
+                    <p class="govuk-body">
+                        If these selections are no longer valid (e.g., the end date has changed, or time has passed and the end date is now considered to be short notice (within next five weeks)), not all of these are valid, please select new dates.
+                    </p>
+                    <p class="govuk-body">
+                        If any of these previous selections are no longer valid and you click save, only valid selections with a checkmark will be saved (selections that are no longer valid will be lost and will not be re-selectable).
+                    </p>
+                    <ul class="govuk-list govuk-list--bullet">
+
+                        @{
+                            var sortedDates = Model.SelectedReviewDates;
+                            sortedDates.Sort();
+                        }
+                        @foreach (var selectedDate in sortedDates)
+                        {
+                            <li>@selectedDate</li>
+                        }
+                    </ul>
+                }
+                
+                @if (Model.IsReviewDateWithinNextFiveWeeks)
+                {
+                    <p class="govuk-body">
+                        Your end date is within 5 weeks, you can submit a request and the service assessment team will contact you to arrange a date.
+                    </p>
+                    
+                    <div class="govuk-button-group">
+                        <govuk-button-link asp-area="Book" asp-controller="BookingRequest" asp-action="Portfolio" asp-route-id="@Model.RequestId">Continue</govuk-button-link>
+                    </div>
+                }
+                else
+                {
+                    @if (Model.EndDate is null)
+                    {
+                        <p class="govuk-body">
+                            As you have not provided an estimated end date for your discovery, you can choose date ranges between 5 and 10 weeks from now.
+                        </p>
+                    }
+                
+                    @if (Model.EndDate is not null)
+                    {
+                        // ToDateTime required due to upstream bug: https://github.com/Humanizr/Humanizer/pull/1228
+                        var endDateDiffToday = Model.EndDate.Value.ToDateTime(TimeOnly.MinValue) - DateTime.Now;
+                        <p class="govuk-body">
+                            @* Based on your anticipated end date of @Model.EndDate (@endDateDiffToday.Humanize(maxUnit: TimeUnit.Week) from now) we suggest the following weeks for your peer review. *@
+                            Based on your anticipated end date of @Model.EndDate (@Model.EndDate.Value.ToDateTime(TimeOnly.MinValue).Humanize()) we suggest the following weeks for your peer review.
+                        </p>
+                    }
+
+                    <form asp-controller="BookingRequest" asp-action="ReviewDates" asp-route-id="@Model.RequestId">
+                        <govuk-checkboxes name="@ReviewDateDto.ReviewDateFormName">
+                            <govuk-checkboxes-fieldset>
+                                <govuk-checkboxes-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
+                                    Select dates
+                                </govuk-checkboxes-fieldset-legend>
+
+                                <govuk-checkboxes-hint>
+                                    Select all weeks that are suitable for you.
+                                </govuk-checkboxes-hint>
+                                
+                                @if (Model.ReviewDateErrors.Any())
+                                {      
+                                    <govuk-checkboxes-error-message>
+                                        @string.Join(", ", Model.ReviewDateErrors)
+                                    </govuk-checkboxes-error-message>
+                                }
+
+
+                                @{
+                                    var sortedDates = (Model.AvailableReviewDates ?? new List<DateOnly>()).Select(x => x).ToList();
+                                    sortedDates.Sort();
+                                }
+                                @foreach (var date in sortedDates)
+                                {
+                                    var dateDiff = date.ToDateTime(TimeOnly.MinValue) - DateTime.Now;
+                                @* <govuk-checkboxes-item value="@date">Week beginning 25 December 2023</govuk-checkboxes-item> *@
+                                @* <govuk-checkboxes-item value="@date">Week beginning @date.DayOfWeek @date.ToLongDateString() (@date.ToDateTime(TimeOnly.MinValue).Humanize())</govuk-checkboxes-item> *@
+                                    <govuk-checkboxes-item value="@date" checked="Model.SelectedReviewDates.Contains(date)">
+                                        Week beginning @date.DayOfWeek @date.ToLongDateString()
+                                        @* (@date.Humanize()) *@
+                                        @* (@date.ToDateTime(TimeOnly.MinValue).Humanize()) *@
+                                        @* (@dateDiff.Humanize(minUnit: TimeUnit.Day, maxUnit: TimeUnit.Week) @((date > DateOnly.FromDateTime(DateTime.Today)) ? "from now" : "ago")) *@
+                                    </govuk-checkboxes-item>
+                                }
+                            </govuk-checkboxes-fieldset>
+                        </govuk-checkboxes>
+
+                        <div class="govuk-button-group">
+                            <govuk-button type="submit">Save and continue</govuk-button>
+                            @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+@model ServiceAssessmentService.WebApp.Controllers.Book.DeputyDirectorViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-header-l">Who is the digital deputy director of your portfolio?</h1>
+                
+                <form asp-controller="BookingRequest" asp-action="DeputyDirector" asp-route-id="@Model.RequestId">
+                    
+                    <govuk-input name="@Model.FormElementNameDeputyDirectorName" value="@Model.DeputyDirectorName">
+                        <govuk-input-label is-page-heading="false">
+                            What is your digital deputy director's name?
+                        </govuk-input-label>
+                        
+                        @if(Model.NameErrors.Any())
+                        {
+                            <govuk-input-error-message>
+                                @string.Join(", ", Model.NameErrors)
+                            </govuk-input-error-message>
+                        }
+                    </govuk-input>
+                    
+                    <govuk-input name="@Model.FormElementNameDeputyDirectorEmail" value="@Model.DeputyDirectorEmail">
+                        <govuk-input-label is-page-heading="false">
+                            What is your digital deputy director's email address?
+                        </govuk-input-label>
+                        
+                        @if(Model.EmailErrors.Any())
+                        {
+                            <govuk-input-error-message>
+                                @string.Join(", ", Model.EmailErrors)
+                            </govuk-input-error-message>
+                        }
+                    </govuk-input>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

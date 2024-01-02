@@ -1,0 +1,51 @@
+@model IncompleteBookingRequest;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <form asp-controller="BookingRequest" asp-action="SeniorResponsibleOfficerSubmit" asp-route-id="@Model.RequestId">
+
+                    <govuk-radios name="deputy_director_is_sro" id-prefix="deputy_director_is_sro">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                                Is the digital deputy director also the senior responsible officer (SRO)?
+                            </govuk-radios-fieldset-legend>
+
+                            <govuk-radios-hint>
+                                Select one option.
+                            </govuk-radios-hint>
+
+                            <govuk-radios-item value="yes">
+                                Yes
+                            </govuk-radios-item>
+
+                            <govuk-radios-item value="no">
+                                No
+                                <govuk-radios-item-conditional>
+                                    <govuk-input name="senior_responsible_officer-name">
+                                        <govuk-input-label>
+                                            Name of the senior responsible officer (SRO)
+                                        </govuk-input-label>
+                                    </govuk-input>
+                                </govuk-radios-item-conditional>
+                            </govuk-radios-item>
+
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

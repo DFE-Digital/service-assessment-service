@@ -1,0 +1,43 @@
+@using ServiceAssessmentService.WebApp.Controllers.Book
+@model ServiceAssessmentService.WebApp.Controllers.Book.StartDateViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <form asp-controller="BookingRequest" asp-action="StartDate" asp-route-id="@Model.RequestId">
+                    <govuk-date-input id="@StartDateDto.DateFormNamePrefix" name-prefix="@StartDateDto.DateFormNamePrefix">
+                        <govuk-date-input-fieldset>
+                            <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                                When did your discovery start?
+                            </govuk-date-input-fieldset-legend>
+                            <govuk-date-input-hint>
+                                For example, 18 2 2023.
+                            </govuk-date-input-hint>
+
+                            @if (Model.AllErrors.Count > 0)
+                            {
+                                <govuk-date-input-error-message error-items="@Model.ErrorItems">@(string.Join(", ", Model.AllErrors))</govuk-date-input-error-message>
+                            }
+
+                            <govuk-date-input-day value="@Model.StartDateDayValue"/>
+                            <govuk-date-input-month value="@Model.StartDateMonthValue"/>
+                            <govuk-date-input-year value="@Model.StartDateYearValue"/>
+                        </govuk-date-input-fieldset>
+                    </govuk-date-input>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

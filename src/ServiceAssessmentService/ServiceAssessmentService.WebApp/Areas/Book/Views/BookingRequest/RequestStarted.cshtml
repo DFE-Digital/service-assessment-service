@@ -1,0 +1,31 @@
+@model IncompleteBookingRequest;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <govuk-panel heading-level="2">
+                    <govuk-panel-title>Booking request started</govuk-panel-title>
+                    <govuk-panel-body>
+                        Your reference number:<br>
+                        <strong>
+                            <code>@Model.RequestId</code>
+                        </strong>
+                    </govuk-panel-body>
+                </govuk-panel>
+
+                <div class="govuk-button-group">
+                    <govuk-button-link asp-controller="BookingRequest" asp-action="Name" asp-route-id="@Model.RequestId">Provide booking request details</govuk-button-link>
+                    @* @Html.ActionLink("View task list", "Tasks", "Book", new {id = Model.RequestId}, new {@class = "govuk-link"}) *@
+                    <govuk-button-link asp-controller="BookingRequest" asp-action="Tasks" asp-route-id="@Model.RequestId">View task list</govuk-button-link>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+@using Humanizer
+@model ServiceAssessmentService.WebApp.Areas.Book.Views.Shared.SimpleRadiosQuestionModel;
+
+@{
+    ViewData["Title"] = Model.QuestionText;
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <form asp-controller="@Model.FormController" asp-action="@Model.FormAction" asp-route-id="@Model.BookingRequestId">
+                    <govuk-radios name="@Model.InputName" value="@Model.Value">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">@Model.QuestionText</govuk-radios-fieldset-legend>
+
+                            @if(!string.IsNullOrWhiteSpace(Model.QuestionHintText))
+                            {
+                                <govuk-radios-hint>@Model.QuestionHintText</govuk-radios-hint>
+                            }
+
+                            @if (Model.Errors.Any())
+                            {
+                                <govuk-radios-error-message>
+                                    @string.Join(", ", Model.Errors)
+                                </govuk-radios-error-message>
+                            }
+
+                            @foreach (var radioItem in Model.AllowedValues.OrderBy(x => x.SortOrder))
+                            {
+                            @* <govuk-radios-item value="@radioItem.Id" disabled="@(!radioItem.IsEnabled)">@radioItem.DisplayName</govuk-radios-item> *@
+                                <govuk-radios-item value="@radioItem.Id">@radioItem.DisplayName</govuk-radios-item>
+                            }
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Begin booking request</govuk-button>
+                        @if (Model.BookingRequestId is not null)
+                        {
+                            @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.BookingRequestId}, new {@class = "govuk-link"})
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

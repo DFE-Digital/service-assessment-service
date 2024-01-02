@@ -1,0 +1,38 @@
+@model ServiceAssessmentService.WebApp.Controllers.Book.DescriptionViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <form asp-controller="BookingRequest" asp-action="Description" asp-route-id="@Model.RequestId">
+                    <govuk-character-count name="@Model.FormElementName" max-length="@Model.MaxLength" asp-for="@Model.Description">
+                        <govuk-character-count-label is-page-heading="true" class="govuk-label--l">What is the purpose of your @Model.Phase?.DisplayNameLowerCase?</govuk-character-count-label>
+                        <govuk-character-count-hint>
+                            Tell us the purpose of your @Model.Phase?.DisplayNameLowerCase.
+                            For example, if it's part of a wider service or based on policy intent.
+                            This description will help us to arrange a review panel with the most relevant experience.
+                        </govuk-character-count-hint>
+                        
+                        @if (Model.Errors.Any())
+                        {
+                            <govuk-character-count-error-message>
+                                @string.Join(", ", Model.Errors)
+                            </govuk-character-count-error-message>
+                        }
+                    </govuk-character-count>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

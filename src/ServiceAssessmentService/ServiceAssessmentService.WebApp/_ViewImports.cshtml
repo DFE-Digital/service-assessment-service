@@ -1,0 +1,46 @@
+﻿@*
+    This file, at the application root folder (next to Program.cs), is shared between all views (including within areas).
+    Note that /Views/_ViewImports.cshtml is not imported to views in areas.
+    
+    Area-specific _ViewImports.cshtml files are used to import references specific to that area.
+    
+    See also: 
+    - https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/areas?view=aspnetcore-7.0#_viewimportscshtml
+*@
+
+
+@*****************************************************
+    SHARED USINGS
+    - References within this file, at the root of the application project, are global to all views)
+*****************************************************@
+
+@using ServiceAssessmentService.WebApp
+@using ServiceAssessmentService.WebApp.Models
+
+
+@*****************************************************
+    SHARED TAG HELPERS
+    - References within this file, at the root of the application project, are global to all views)
+*****************************************************@
+
+@*
+    Generic tag helpers
+    - These are provided by ASP.NET Core MVC
+    - They enable razor markup which generates HTML based on references C# variables/properties 
+      (e.g., `<input asp-for="LastName" />` which will infer the type/value of input based on the type/value of the `LastName` property)
+    
+    See also:
+    - https://learn.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/intro?view=aspnetcore-7.0
+*@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@* 
+    GovUk.Frontend.AspNetCore is a library of components and styles for building user interfaces to GOV.UK design standards.
+    It does not include the DfE-branding or layouts, so some additional tweaking to the default layout components is required.
+    
+    See also: 
+    - Upstream repo: https://github.com/gunndabad/govuk-frontend-aspnetcore
+      - Provides nuget package: https://www.nuget.org/packages/GovUk.Frontend.AspNetCore/
+    - DfE-Digital fork: https://github.com/DFE-Digital/govuk-frontend-aspnetcore
+*@
+@addTagHelper *, GovUk.Frontend.AspNetCore

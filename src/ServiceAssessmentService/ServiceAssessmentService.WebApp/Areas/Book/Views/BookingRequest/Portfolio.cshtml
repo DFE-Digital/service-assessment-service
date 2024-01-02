@@ -1,0 +1,59 @@
+@using ServiceAssessmentService.WebApp.Controllers.Book
+@model PortfolioViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main--content">
+
+    <div class="main--inside-container">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form asp-controller="BookingRequest" asp-action="Portfolio" asp-route-id="@Model.RequestId">
+                    <govuk-radios name="@Model.FormElementName">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                                Which DfE group or arms-length body is your discovery for?
+                            </govuk-radios-fieldset-legend>
+
+                            <govuk-radios-hint>
+                                You may know these as portfolios.
+                            </govuk-radios-hint>
+                            
+                            @if (Model.Errors.Any())
+                            {
+                                <govuk-radios-error-message>
+                                    @string.Join(", ", Model.Errors)
+                                </govuk-radios-error-message>
+                            }
+
+                            @foreach (var option in Model.MainPortfolioOptions.OrderBy( p => p.SortOrder))
+                            {
+                                <govuk-radios-item value="@option.Id" checked="@option.Id.Equals(Model.PortfolioId)">@option.DisplayName</govuk-radios-item>
+                            }
+                            
+                            @if (Model.OtherPortfolioOptions.Any())
+                            {
+                                <govuk-radios-divider>or</govuk-radios-divider>
+
+                                @foreach (var option in Model.OtherPortfolioOptions.OrderBy(p => p.SortOrder))
+                                {
+                                    <govuk-radios-item value="@option.Id" checked="@option.Id.Equals(Model.PortfolioId)">@option.DisplayName</govuk-radios-item>
+                                }
+                            }
+                            
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        @Html.ActionLink("Skip and return to later", "Tasks", "BookingRequest", new {id = Model.RequestId}, new {@class = "govuk-link"})
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
