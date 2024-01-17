@@ -1,102 +1,57 @@
-name: Build and deploy ASP.Net Core app to Dev
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
 
-env:
-  AZURE_WEBAPP_NAME: service-assessment-service
-  AZURE_WEBAPP_PACKAGE_PATH: "."
-  DOTNET_VERSION: "7.x"
-  APP_NAME: SAS-App
+name: Build and deploy ASP.Net Core app to Azure Web App - service-assessment-service
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4.0.1
-        with:
-          node-version: 16
-
-      - name: Cache node_modules
-        id: node_modules-cache-webapp
-        uses: actions/cache@v3
-        with:
-          path: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp/node_modules
-          key: ${{ runner.os }}-node_modules-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install NPM dependencies (Web UI)
-        working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
-        run: npm install
-
-      - name: Set up dependency caching for faster builds
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Build Web UI (webpack)
-        working-directory: ./src/ServiceAssessmentService/ServiceAssessmentService.WebApp
-        run: npm run buildCi
-
-      - name: Verify formatting
-        working-directory: ./src/ServiceAssessmentService
-        run: dotnet format --no-restore --verify-no-changes
+          dotnet-version: '8.x'
+          include-prerelease: true
 
       - name: Build with dotnet
-        working-directory: ./src/ServiceAssessmentService
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        working-directory: ./src/ServiceAssessmentService
-        run: dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.APP_NAME }}
-          path: ${{ env.DOTNET_ROOT }}/myapp
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
-      name: "Dev"
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
-          name: ${{ env.APP_NAME }}
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL_CREDS }}
-
+          name: .net-app
+      
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          app-name: 'service-assessment-service'
+          slot-name: 'Production'
+          package: .
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
