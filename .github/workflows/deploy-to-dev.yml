@@ -1,4 +1,4 @@
-name: Build and deploy ASP.Net Core app to an Azure Web App
+name: Build and deploy ASP.Net Core app to Dev
 
 env:
   AZURE_WEBAPP_NAME: service-assessment-service
