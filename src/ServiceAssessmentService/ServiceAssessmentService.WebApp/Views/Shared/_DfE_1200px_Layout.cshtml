@@ -1,15 +1,50 @@
 ﻿@{
+    // ReSharper disable once Razor.LayoutNotResolved
     Layout = "_GovUkPageTemplate";
     ViewData["BodyClasses"] = "govuk-template__body";
+
+    // Use the page title, suffixed by the service name
+    ViewData["Title"] += " - Service Assessment Service";
+    
+    // get name of current area
+    var area = ViewContext.RouteData.Values["area"] as string;
+    
+    // get name of current controller
+    var controller = ViewContext.RouteData.Values["controller"] as string;
+
+    // get name of current action
+    var action = ViewContext.RouteData.Values["action"] as string;
+
+    // get name of current page
+    var page = ViewContext.RouteData.Values["page"] as string;
+
+    // If not a production environment, show the environment name within the title
+    if (!"Production".Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), StringComparison.OrdinalIgnoreCase))
+    {
+        ViewData["Title"] += $" (environment: {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")})";
+    }
+
+    // If local development environment, include route information in the title (for debugging purposes)
+    if ("Development".Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), StringComparison.OrdinalIgnoreCase))
+    {
+        ViewData["Title"] += $" (route debug -- area: {area}, controller: {controller}, action: {action}, page: {page})";
+    }
+
+    // Helpers, used to determine which navigation item is currently active
+    var isAreaDefault = (area is null) || ("Home".Equals(area, StringComparison.OrdinalIgnoreCase));
+    var isAreaBook = ("Book".Equals(area, StringComparison.OrdinalIgnoreCase));
+    
+
 }
 
 
+@* ReSharper disable once Razor.SectionNotResolved *@
 @section Head {
-    <!-- TODO: Output the CSS file and include it here (JavaScript should then be moved to bottom of page at end of body) -->
-    <script src="~/dist/site.entry.js" defer></script>
+    <link rel="stylesheet" href="~/dist/css/site.min.css"/>
 }
 
 
+@* ReSharper disable once Razor.SectionNotResolved *@
 @section Header {
     <header class="dfe-header" role="banner">
         <div class="dfe-width-container dfe-header__container">
@@ -18,13 +53,12 @@
                     <img src="/images/dfe-logo.png" class="dfe-logo" alt="DfE Homepage">
                     <img src="/images/dfe-logo-alt.png" class="dfe-logo-hover" alt="DfE Homepage">
                     <span class="dfe-header__service-name">
-                        Service Assessment Service
+                        Service assessment service
                     </span>
                 </a>
             </div>
             <div class="dfe-header__content" id="content-header">
                 <ul class="dfe-header__action-links">
-                    <!-- TODO: Conditionally show login / sign-out link, based on whether user is already logged in -->
                     <li>
                         <a href="/" class="govuk-link govuk-link--inverse">My account</a>
                     </li>
@@ -36,43 +70,6 @@
                     <button class="dfe-header__menu-toggle" id="toggle-menu" aria-controls="header-navigation" aria-expanded="false">
                         Menu
                     </button>
-                </div>
-                <div class="dfe-header__search">
-                    <button class="dfe-header__search-toggle" id="toggle-search" aria-controls="search"
-                            aria-label="Open search">
-                        <svg class="dfe-icon dfe-icon__search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                             aria-hidden="true" focusable="false" width="27" height="27">
-                            <path
-                                d="M19.71 18.29l-4.11-4.1a7 7 0 1 0-1.41 1.41l4.1 4.11a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 10a5 5 0 1 1 5 5 5 5 0 0 1-5-5z">
-                            </path>
-                        </svg>
-                        <span class="govuk-visually-hidden">Search</span>
-                    </button>
-                    <div class="dfe-header__search-wrap" id="wrap-search">
-                        <form class="dfe-header__search-form" id="search" action="/search/" method="get" role="search">
-                            <label class="govuk-visually-hidden" for="searchterm">Search this website</label>
-                            <input class="dfe-search__input" id="searchterm" name="searchterm" type="search" placeholder="Search"
-                                   autocomplete="off">
-                            <button class="dfe-search__submit" type="submit">
-                                <svg class="dfe-icon dfe-icon__search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                     aria-hidden="true" focusable="false" width="27" height="27">
-                                    <path
-                                        d="M19.71 18.29l-4.11-4.1a7 7 0 1 0-1.41 1.41l4.1 4.11a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 10a5 5 0 1 1 5 5 5 5 0 0 1-5-5z">
-                                    </path>
-                                </svg>
-                                <span class="govuk-visually-hidden">Search</span>
-                            </button>
-                            <button class="dfe-search__close" id="close-search">
-                                <svg class="dfe-icon dfe-icon__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                     aria-hidden="true" focusable="false" width="27" height="27">
-                                    <path
-                                        d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z">
-                                    </path>
-                                </svg>
-                                <span class="govuk-visually-hidden">Close search</span>
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -92,56 +89,12 @@
                     </button>
                 </p>
                 <ul class="dfe-header__navigation-list">
-                    <li class="dfe-header__navigation-item dfe-header__navigation-item--current">
-                        <a class="dfe-header__navigation-link" href="/home/dashboard">
+                    <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
+                        <a class="dfe-header__navigation-link" asp-area="" asp-controller="Home" asp-action="Dashboard">
                             Dashboard
                             <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                  aria-hidden="true" width="34" height="34">
                                 <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
-                                </path>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="dfe-header__navigation-item ">
-                        <a class="dfe-header__navigation-link" href="/book/index">
-                            New Booking
-                            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 aria-hidden="true" width="34" height="34">
-                                <path
-                                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
-                                </path>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="dfe-header__navigation-item ">
-                        <a class="dfe-header__navigation-link" href="#">
-                            Upcoming Assessments
-                            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 aria-hidden="true" width="34" height="34">
-                                <path
-                                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
-                                </path>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="dfe-header__navigation-item ">
-                        <a class="dfe-header__navigation-link" href="#">
-                            Manage Assessors
-                            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 aria-hidden="true" width="34" height="34">
-                                <path
-                                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
-                                </path>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="dfe-header__navigation-item ">
-                        <a class="dfe-header__navigation-link" href="#">
-                            Reporting
-                            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 aria-hidden="true" width="34" height="34">
-                                <path
-                                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
                                 </path>
                             </svg>
                         </a>
@@ -153,6 +106,7 @@
 }
 
 
+@* ReSharper disable once Razor.SectionNotResolved *@
 @section BeforeContent{
     <govuk-phase-banner>
         <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
@@ -164,6 +118,7 @@
 @RenderBody()
 
 
+@* ReSharper disable once Razor.SectionNotResolved *@
 @section Footer {
 
     <footer class="govuk-footer " role="contentinfo">
@@ -173,27 +128,26 @@
                     <h2 class="govuk-visually-hidden">Support links</h2>
                     <ul class="govuk-footer__inline-list">
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
+                            <a class="govuk-footer__link" asp-area="" asp-controller="Home" asp-action="AccessibilityStatement">
                                 Accessibility statement
                             </a>
                         </li>
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
+                            <a class="govuk-footer__link" asp-area="" asp-controller="Home" asp-action="CookiePolicy">
                                 Cookie policy
                             </a>
                         </li>
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
+                            <a class="govuk-footer__link" asp-area="" asp-controller="Home" asp-action="Privacy">
                                 Privacy statement
                             </a>
                         </li>
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" href="#">
+                            <a class="govuk-footer__link" href="https://github.com/DFE-Digital/service-assessment-service">
                                 GitHub Source Code
                             </a>
                         </li>
 
-                        <!-- TODO: Secondary Navigation links -->
                         <li class="govuk-footer__inline-list-item">
                             <a class="govuk-footer__link" href="https://apply-the-service-standard.education.gov.uk/service-standard">
                                 DfE Guidance: The Service Standard
@@ -205,7 +159,6 @@
                             </a>
                         </li>
 
-                        <!-- TODO: Secondary Navigation links -->
                         <li class="govuk-footer__inline-list-item">
                             <a class="govuk-footer__link" href="https://www.gov.uk/service-manual/service-standard">
                                 GOV.UK Guidance: The Service Standard
@@ -246,9 +199,11 @@
             </div>
         </div>
     </footer>
-
 }
 
+
+@* ReSharper disable once Razor.SectionNotResolved *@
 @section BodyEnd {
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/dist/js/site.min.js"></script>
 }
