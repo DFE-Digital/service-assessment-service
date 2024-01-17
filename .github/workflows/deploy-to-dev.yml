@@ -13,16 +13,49 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '3.1'  # Update to your preferred .NET Core version
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: '14'
 
-      - name: Install dependencies
+      - name: Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/.npm
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/*.csproj') }}
+
+      - name: Install .NET dependencies
+        run: dotnet restore
+
+      - name: Install Node.js dependencies
         run: npm install
+
+      - name: Build application
+        run: |
+          dotnet build --configuration Release
+          npm run build  # Add your build command for Node.js if needed
+
+      - name: Publish application
+        id: publish
+        run: dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/myapp
+
+      - name: Upload artifact for deployment
+        uses: actions/upload-artifact@v2
+        with:
+          name: myapp
+          path: ${{ env.DOTNET_ROOT }}/myapp
 
       - name: Deploy to Azure
         uses: Azure/webapps-deploy@v2
         with:
           app-name: ${{ secrets.AZURE_APP_NAME }}
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: ${{ runner.workspace }}/myapp
