@@ -119,7 +119,7 @@ jobs:
 
       - name: Test
         working-directory: ./src/ServiceAssessmentService
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build --configuration Release --verbosity normal
 
 
       - name: End SonarCloud analysis and upload results (end after all build/test steps)

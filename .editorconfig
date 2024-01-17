@@ -4,3 +4,11 @@ root = true
 indent_style = space
 indent_size = 4
 insert_final_newline = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+
+## CA1848: For improved performance, use the LoggerMessage delegates instead of calling 'LoggerExtensions.LogInformation(ILogger, string?, params object?[])'
+dotnet_diagnostic.CA1848.severity = none
