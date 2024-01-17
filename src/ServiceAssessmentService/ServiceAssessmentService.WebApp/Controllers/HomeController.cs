@@ -13,19 +13,42 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+
+    [Route("")]
+    public IActionResult Index()
+    {
+        return RedirectToAction(nameof(Dashboard));
+    }
+
+    [Route("Dashboard")]
     public IActionResult Dashboard()
     {
         return View();
     }
 
+    [Route("AccessibilityStatement")]
+    public IActionResult AccessibilityStatement()
+    {
+        return View();
+    }
+
+    [Route("CookiePolicy")]
+    public IActionResult CookiePolicy()
+    {
+        return View();
+    }
+
+    [Route("Privacy")]
     public IActionResult Privacy()
     {
         return View();
     }
 
+    [Route("Error")]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        _logger.LogError("An error occurred");
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
