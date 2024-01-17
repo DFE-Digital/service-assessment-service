@@ -5,7 +5,7 @@ name: Build and deploy to dev
 
 env:
   AZURE_WEBAPP_NAME: service-assessment-service-dev
-  AZURE_WEBAPP_PACKAGE_PATH: "."
+  AZURE_WEBAPP_PACKAGE_PATH: "./src"
   DOTNET_VERSION: "7.x"
   APP_NAME: SAS-App
 
