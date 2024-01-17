@@ -9,8 +9,8 @@
     "govuk-frontend": "^4.7.0"
   },
   "devDependencies": {
-    "css-loader": "^6.7.4",
     "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.4",
     "mini-css-extract-plugin": "^2.7.6",
     "node-sass": "^9.0.0",
     "postcss-loader": "^7.3.4",
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "webpack --mode=production --progress",
-    "buildCi": "webpack --mode=production progress --env=ci",
+    "buildCi": "webpack --mode=production --progress --env=ci",
     "buildDev": "webpack --mode=development --progress=profile",
     "buildDev:watch": "webpack --mode=development --progress=profile --watch"
   }
