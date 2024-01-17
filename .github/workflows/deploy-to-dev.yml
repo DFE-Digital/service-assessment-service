@@ -19,6 +19,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    
+      - name: Checkout repo
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
