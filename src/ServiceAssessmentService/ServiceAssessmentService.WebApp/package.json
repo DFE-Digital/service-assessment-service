@@ -13,7 +13,7 @@
     "css-loader": "^6.9.0",
     "mini-css-extract-plugin": "^2.7.6",
     "node-sass": "^9.0.0",
-    "postcss-loader": "^7.3.4",
+    "postcss-loader": "^8.0.0",
     "sass": "^1.70.0",
     "sass-loader": "^13.3.3",
     "style-loader": "^3.3.3",
