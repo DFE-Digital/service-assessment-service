@@ -4,8 +4,8 @@
 name: Build and Test
 
 env:
-  DOTNET_VERSION: '7.x'
-  NODE_VERSION: '16'       ## NOTE: dfe-frontend-alpha advertises requirement of node 16, with console warnings/errors if using more recent version
+  DOTNET_VERSION: '8.x'
+  NODE_VERSION: '20'
 
 on:
   push:

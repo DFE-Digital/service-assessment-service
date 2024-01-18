@@ -3,7 +3,8 @@ name: Build and deploy to dev
 env:
   AZURE_WEBAPP_NAME: service-assessment-service # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: "." # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: "7.x" # set this to the .NET Core version to use
+  DOTNET_VERSION: "8.x" # set this to the .NET Core version to use
+  NODE_VERSION: '20'
   APP_NAME: SAS-App
 
 on:
@@ -29,8 +30,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.1
         with:
-          ## NOTE: dfe-frontend-alpha advertises requirement of node 16, with console warnings/errors if using more recent version
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Cache node_modules
         id: node_modules-cache-webapp
