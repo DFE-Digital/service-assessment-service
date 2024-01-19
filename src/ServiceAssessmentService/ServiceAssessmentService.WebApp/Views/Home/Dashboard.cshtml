@@ -1,5 +1,8 @@
-﻿@{
+﻿@using ServiceAssessmentService.Domain.Model
+@{
     ViewData["Title"] = "Dashboard";
+
+    IEnumerable<AssessmentRequest> assessments = ViewBag.AllAssessments;
 }
 
 <div class="pre--content"></div>
@@ -29,24 +32,15 @@
                             </tr>
                             </thead>
                             <tbody class="govuk-table__body">
-                            <tr class="govuk-table__row">
-                                <th scope="row" class="govuk-table__header">
-                                    <a href="/admin/entry/462" class="govuk-link">New discovery peer review request <span class="govuk-visually-hidden"> for Example</span></a>
-                                </th>
-                                <td class="govuk-table__cell">Example</td>
-                            </tr>
-                            <tr class="govuk-table__row">
-                                <th scope="row" class="govuk-table__header">
-                                    <a href="/admin/report/preview/452" class="govuk-link">Publish assessment report <span class="govuk-visually-hidden"> for Free pencils for schools</span></a>
-                                </th>
-                                <td class="govuk-table__cell">Free pencils for schools</td>
-                            </tr>
-                            <tr class="govuk-table__row">
-                                <th scope="row" class="govuk-table__header">
-                                    <a href="/admin/report/preview/454" class="govuk-link">Check report and send to team <span class="govuk-visually-hidden"> for Mickey mouse discovery</span></a>
-                                </th>
-                                <td class="govuk-table__cell">Mickey mouse discovery</td>
-                            </tr>
+                            @foreach (var assessment in assessments)
+                            {
+                                <tr class="govuk-table__row">
+                                    <th scope="row" class="govuk-table__header">
+                                        <a href="/" class="govuk-link">New @(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span></a>
+                                    </th>
+                                    <td class="govuk-table__cell">@assessment.Name</td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>

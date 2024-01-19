@@ -11,7 +11,6 @@ public class DataContext : DbContext
     }
 
     public DbSet<Entities.AssessmentRequest> AssessmentRequests { get; set; } = null!;
-    public DbSet<Entities.Question> Questions { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,10 +19,6 @@ public class DataContext : DbContext
         modelBuilder
             .Entity<Entities.AssessmentRequest>()
             .ToTable("AssessmentRequests", builder => builder.IsTemporal());
-        
-        modelBuilder
-            .Entity<Entities.Question>()
-            .ToTable("Questions", builder => builder.IsTemporal());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -1,4 +1,4 @@
-﻿namespace ServiceAssessmentService.Data.Entities;
+﻿namespace ServiceAssessmentService.Domain.Model;
 
 public class Question
 {

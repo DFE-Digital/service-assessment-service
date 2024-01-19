@@ -10,4 +10,7 @@
     <!-- Note C# dependency `GovUk.Frontend.AspNetCore` currently only supports node dependency `govuk-frontend` to v4.7.0 preventing upgrade to v5 -->
     <PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.4.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceAssessmentService.Data\ServiceAssessmentService.Data.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,16 +1,19 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using ServiceAssessmentService.Data;
 using ServiceAssessmentService.WebApp.Models;
 
 namespace ServiceAssessmentService.WebApp.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, AssessmentRequestRepository assessmentRequestRepository)
     {
         _logger = logger;
+        _assessmentRequestRepository = assessmentRequestRepository;
     }
 
 
@@ -21,8 +24,12 @@ public class HomeController : Controller
     }
 
     [Route("Dashboard")]
-    public IActionResult Dashboard()
+    public async Task<IActionResult> Dashboard()
     {
+        var allAssessments = await _assessmentRequestRepository.GetAllAssessmentRequests();
+        
+        ViewBag.AllAssessments = allAssessments;
+        
         return View();
     }
 

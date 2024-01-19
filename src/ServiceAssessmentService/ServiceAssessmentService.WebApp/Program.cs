@@ -1,4 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using ServiceAssessmentService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +9,16 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddGovUkFrontend();
 
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+builder.Services.AddScoped<AssessmentRequestRepository>();
+
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
