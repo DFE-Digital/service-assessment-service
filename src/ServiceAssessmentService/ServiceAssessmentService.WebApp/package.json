@@ -9,7 +9,7 @@
     "govuk-frontend": "^4.7.0"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^6.9.1",
     "mini-css-extract-plugin": "^2.7.6",
     "node-sass": "^9.0.0",
