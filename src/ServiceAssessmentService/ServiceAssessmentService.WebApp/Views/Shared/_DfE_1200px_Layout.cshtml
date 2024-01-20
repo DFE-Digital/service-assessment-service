@@ -58,20 +58,25 @@
                 </a>
             </div>
             <div class="dfe-header__content" id="content-header">
-                <ul class="dfe-header__action-links">
-                    <li>
-                        <a href="/" class="govuk-link govuk-link--inverse">My account</a>
-                    </li>
-                    <li>
-                        <a href="/" class="govuk-link govuk-link--inverse">Sign out</a>
-                    </li>
-                </ul>
+                @* <ul class="dfe-header__action-links"> *@
+                @*     <li> *@
+                @*         <a href="/" class="govuk-link govuk-link--inverse">My account</a> *@
+                @*     </li> *@
+                @*     <li> *@
+                @*         <a href="/" class="govuk-link govuk-link--inverse">Sign out</a> *@
+                @*     </li> *@
+                @* </ul> *@
+                
+                <partial name="_LoginPartial" />
+
                 <div class="dfe-header__menu">
                     <button class="dfe-header__menu-toggle" id="toggle-menu" aria-controls="header-navigation" aria-expanded="false">
                         Menu
                     </button>
                 </div>
             </div>
+
+
         </div>
         <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation"
              aria-labelledby="label-navigation">

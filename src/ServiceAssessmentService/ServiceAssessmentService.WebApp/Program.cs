@@ -1,6 +1,7 @@
-﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using ServiceAssessmentService.Data;
+using ServiceAssessmentService.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,17 @@ builder.Services.AddGovUkFrontend();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    // options.UseSqlServer(builder.Configuration.GetConnectionString("LocalConnection"));
 });
-builder.Services.AddScoped<AssessmentRequestRepository>();
 
+builder.Services
+    .AddDefaultIdentity<ServiceAssessmentServiceWebAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<DataContext>();
+
+builder.Services.AddScoped<AssessmentRequestRepository>();
 
 var app = builder.Build();
 
@@ -34,10 +43,15 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+app.MapRazorPages();
 
+app.MapHealthChecks("/health").AllowAnonymous();
+
+
+app.Run();

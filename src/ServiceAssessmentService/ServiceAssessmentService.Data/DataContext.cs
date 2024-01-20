@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ServiceAssessmentService.Data.Entities;
 
 namespace ServiceAssessmentService.Data;
 
-public class DataContext : DbContext
+public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
 {
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)
