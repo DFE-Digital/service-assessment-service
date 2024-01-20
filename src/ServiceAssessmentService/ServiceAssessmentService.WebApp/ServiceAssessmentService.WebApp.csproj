@@ -12,5 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServiceAssessmentService.Data\ServiceAssessmentService.Data.csproj" />
+    <ProjectReference Include="..\ServiceAssessmentService.Domain\ServiceAssessmentService.Domain.csproj" />
   </ItemGroup>
 </Project>

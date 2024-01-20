@@ -1,0 +1,73 @@
+﻿@model ServiceAssessmentService.Domain.Model.AssessmentRequest
+@{
+    ViewData["Title"] = "Viewing assessment";
+}
+
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l ">Assessment Request</h1>
+            </div>
+        </div>
+
+
+        <div class="govuk-grid-row">
+            <form asp-controller="Book" asp-action="Create" method="post">
+
+                <!-- Name field -->
+                <govuk-input asp-for="@Model.Name">
+                    <govuk-input-label is-page-heading="false" class="govuk-label--l">What is your service's name?</govuk-input-label>
+                    <govuk-input-hint>For example: Apply for a budgeting loan, Check your State Pension, Sign up for email alerts about Child Benefit.</govuk-input-hint>
+                </govuk-input>
+
+                <!-- Description field -->
+                <govuk-input asp-for="@Model.Description">
+                    <govuk-input-label is-page-heading="false" class="govuk-label--l">Provide a description:</govuk-input-label>
+                    <govuk-input-hint>For example: This service allows users to apply for a budgeting loan</govuk-input-hint>
+                </govuk-input>
+
+                <!-- PhaseConcluding field -->
+                <govuk-input asp-for="@Model.PhaseConcluding">
+                    <govuk-input-label is-page-heading="false" class="govuk-label--l">What phase is concluding?</govuk-input-label>
+                    <govuk-input-hint>For example: Discovery, Alpha, Private Beta, Public Beta, Live.</govuk-input-hint>
+                </govuk-input>
+
+                <!-- AssessmentType field -->
+                <govuk-input asp-for="@Model.AssessmentType">
+                    <govuk-input-label is-page-heading="false" class="govuk-label--l">What is the assessment type?</govuk-input-label>
+                    <govuk-input-hint>For example: Peer Review, Mock Assessment, Continuous, Full DfE Internal, Full Cross-Governmental (separate Y/N Q?), Re-Assessment (separate Y/N Q?).</govuk-input-hint>
+                </govuk-input>
+
+                <!-- PhaseStartDate field -->
+                <govuk-date-input asp-for="@Model.PhaseStartDate">
+                    <govuk-date-input-fieldset>
+                        <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                            When did this phase start?
+                        </govuk-date-input-fieldset-legend>
+                    <govuk-date-input-hint>For example: 20 3 2019.</govuk-date-input-hint>
+                    </govuk-date-input-fieldset>
+                </govuk-date-input>
+
+                <!-- PhaseEndDate field -->
+                <govuk-date-input asp-for="@Model.PhaseEndDate">
+                    <govuk-date-input-fieldset>
+                        <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                            When did this phase end?
+                        </govuk-date-input-fieldset-legend>
+                    <govuk-date-input-hint>For example: 20 3 2019.</govuk-date-input-hint>
+                    </govuk-date-input-fieldset>
+                </govuk-date-input>
+
+                <govuk-button type="submit" prevent-double-click="true">Create</govuk-button>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ServiceAssessmentService.Domain.Model.AssessmentRequest>
+@{
+    ViewData["Title"] = "Viewing assessment";
+}
+
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l ">Assessment Request</h1>
+            </div>
+        </div>
+
+        <ul>
+@foreach (var assessment in Model)
+            {
+                <li>
+                    <a asp-controller="Book"
+                       asp-action="View"
+                       asp-route-id="@assessment.Id"
+                       class="govuk-link">
+                        @assessment.Name
+                        (@(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? ""))
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <govuk-button-link asp-controller="Book" asp-action="Create">Create New</govuk-button-link> 
+
+    </div>
+</div>
+
+
+

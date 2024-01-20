@@ -36,11 +36,18 @@
                             {
                                 <tr class="govuk-table__row">
                                     <th scope="row" class="govuk-table__header">
-                                        <a href="/" class="govuk-link">New @(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span></a>
+                                        <a
+                                            asp-controller="Book"
+                                            asp-action="View"
+                                            asp-route-id="@assessment.Id"
+                                            class="govuk-link">
+                                            New @(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span>
+                                        </a>
                                     </th>
                                     <td class="govuk-table__cell">@assessment.Name</td>
                                 </tr>
                             }
+
                             </tbody>
                         </table>
                     </div>

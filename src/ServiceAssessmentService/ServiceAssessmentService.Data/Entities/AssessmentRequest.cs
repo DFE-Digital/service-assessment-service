@@ -1,6 +1,6 @@
 ﻿namespace ServiceAssessmentService.Data.Entities;
 
-public class AssessmentRequest
+public class AssessmentRequest : BaseEntity
 {
     public Guid Id { get; set; }
 
@@ -28,6 +28,10 @@ public class AssessmentRequest
             PhaseStartDate = PhaseStartDate,
             PhaseEndDate = PhaseEndDate,
             Description = Description,
+            CreatedAt = Created,
+            UpdatedAt = Updated,
+            DeletedAt = Deleted,
+
         };
 
         return assessmentRequest;

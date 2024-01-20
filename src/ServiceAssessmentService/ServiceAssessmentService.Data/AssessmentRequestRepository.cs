@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServiceAssessmentService.Domain.Model;
 
 namespace ServiceAssessmentService.Data;
 
@@ -67,4 +68,24 @@ public class AssessmentRequestRepository
         // Return the deleted entity
         return assessmentRequest.ToDomainModel();
     }
+
+    public async Task<Domain.Model.AssessmentRequest?> UpdateAsync(AssessmentRequest assessmentRequest)
+    {
+        var entity = new Entities.AssessmentRequest
+        {
+            Id = assessmentRequest.Id,
+            Name = assessmentRequest.Name,
+            PhaseConcluding = assessmentRequest.PhaseConcluding,
+            AssessmentType = assessmentRequest.AssessmentType,
+            PhaseStartDate = assessmentRequest.PhaseStartDate,
+            PhaseEndDate = assessmentRequest.PhaseEndDate,
+            Description = assessmentRequest.Description,
+        };
+
+        _dbContext.AssessmentRequests.Update(entity);
+        await _dbContext.SaveChangesAsync();
+
+        return assessmentRequest;
+    }
+
 }
