@@ -15,7 +15,7 @@ public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
 {
     // private const string ConnectionString = "Server=localhost;Database=ServiceAssessmentPlus;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
     private const string ConnectionString = "Server=serviceassessmentplus-dev.database.windows.net;Database=ServiceAssessmentPlus-dev;Authentication=Active Directory Default;";
-    
+
     public DataContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<DataContext>();

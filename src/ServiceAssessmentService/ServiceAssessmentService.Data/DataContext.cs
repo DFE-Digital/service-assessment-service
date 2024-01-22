@@ -16,7 +16,7 @@ public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
+
         builder
             .Entity<Entities.AssessmentRequest>()
             .ToTable("AssessmentRequests", b => b.IsTemporal());
@@ -28,10 +28,10 @@ public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
         var entries = ChangeTracker
             .Entries()
             .Where(e => e is
-                {
-                    Entity: BaseEntity,
-                    State: EntityState.Added or EntityState.Modified,
-                }
+            {
+                Entity: BaseEntity,
+                State: EntityState.Added or EntityState.Modified,
+            }
             );
 
         foreach (var entityEntry in entries)
@@ -44,7 +44,7 @@ public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
                 // Only set created timestamp if entity is newly added
                 ((BaseEntity)entityEntry.Entity).Created = DateTimeOffset.UtcNow;
             }
-            
+
             if (entityEntry.State == EntityState.Deleted)
             {
                 // Only set deleted timestamp if entity is being deleted

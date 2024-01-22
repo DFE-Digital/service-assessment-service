@@ -5,5 +5,5 @@ namespace ServiceAssessmentService.Data.Entities;
 
 public class ServiceAssessmentServiceWebAppUser : IdentityUser
 {
-    
+
 }

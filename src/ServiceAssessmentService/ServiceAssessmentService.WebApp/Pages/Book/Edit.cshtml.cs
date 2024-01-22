@@ -45,7 +45,7 @@ public class EditModel : PageModel
 
         await _assessmentRequestRepository.UpdateAsync(req);
 
-        return RedirectToPage("/Book/View", new {id});
+        return RedirectToPage("/Book/View", new { id });
     }
 
     public class EditAssessmentRequestSubmitModel

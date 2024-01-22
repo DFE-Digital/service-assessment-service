@@ -27,9 +27,9 @@ public class HomeController : Controller
     public async Task<IActionResult> Dashboard()
     {
         var allAssessments = await _assessmentRequestRepository.GetAllAssessmentRequests();
-        
+
         ViewBag.AllAssessments = allAssessments;
-        
+
         return View();
     }
 

@@ -45,7 +45,7 @@ public class CreateModel : PageModel
 
         await _assessmentRequestRepository.CreateAsync(assessmentRequest);
 
-        return RedirectToPage(nameof(View), new {assessmentRequest.Id});
+        return RedirectToPage(nameof(View), new { assessmentRequest.Id });
     }
 
 
