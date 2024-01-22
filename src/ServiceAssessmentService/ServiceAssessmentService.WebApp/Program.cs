@@ -1,4 +1,6 @@
 using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ServiceAssessmentService.Data;
 using ServiceAssessmentService.Data.Entities;
@@ -10,8 +12,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddGovUkFrontend();
-
-
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -26,6 +26,15 @@ builder.Services.AddHealthChecks()
     .AddDbContextCheck<DataContext>();
 
 builder.Services.AddScoped<AssessmentRequestRepository>();
+
+builder.Services.AddControllers(config =>
+{
+    // Default to requiring authorisation, unless explicit [AllowAnonymous] specified for the page/route
+    var policy = new AuthorizationPolicyBuilder()
+                     .RequireAuthenticatedUser()
+                     .Build();
+    config.Filters.Add(new AuthorizeFilter(policy));
+});
 
 var app = builder.Build();
 

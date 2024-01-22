@@ -1,4 +1,11 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using ServiceAssessmentService.Data.Entities
+@using GovUk.Frontend.AspNetCore.TagHelpers
+
+@inject SignInManager<ServiceAssessmentServiceWebAppUser> SignInManager
+@inject UserManager<ServiceAssessmentServiceWebAppUser> UserManager
+
+@{
     // ReSharper disable once Razor.LayoutNotResolved
     Layout = "_GovUkPageTemplate";
     ViewData["BodyClasses"] = "govuk-template__body";
@@ -94,36 +101,45 @@
                     </button>
                 </p>
                 <ul class="dfe-header__navigation-list">
-                    <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
-                        <a class="dfe-header__navigation-link" asp-page="/Home/Dashboard">
-                            Dashboard
-                            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 aria-hidden="true" width="34" height="34">
-                                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
-                                </path>
-                            </svg>
-                        </a>
-                    </li>
-                    @* <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")"> *@
-                    @*     <a class="dfe-header__navigation-link" asp-page="/Book/Index"> *@
-                    @*         Book *@
-                    @*         <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" *@
-                    @*              aria-hidden="true" width="34" height="34"> *@
-                    @*             <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"> *@
-                    @*             </path> *@
-                    @*         </svg> *@
-                    @*     </a> *@
-                    @* </li> *@
-                    <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
-                        <a class="dfe-header__navigation-link" asp-page="/Book/List">
-                            Booking Requests
-                            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 aria-hidden="true" width="34" height="34">
-                                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
-                                </path>
-                            </svg>
-                        </a>
-                    </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
+                            <a class="dfe-header__navigation-link" asp-page="/Dashboard">
+                                Dashboard
+                                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                aria-hidden="true" width="34" height="34">
+                                    <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </li>
+                    }
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @* <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")"> *@
+                        @*     <a class="dfe-header__navigation-link" asp-page="/Book/Index"> *@
+                        @*         Book *@
+                        @*         <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" *@
+                        @*              aria-hidden="true" width="34" height="34"> *@
+                        @*             <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"> *@
+                        @*             </path> *@
+                        @*         </svg> *@
+                        @*     </a> *@
+                        @* </li> *@
+                    }
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
+                            <a class="dfe-header__navigation-link" asp-page="/Book/List">
+                                Booking Requests
+                                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                aria-hidden="true" width="34" height="34">
+                                    <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>
@@ -153,17 +169,17 @@
                     <h2 class="govuk-visually-hidden">Support links</h2>
                     <ul class="govuk-footer__inline-list">
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" asp-page="/AccessibilityStatement">
+                            <a class="govuk-footer__link" asp-page="/Public/AccessibilityStatement">
                                 Accessibility statement
                             </a>
                         </li>
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" asp-page="/Home/CookiePolicy">
+                            <a class="govuk-footer__link" asp-page="/Public/CookiePolicy">
                                 Cookie policy
                             </a>
                         </li>
                         <li class="govuk-footer__inline-list-item">
-                            <a class="govuk-footer__link" asp-page="/Home/Privacy">
+                            <a class="govuk-footer__link" asp-page="/Public/Privacy">
                                 Privacy statement
                             </a>
                         </li>
