@@ -1,9 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 25.0.1706.3
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAssessmentService.WebApp", "ServiceAssessmentService.WebApp\ServiceAssessmentService.WebApp.csproj", "{1F6A6918-96BF-482C-B0FF-2D41B0A11B9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAssessmentService.Data", "ServiceAssessmentService.Data\ServiceAssessmentService.Data.csproj", "{F9440989-2E62-406A-994F-2592AE937F75}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAssessmentService.Domain", "ServiceAssessmentService.Domain\ServiceAssessmentService.Domain.csproj", "{E6CBBAEE-5981-4F4E-922D-B73659BB5B97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +18,14 @@ Global
 		{1F6A6918-96BF-482C-B0FF-2D41B0A11B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F6A6918-96BF-482C-B0FF-2D41B0A11B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F6A6918-96BF-482C-B0FF-2D41B0A11B9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9440989-2E62-406A-994F-2592AE937F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9440989-2E62-406A-994F-2592AE937F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9440989-2E62-406A-994F-2592AE937F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9440989-2E62-406A-994F-2592AE937F75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6CBBAEE-5981-4F4E-922D-B73659BB5B97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6CBBAEE-5981-4F4E-922D-B73659BB5B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6CBBAEE-5981-4F4E-922D-B73659BB5B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6CBBAEE-5981-4F4E-922D-B73659BB5B97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
