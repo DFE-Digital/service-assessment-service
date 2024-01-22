@@ -1,15 +1,37 @@
 using GovUk.Frontend.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ServiceAssessmentService.Data;
 using ServiceAssessmentService.Data.Entities;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+using ServiceAssessmentService.WebApp.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ') ??
+                    builder.Configuration["MicrosoftGraph:Scopes"]?.Split(' ');
+
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+    .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
+    .AddInMemoryTokenCaches();
+
+builder.Services.AddAuthorization(options =>
+{
+    // By default, all incoming requests will be authorized according to the default policy.
+    options.FallbackPolicy = options.DefaultPolicy;
+});
+builder.Services.AddRazorPages()
+    .AddMicrosoftIdentityUI();
+
+// // Used for local accounts
+// builder.Services
+//     .AddDefaultIdentity<ServiceAssessmentServiceWebAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//     .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddGovUkFrontend();
 
@@ -18,23 +40,12 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services
-    .AddDefaultIdentity<ServiceAssessmentServiceWebAppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<DataContext>();
 
 builder.Services.AddScoped<AssessmentRequestRepository>();
-
-builder.Services.AddControllers(config =>
-{
-    // Default to requiring authorisation, unless explicit [AllowAnonymous] specified for the page/route
-    var policy = new AuthorizationPolicyBuilder()
-                     .RequireAuthenticatedUser()
-                     .Build();
-    config.Filters.Add(new AuthorizeFilter(policy));
-});
+builder.Services.AddScoped<GraphUserClient>();
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -48,14 +59,18 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    app.UseDeveloperExceptionPage();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
