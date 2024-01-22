@@ -1,6 +1,6 @@
 ﻿namespace ServiceAssessmentService.Data.Entities;
 
-public  class BaseEntity
+internal  class BaseEntity
 {
     public DateTimeOffset Created { get; set; }
     public DateTimeOffset Updated { get; set; }

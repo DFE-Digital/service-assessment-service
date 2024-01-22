@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ServiceAssessmentService.Domain.Model.AssessmentRequest>
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Book.ListModel
 @{
     ViewData["Title"] = "Viewing assessment";
 }
@@ -9,20 +10,19 @@
 
     <div class="main--inside-container">
         <div class="govuk-grid-row">
-
             <div class="govuk-grid-column-full">
-                <h1 class="govuk-heading-l ">Assessment Request</h1>
+                <h1 class="govuk-heading-l ">All assessment requests</h1>
             </div>
         </div>
 
         <ul>
-@foreach (var assessment in Model)
+            @foreach (var assessment in Model.AssessmentRequests)
             {
                 <li>
-                    <a asp-controller="Book"
-                       asp-action="View"
-                       asp-route-id="@assessment.Id"
-                       class="govuk-link">
+                    <a
+                        asp-page="/Book/View"
+                        asp-route-id="@assessment.Id"
+                        class="govuk-link">
                         @assessment.Name
                         (@(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? ""))
                     </a>
@@ -30,10 +30,7 @@
             }
         </ul>
 
-        <govuk-button-link asp-controller="Book" asp-action="Create">Create New</govuk-button-link> 
+        <govuk-button-link asp-page="/Book/Create">Create New</govuk-button-link>
 
     </div>
 </div>
-
-
-

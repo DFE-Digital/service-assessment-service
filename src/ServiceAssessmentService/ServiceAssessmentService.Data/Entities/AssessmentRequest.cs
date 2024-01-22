@@ -1,6 +1,6 @@
 ﻿namespace ServiceAssessmentService.Data.Entities;
 
-public class AssessmentRequest : BaseEntity
+internal class AssessmentRequest : BaseEntity
 {
     public Guid Id { get; set; }
 

@@ -11,15 +11,15 @@ public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
     {
     }
 
-    public DbSet<Entities.AssessmentRequest> AssessmentRequests { get; set; } = null!;
+    internal DbSet<Entities.AssessmentRequest> AssessmentRequests { get; set; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
         
-        modelBuilder
+        builder
             .Entity<Entities.AssessmentRequest>()
-            .ToTable("AssessmentRequests", builder => builder.IsTemporal());
+            .ToTable("AssessmentRequests", b => b.IsTemporal());
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
