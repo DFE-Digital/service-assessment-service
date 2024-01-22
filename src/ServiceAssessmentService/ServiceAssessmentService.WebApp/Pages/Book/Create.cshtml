@@ -18,7 +18,7 @@
 
 
         <div class="govuk-grid-row">
-            <form asp-controller="Book" asp-action="Create" method="post">
+            <form asp-page="/Book/Create" method="post">
 
                 <!-- Name field -->
                 <govuk-input asp-for="@Model.AssessmentRequestPageModel.Name">

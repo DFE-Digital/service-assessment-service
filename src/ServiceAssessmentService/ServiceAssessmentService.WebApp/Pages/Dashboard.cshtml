@@ -1,8 +1,7 @@
-﻿@using ServiceAssessmentService.Domain.Model
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.DashboardModel
 @{
     ViewData["Title"] = "Dashboard";
-
-    IEnumerable<AssessmentRequest> assessments = ViewBag.AllAssessments;
 }
 
 <div class="pre--content"></div>
@@ -26,25 +25,25 @@
                     <div class="govuk-summary-card__content">
                         <table class="govuk-table" aria-describedby="your_actions_heading">
                             <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
-                                <th scope="col" class="govuk-table__header  govuk-!-width-one-half">Task</th>
-                                <th scope="col" class="govuk-table__header">Service</th>
-                            </tr>
+                                <tr class="govuk-table__row">
+                                    <th scope="col" class="govuk-table__header  govuk-!-width-one-half">Task</th>
+                                    <th scope="col" class="govuk-table__header">Service</th>
+                                </tr>
                             </thead>
                             <tbody class="govuk-table__body">
-                            @foreach (var assessment in assessments)
-                            {
-                                <tr class="govuk-table__row">
-                                    <th scope="row" class="govuk-table__header">
-                                        <a asp-page="/Book/View"
-                                            asp-route-id="@assessment.Id"
-                                            class="govuk-link">
-                                            New @(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span>
-                                        </a>
-                                    </th>
-                                    <td class="govuk-table__cell">@assessment.Name</td>
-                                </tr>
-                            }
+                                @foreach (var assessment in Model.AllAssessments)
+                                {
+                                    <tr class="govuk-table__row">
+                                        <th scope="row" class="govuk-table__header">
+                                            <a asp-page="/Book/View"
+                                               asp-route-id="@assessment.Id"
+                                               class="govuk-link">
+                                                New @(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span>
+                                            </a>
+                                        </th>
+                                        <td class="govuk-table__cell">@assessment.Name</td>
+                                    </tr>
+                                }
 
                             </tbody>
                         </table>
@@ -77,7 +76,7 @@
                     <div class="govuk-grid-column-one-half"></div>
                 </div>
             </div>
-            
+
             <div class="govuk-grid-column-one-third">
                 <h2 class="govuk-heading-m">Other resources and guidance</h2>
                 <div class="chevron-card">
@@ -85,7 +84,7 @@
                         <h3 class="gem-c-heading govuk-heading-s govuk-!-margin-bottom-2">
                             <a class="govuk-link chevron-card__link" href="https://apply-the-service-standard.education.gov.uk/">Assessing against standards</a>
                         </h3>
-                        
+
                         <p class="govuk-body chevron-card__description">How to understand, apply, and assure against Service Standards and other departmental standards.</p>
                     </div>
                 </div>
