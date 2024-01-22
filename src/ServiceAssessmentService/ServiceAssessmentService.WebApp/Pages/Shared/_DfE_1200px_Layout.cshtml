@@ -2,8 +2,6 @@
 @using ServiceAssessmentService.Data.Entities
 @using GovUk.Frontend.AspNetCore.TagHelpers
 
-@inject SignInManager<ServiceAssessmentServiceWebAppUser> SignInManager
-@inject UserManager<ServiceAssessmentServiceWebAppUser> UserManager
 
 @{
     // ReSharper disable once Razor.LayoutNotResolved
@@ -12,10 +10,10 @@
 
     // Use the page title, suffixed by the service name
     ViewData["Title"] += " - Service Assessment Service";
-    
+
     // get name of current area
     var area = ViewContext.RouteData.Values["area"] as string;
-    
+
     // get name of current controller
     var controller = ViewContext.RouteData.Values["controller"] as string;
 
@@ -40,14 +38,14 @@
     // Helpers, used to determine which navigation item is currently active
     var isAreaDefault = (area is null) || ("Home".Equals(area, StringComparison.OrdinalIgnoreCase));
     var isAreaBook = ("Book".Equals(area, StringComparison.OrdinalIgnoreCase));
-    
+
 
 }
 
 
 @* ReSharper disable once Razor.SectionNotResolved *@
 @section Head {
-    <link rel="stylesheet" href="~/dist/css/site.min.css"/>
+    <link rel="stylesheet" href="~/dist/css/site.min.css" />
 }
 
 
@@ -73,7 +71,7 @@
                 @*         <a href="/" class="govuk-link govuk-link--inverse">Sign out</a> *@
                 @*     </li> *@
                 @* </ul> *@
-                
+
                 <partial name="_LoginPartial" />
 
                 <div class="dfe-header__menu">
@@ -93,28 +91,27 @@
                     <button class="dfe-header__navigation-close" id="close-menu">
                         <svg class="dfe-icon dfe-icon__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                              aria-hidden="true" focusable="false" width="27" height="27">
-                            <path
-                                d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z">
+                            <path d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z">
                             </path>
                         </svg>
                         <span class="govuk-visually-hidden">Close menu</span>
                     </button>
                 </p>
                 <ul class="dfe-header__navigation-list">
-                    @if (SignInManager.IsSignedIn(User))
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Dashboard">
                                 Dashboard
                                 <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                aria-hidden="true" width="34" height="34">
+                                     aria-hidden="true" width="34" height="34">
                                     <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
                                     </path>
                                 </svg>
                             </a>
                         </li>
                     }
-                    @if (SignInManager.IsSignedIn(User))
+                    @if (User.Identity.IsAuthenticated)
                     {
                         @* <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")"> *@
                         @*     <a class="dfe-header__navigation-link" asp-page="/Book/Index"> *@
@@ -127,13 +124,26 @@
                         @*     </a> *@
                         @* </li> *@
                     }
-                    @if (SignInManager.IsSignedIn(User))
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Book/List">
                                 Booking Requests
                                 <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                aria-hidden="true" width="34" height="34">
+                                     aria-hidden="true" width="34" height="34">
+                                    <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </li>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
+                            <a class="dfe-header__navigation-link" asp-page="/Me/Index">
+                                About Me
+                                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                     aria-hidden="true" width="34" height="34">
                                     <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
                                     </path>
                                 </svg>
@@ -148,7 +158,7 @@
 
 
 @* ReSharper disable once Razor.SectionNotResolved *@
-@section BeforeContent{
+@section BeforeContent {
     <govuk-phase-banner>
         <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
         This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
@@ -220,7 +230,7 @@
                          height="17"
                          width="41">
                         <path fill="currentColor"
-                              d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"/>
+                              d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145" />
                     </svg>
                     <span class="govuk-footer__licence-description">
                         All content is available under the
