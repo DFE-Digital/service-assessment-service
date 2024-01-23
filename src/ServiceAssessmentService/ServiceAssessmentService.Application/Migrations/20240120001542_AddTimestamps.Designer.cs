@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServiceAssessmentService.Data;
+using ServiceAssessmentService.Application;
 
 #nullable disable
 
-namespace ServiceAssessmentService.Data.Migrations
+namespace ServiceAssessmentService.Application.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20240120001542_AddTimestamps")]
@@ -25,7 +25,7 @@ namespace ServiceAssessmentService.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ServiceAssessmentService.Data.Entities.AssessmentRequest", b =>
+            modelBuilder.Entity("ServiceAssessmentService.Application.Entities.AssessmentRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

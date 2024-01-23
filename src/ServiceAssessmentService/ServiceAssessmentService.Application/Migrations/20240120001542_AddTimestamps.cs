@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ServiceAssessmentService.Data.Migrations;
+namespace ServiceAssessmentService.Application.Migrations;
 
 /// <inheritdoc />
 public partial class AddTimestamps : Migration

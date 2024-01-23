@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceAssessmentService.Domain.Model;
 
-namespace ServiceAssessmentService.Data;
+namespace ServiceAssessmentService.Application;
 
 public class AssessmentRequestRepository
 {

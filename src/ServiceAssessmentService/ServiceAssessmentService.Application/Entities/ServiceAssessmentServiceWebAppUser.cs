@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
 
-namespace ServiceAssessmentService.Data.Entities;
+namespace ServiceAssessmentService.Application.Entities;
 
 public class ServiceAssessmentServiceWebAppUser : IdentityUser
 {

@@ -1,4 +1,4 @@
-﻿namespace ServiceAssessmentService.Data.Entities;
+﻿namespace ServiceAssessmentService.Application.Entities;
 
 internal class AssessmentRequest : BaseEntity
 {

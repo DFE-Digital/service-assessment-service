@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServiceAssessmentService.Data\ServiceAssessmentService.Data.csproj" />
+    <ProjectReference Include="..\ServiceAssessmentService.Application\ServiceAssessmentService.Application.csproj" />
     <ProjectReference Include="..\ServiceAssessmentService.Domain\ServiceAssessmentService.Domain.csproj" />
   </ItemGroup>
 </Project>
