@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Confirmation required: Are you sure you want to withdraw this assessment request?";
+    ViewData["Section"] = SiteSection.BookingRequest;
 }
 <div class="pre--content"></div>
 <div class="main--content">
@@ -19,7 +20,7 @@
 
     <div class="govuk-grid-row">
         <form asp-page="/Book/Delete" asp-route-id="@Model.AssessmentRequest.Id" method="post">
-            <govuk-button type="submit" prevent-double-click="true" class="govuk-button--warning">Confirm withdrawal of asssessment request</govuk-button>
+            <govuk-button type="submit" prevent-double-click="true" class="govuk-button--warning">Confirm withdrawal of assessment request</govuk-button>
         </form>
     </div>
 

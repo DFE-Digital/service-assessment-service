@@ -1,4 +1,5 @@
-﻿@*
+﻿@using ServiceAssessmentService.WebApp.Models
+@*
     This file, at the application root folder (next to Program.cs), is shared between all views (including within areas).
     This provides a common default layout for the entire application.
     
@@ -8,4 +9,5 @@
 
 @{
     Layout = "_DfE_1200px_Layout";
+    ViewData["Section"] = SiteSection.Default;
 }

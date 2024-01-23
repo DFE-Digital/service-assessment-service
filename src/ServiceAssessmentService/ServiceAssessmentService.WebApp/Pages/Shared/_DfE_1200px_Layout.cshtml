@@ -35,8 +35,11 @@
     }
 
     // Helpers, used to determine which navigation item is currently active
-    var isAreaDefault = (area is null) || ("Home".Equals(area, StringComparison.OrdinalIgnoreCase));
-    var isAreaBook = ("Book".Equals(area, StringComparison.OrdinalIgnoreCase));
+    var siteSection = ViewData["Section"] as ServiceAssessmentService.WebApp.Models.SiteSection?;
+    
+    var isAreaDefault = (siteSection is null) || (siteSection is SiteSection.Default);
+    // var isAreaBook = ("Book".Equals(area, StringComparison.OrdinalIgnoreCase));
+    var isAreaBook = ("Book".Equals((ViewData["Section"] as string), StringComparison.OrdinalIgnoreCase));
 
 
 }
@@ -97,9 +100,22 @@
                     </button>
                 </p>
                 <ul class="dfe-header__navigation-list">
+                    @if (true)
+                    {
+                        <li class="dfe-header__navigation-item">
+                            <a class="dfe-header__navigation-link" asp-page="/Index">
+                                Home
+                                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                     aria-hidden="true" width="34" height="34">
+                                    <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </li>
+                    }
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
+                        <li class="dfe-header__navigation-item @(siteSection is SiteSection.Dashboard ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Dashboard">
                                 Dashboard
                                 <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -125,7 +141,7 @@
                     }
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
+                        <li class="dfe-header__navigation-item @(siteSection is SiteSection.BookingRequest ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Book/List">
                                 Booking Requests
                                 <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -138,7 +154,7 @@
                     }
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")">
+                        <li class="dfe-header__navigation-item @(siteSection is SiteSection.MyAccount ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Me/Index">
                                 About Me
                                 <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -162,6 +178,22 @@
         <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
         This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
     </govuk-phase-banner>
+
+    @*
+     * Each page should have a site section attribute/value set, but in this case it has not been overridden.
+     * This is used by e.g., the header navigation bar to highlight the current section as "active", therefore is mandatory.
+     *@
+    @if (siteSection is SiteSection.Default)
+    {
+        <govuk-notification-banner>
+            <p class="govuk-notification-banner__heading">
+                This page is missing a site section attribute/value.
+            </p>
+            <govuk-warning-text icon-fallback-text="Warning">
+                This will need to be added by a developer.
+            </govuk-warning-text>
+        </govuk-notification-banner>
+    }
 }
 
 

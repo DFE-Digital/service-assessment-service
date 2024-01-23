@@ -2,6 +2,7 @@
 @model ServiceAssessmentService.WebApp.Pages.Me.IndexModel
 @{
     ViewData["Title"] = "Home page";
+    ViewData["Section"] = SiteSection.MyAccount;
 
     var graphUser = ViewData["GraphUser"] as Microsoft.Graph.User;
 }
