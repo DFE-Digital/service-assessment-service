@@ -96,14 +96,6 @@
                                 @Model.AssessmentRequest.UpdatedAt.ToString()
                             </dd>
                         </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Deleted
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @Model.AssessmentRequest.DeletedAt?.ToString()
-                            </dd>
-                        </div>
                     </dl>
 
                     <govuk-button-link asp-page="/Book/Edit" asp-route-id="@Model.AssessmentRequest.Id">Edit</govuk-button-link>"

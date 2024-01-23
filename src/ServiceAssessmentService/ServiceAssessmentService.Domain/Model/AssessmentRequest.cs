@@ -21,6 +21,4 @@ public class AssessmentRequest
 
     public DateTimeOffset UpdatedAt { get; set; }
 
-    public DateTimeOffset? DeletedAt { get; set; }
-
 }

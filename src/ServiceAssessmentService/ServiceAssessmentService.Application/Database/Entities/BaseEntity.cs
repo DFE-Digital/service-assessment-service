@@ -2,7 +2,6 @@
 
 internal class BaseEntity
 {
-    public DateTimeOffset Created { get; set; }
-    public DateTimeOffset Updated { get; set; }
-    public DateTimeOffset? Deleted { get; set; }
+    public DateTime CreatedUtc { get; set; }
+    public DateTime UpdatedUtc { get; set; }
 }

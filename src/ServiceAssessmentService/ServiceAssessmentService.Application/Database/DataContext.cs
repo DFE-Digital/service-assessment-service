@@ -37,18 +37,12 @@ public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
         foreach (var entityEntry in entries)
         {
             // Always update the updated time
-            ((BaseEntity)entityEntry.Entity).Updated = DateTimeOffset.UtcNow;
+            ((BaseEntity)entityEntry.Entity).UpdatedUtc = DateTime.UtcNow;
 
             if (entityEntry.State == EntityState.Added)
             {
                 // Only set created timestamp if entity is newly added
-                ((BaseEntity)entityEntry.Entity).Created = DateTimeOffset.UtcNow;
-            }
-
-            if (entityEntry.State == EntityState.Deleted)
-            {
-                // Only set deleted timestamp if entity is being deleted
-                ((BaseEntity)entityEntry.Entity).Deleted = DateTimeOffset.UtcNow;
+                ((BaseEntity)entityEntry.Entity).CreatedUtc = DateTime.UtcNow;
             }
         }
 
