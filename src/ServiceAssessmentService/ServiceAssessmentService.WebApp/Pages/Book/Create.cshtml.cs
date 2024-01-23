@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ServiceAssessmentService.Application;
+using ServiceAssessmentService.Application.UseCases;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book;
 

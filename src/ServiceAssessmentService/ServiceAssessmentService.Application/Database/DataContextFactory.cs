@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ServiceAssessmentService.Application;
+namespace ServiceAssessmentService.Application.Database;
 
 /// <summary>
 /// This class is used by the EF Core tools to create a DbContext for migrations.

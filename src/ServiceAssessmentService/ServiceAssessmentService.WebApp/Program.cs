@@ -1,10 +1,11 @@
 using GovUk.Frontend.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using ServiceAssessmentService.Application;
-using ServiceAssessmentService.Application.Entities;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using ServiceAssessmentService.Application.Database;
+using ServiceAssessmentService.Application.UseCases;
 using ServiceAssessmentService.WebApp.Models;
 
 

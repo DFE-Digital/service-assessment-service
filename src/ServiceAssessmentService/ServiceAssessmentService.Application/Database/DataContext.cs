@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ServiceAssessmentService.Application.Entities;
+using ServiceAssessmentService.Application.Database.Entities;
 
-namespace ServiceAssessmentService.Application;
+namespace ServiceAssessmentService.Application.Database;
 
 public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
 {

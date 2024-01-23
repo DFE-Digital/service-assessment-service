@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceAssessmentService.Application;
+using ServiceAssessmentService.Application.UseCases;
 using ServiceAssessmentService.Domain.Model;
 using ServiceAssessmentService.WebApp.Pages.Book;
 

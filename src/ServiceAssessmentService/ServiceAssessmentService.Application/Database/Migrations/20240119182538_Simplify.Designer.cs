@@ -6,14 +6,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceAssessmentService.Application;
+using ServiceAssessmentService.Application.Database;
 
 #nullable disable
 
 namespace ServiceAssessmentService.Application.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240120001542_AddTimestamps")]
-    partial class AddTimestamps
+    [Migration("20240119182538_Simplify")]
+    partial class Simplify
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,12 +35,6 @@ namespace ServiceAssessmentService.Application.Migrations
                     b.Property<string>("AssessmentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("Deleted")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -67,9 +62,6 @@ namespace ServiceAssessmentService.Application.Migrations
 
                     b.Property<DateOnly?>("PhaseStartDate")
                         .HasColumnType("date");
-
-                    b.Property<DateTimeOffset>("Updated")
-                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
