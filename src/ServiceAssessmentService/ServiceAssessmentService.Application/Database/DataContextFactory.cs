@@ -13,8 +13,8 @@ namespace ServiceAssessmentService.Application.Database;
 /// </summary>
 public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
 {
-    // private const string ConnectionString = "Server=localhost;Database=ServiceAssessmentPlus;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
-    private const string ConnectionString = "Server=serviceassessmentplus-dev.database.windows.net;Database=ServiceAssessmentPlus-dev;Authentication=Active Directory Default;";
+    private const string ConnectionString = "Server=localhost;Database=ServiceAssessmentPlus-local;Trusted_Connection=True;TrustServerCertificate=True;";
+    // private const string ConnectionString = "Server=serviceassessmentplus-dev.database.windows.net;Database=ServiceAssessmentPlus-dev;Authentication=Active Directory Integrated;";
 
     public DataContext CreateDbContext(string[] args)
     {
