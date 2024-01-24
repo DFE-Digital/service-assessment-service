@@ -11,6 +11,7 @@ public class EditModel : PageModel
     [BindProperty] public EditAssessmentRequestSubmitModel AssessmentRequestPageModel { get; set; }
 
     public IEnumerable<ProjectPhase> AllPhases { get; set; }
+    public IEnumerable<ServiceAssessmentService.Domain.Model.AssessmentType> AllAssessmentTypes { get; set; }
 
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly ILogger<EditModel> _logger;
@@ -31,6 +32,7 @@ public class EditModel : PageModel
         }
         
         AllPhases = ProjectPhase.Sequence;
+        AllAssessmentTypes = ServiceAssessmentService.Domain.Model.AssessmentType.All;
 
         AssessmentRequestPageModel = EditAssessmentRequestSubmitModel.FromDomainModel(req);
 
@@ -45,6 +47,7 @@ public class EditModel : PageModel
         }
 
         AllPhases = ProjectPhase.Sequence;
+        AllAssessmentTypes = ServiceAssessmentService.Domain.Model.AssessmentType.All;
 
         // Update values from submission
         var req = AssessmentRequestPageModel.ToDomainModel();
@@ -80,7 +83,7 @@ public class EditModel : PageModel
                 Name = Name,
                 Description = Description,
                 PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
-                AssessmentType = AssessmentType,
+                AssessmentType = ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType),
                 PhaseStartDate = PhaseStartDate,
                 PhaseEndDate = PhaseEndDate,
             };
@@ -94,7 +97,7 @@ public class EditModel : PageModel
                 Name = request.Name,
                 Description = request.Description,
                 PhaseConcluding = request.PhaseConcluding?.Name ?? string.Empty,
-                AssessmentType = request.AssessmentType,
+                AssessmentType = request.AssessmentType?.Name ?? string.Empty,
                 PhaseStartDate = request.PhaseStartDate,
                 PhaseEndDate = request.PhaseEndDate,
             };

@@ -39,7 +39,7 @@
                                             <a asp-page="/Book/View"
                                                asp-route-id="@assessment.Id"
                                                class="govuk-link">
-                                                New @(assessment.PhaseConcluding?.Name ?? "") @(assessment.AssessmentType ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span>
+                                                New @(assessment.PhaseConcluding?.Name ?? "") @(assessment.AssessmentType?.Name ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span>
                                             </a>
                                         </th>
                                         <td class="govuk-table__cell">@assessment.Name</td>

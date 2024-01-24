@@ -8,7 +8,7 @@ public class AssessmentRequest
 
     public ProjectPhase? PhaseConcluding { get; set; }
 
-    public string AssessmentType { get; set; } = string.Empty;
+    public AssessmentType? AssessmentType { get; set; }
 
     public DateOnly? PhaseStartDate { get; set; }
 

@@ -22,6 +22,7 @@ public class CreateModel : PageModel
     [BindProperty] public NewAssessmentRequestSubmitModel? AssessmentRequestPageModel { get; set; }
     
     public IEnumerable<ProjectPhase> AllPhases { get; set; }
+    public IEnumerable<ServiceAssessmentService.Domain.Model.AssessmentType> AllAssessmentTypes { get; set; }
 
     public void OnGet()
     {
@@ -29,13 +30,15 @@ public class CreateModel : PageModel
         AssessmentRequestPageModel ??= new NewAssessmentRequestSubmitModel();
         
         AllPhases = ProjectPhase.Sequence;
+        AllAssessmentTypes = ServiceAssessmentService.Domain.Model.AssessmentType.All;
     }
 
 
     public async Task<IActionResult> OnPostAsync()
     {
         AllPhases = ProjectPhase.Sequence;
-        
+        AllAssessmentTypes = ServiceAssessmentService.Domain.Model.AssessmentType.All;
+
         if (!ModelState.IsValid)
         {
             _logger.LogDebug("Submitted ModelState is invalid");
@@ -82,7 +85,7 @@ public class CreateModel : PageModel
                 Name = Name,
                 Description = Description,
                 PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
-                AssessmentType = AssessmentType,
+                AssessmentType = ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType),
                 PhaseStartDate = PhaseStartDate,
                 PhaseEndDate = PhaseEndDate,
             };

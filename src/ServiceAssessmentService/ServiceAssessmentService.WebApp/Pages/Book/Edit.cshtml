@@ -21,25 +21,12 @@
         <div class="govuk-grid-row">
             <form asp-page="/Book/Edit" asp-route-id="@Model.AssessmentRequestPageModel.Id" method="post">
 
-                <!-- Name field -->
-                <govuk-input asp-for="@Model.AssessmentRequestPageModel.Name">
-                    <govuk-input-label is-page-heading="false" class="govuk-label--l">What is your service's name?</govuk-input-label>
-                    <govuk-input-hint>For example: Apply for a budgeting loan, Check your State Pension, Sign up for email alerts about Child Benefit.</govuk-input-hint>
-                </govuk-input>
-
-                <!-- Description field -->
-                <govuk-input asp-for="@Model.AssessmentRequestPageModel.Description">
-                    <govuk-input-label is-page-heading="false" class="govuk-label--l">Provide a description:</govuk-input-label>
-                    <govuk-input-hint>For example: This service allows users to apply for a budgeting loan</govuk-input-hint>
-                </govuk-input>
-
                 <!-- PhaseConcluding field -->
                 <govuk-radios asp-for="@Model.AssessmentRequestPageModel.PhaseConcluding">
                     <govuk-radios-fieldset>
                         <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
                             What phase is concluding?
                         </govuk-radios-fieldset-legend>
-                        <govuk-radios-hint>For example: Discovery, Alpha, Private Beta, Public Beta, Live.</govuk-radios-hint>
 
                         @foreach (var phase in Model.AllPhases)
                         {
@@ -51,9 +38,31 @@
                 </govuk-radios>
 
                 <!-- AssessmentType field -->
-                <govuk-input asp-for="@Model.AssessmentRequestPageModel.AssessmentType">
-                    <govuk-input-label is-page-heading="false" class="govuk-label--l">What is the assessment type?</govuk-input-label>
-                    <govuk-input-hint>For example: Peer Review, Mock Assessment, Continuous, Full DfE Internal, Full Cross-Governmental (separate Y/N Q?), Re-Assessment (separate Y/N Q?).</govuk-input-hint>
+                <govuk-radios asp-for="@Model.AssessmentRequestPageModel.AssessmentType">
+                    <govuk-radios-fieldset>
+                        <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
+                            What assessment type are you requesting?
+                        </govuk-radios-fieldset-legend>
+
+                        @foreach (var assessmentType in Model.AllAssessmentTypes)
+                        {
+                            <govuk-radios-item value="@assessmentType.Name">
+                                @assessmentType.Name
+                            </govuk-radios-item>
+                        }
+                    </govuk-radios-fieldset>
+                </govuk-radios>
+
+                <!-- Name field -->
+                <govuk-input asp-for="@Model.AssessmentRequestPageModel.Name">
+                    <govuk-input-label is-page-heading="false" class="govuk-label--l">What is your service's name?</govuk-input-label>
+                    <govuk-input-hint>For example: Apply for a budgeting loan, Check your State Pension, Sign up for email alerts about Child Benefit.</govuk-input-hint>
+                </govuk-input>
+
+                <!-- Description field -->
+                <govuk-input asp-for="@Model.AssessmentRequestPageModel.Description">
+                    <govuk-input-label is-page-heading="false" class="govuk-label--l">Provide a description:</govuk-input-label>
+                    <govuk-input-hint>For example: This service allows users to apply for a budgeting loan</govuk-input-hint>
                 </govuk-input>
 
                 <!-- PhaseStartDate field -->

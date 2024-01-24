@@ -26,7 +26,7 @@ internal class AssessmentRequest : BaseEntity
             Id = Id,
             Name = Name,
             PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
-            AssessmentType = AssessmentType,
+            AssessmentType = ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType),
             PhaseStartDate = PhaseStartDate,
             PhaseEndDate = PhaseEndDate,
             Description = Description,

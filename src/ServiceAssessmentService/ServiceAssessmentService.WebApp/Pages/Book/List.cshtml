@@ -25,7 +25,7 @@
                         asp-route-id="@assessment.Id"
                         class="govuk-link">
                         @assessment.Name
-                        (@(assessment.PhaseConcluding?.Name ?? "") @(assessment.AssessmentType ?? ""))
+                        (@(assessment.PhaseConcluding?.Name ?? "") @(assessment.AssessmentType?.Name ?? ""))
                     </a>
                 </li>
             }
