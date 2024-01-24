@@ -3,6 +3,7 @@
 @model ServiceAssessmentService.WebApp.Pages.Book.ViewModel
 @{
     ViewData["Title"] = "Index";
+    ViewData["Section"] = SiteSection.BookingRequest;
 }
 
 
@@ -93,14 +94,6 @@
                             </dt>
                             <dd class="govuk-summary-list__value">
                                 @Model.AssessmentRequest.UpdatedAt.ToString()
-                            </dd>
-                        </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Deleted
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @Model.AssessmentRequest.DeletedAt?.ToString()
                             </dd>
                         </div>
                     </dl>

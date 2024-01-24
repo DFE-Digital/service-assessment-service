@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceAssessmentService.Domain.Model;
+using ServiceAssessmentService.Application.Database;
+using AssessmentRequest = ServiceAssessmentService.Application.Database.Entities.AssessmentRequest;
 
-namespace ServiceAssessmentService.Data;
+namespace ServiceAssessmentService.Application.UseCases;
 
 public class AssessmentRequestRepository
 {
@@ -34,7 +35,7 @@ public class AssessmentRequestRepository
 
     public async Task<Domain.Model.AssessmentRequest?> CreateAsync(Domain.Model.AssessmentRequest assessmentRequest)
     {
-        var entity = new Entities.AssessmentRequest
+        var entity = new AssessmentRequest
         {
             Id = assessmentRequest.Id,
             Name = assessmentRequest.Name,
@@ -69,9 +70,9 @@ public class AssessmentRequestRepository
         return assessmentRequest.ToDomainModel();
     }
 
-    public async Task<Domain.Model.AssessmentRequest?> UpdateAsync(AssessmentRequest assessmentRequest)
+    public async Task<Domain.Model.AssessmentRequest?> UpdateAsync(Domain.Model.AssessmentRequest assessmentRequest)
     {
-        var entity = new Entities.AssessmentRequest
+        var entity = new AssessmentRequest
         {
             Id = assessmentRequest.Id,
             Name = assessmentRequest.Name,

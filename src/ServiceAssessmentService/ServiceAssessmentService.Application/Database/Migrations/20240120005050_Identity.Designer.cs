@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServiceAssessmentService.Data;
+using ServiceAssessmentService.Application;
+using ServiceAssessmentService.Application.Database;
 
 #nullable disable
 
-namespace ServiceAssessmentService.Data.Migrations
+namespace ServiceAssessmentService.Application.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20240120005050_Identity")]
@@ -223,7 +224,7 @@ namespace ServiceAssessmentService.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceAssessmentService.Data.Entities.AssessmentRequest", b =>
+            modelBuilder.Entity("ServiceAssessmentService.Application.Entities.AssessmentRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

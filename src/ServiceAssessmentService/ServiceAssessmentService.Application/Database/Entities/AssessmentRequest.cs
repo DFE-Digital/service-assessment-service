@@ -1,4 +1,4 @@
-﻿namespace ServiceAssessmentService.Data.Entities;
+﻿namespace ServiceAssessmentService.Application.Database.Entities;
 
 internal class AssessmentRequest : BaseEntity
 {
@@ -28,10 +28,8 @@ internal class AssessmentRequest : BaseEntity
             PhaseStartDate = PhaseStartDate,
             PhaseEndDate = PhaseEndDate,
             Description = Description,
-            CreatedAt = Created,
-            UpdatedAt = Updated,
-            DeletedAt = Deleted,
-
+            CreatedAt = CreatedUtc,
+            UpdatedAt = UpdatedUtc,
         };
 
         return assessmentRequest;

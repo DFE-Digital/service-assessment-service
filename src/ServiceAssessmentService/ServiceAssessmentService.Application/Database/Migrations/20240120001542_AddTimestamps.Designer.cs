@@ -5,15 +5,16 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServiceAssessmentService.Data;
+using ServiceAssessmentService.Application;
+using ServiceAssessmentService.Application.Database;
 
 #nullable disable
 
-namespace ServiceAssessmentService.Data.Migrations
+namespace ServiceAssessmentService.Application.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240119182538_Simplify")]
-    partial class Simplify
+    [Migration("20240120001542_AddTimestamps")]
+    partial class AddTimestamps
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +26,7 @@ namespace ServiceAssessmentService.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ServiceAssessmentService.Data.Entities.AssessmentRequest", b =>
+            modelBuilder.Entity("ServiceAssessmentService.Application.Entities.AssessmentRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,6 +35,12 @@ namespace ServiceAssessmentService.Data.Migrations
                     b.Property<string>("AssessmentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -61,6 +68,9 @@ namespace ServiceAssessmentService.Data.Migrations
 
                     b.Property<DateOnly?>("PhaseStartDate")
                         .HasColumnType("date");
+
+                    b.Property<DateTimeOffset>("Updated")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 

@@ -4,7 +4,7 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAssessmentService.WebApp", "ServiceAssessmentService.WebApp\ServiceAssessmentService.WebApp.csproj", "{1F6A6918-96BF-482C-B0FF-2D41B0A11B9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAssessmentService.Data", "ServiceAssessmentService.Data\ServiceAssessmentService.Data.csproj", "{F9440989-2E62-406A-994F-2592AE937F75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAssessmentService.Application", "ServiceAssessmentService.Application\ServiceAssessmentService.Application.csproj", "{F9440989-2E62-406A-994F-2592AE937F75}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAssessmentService.Domain", "ServiceAssessmentService.Domain\ServiceAssessmentService.Domain.csproj", "{E6CBBAEE-5981-4F4E-922D-B73659BB5B97}"
 EndProject

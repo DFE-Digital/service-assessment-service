@@ -7,12 +7,14 @@
             <span class="govuk-link govuk-link--inverse">Hello @User.Identity.Name!</span>
         </li>
         <li class="nav-item">
+            @* ReSharper disable once Mvc.AreaNotResolved -- https://youtrack.jetbrains.com/issue/RSRP-493782 *@
             <a class="govuk-link govuk-link--inverse" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
         </li>
     }
     else
     {
         <li class="nav-item">
+            @* ReSharper disable once Mvc.AreaNotResolved -- https://youtrack.jetbrains.com/issue/RSRP-493782 *@
             <a class="govuk-link govuk-link--inverse" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
         </li>
     }

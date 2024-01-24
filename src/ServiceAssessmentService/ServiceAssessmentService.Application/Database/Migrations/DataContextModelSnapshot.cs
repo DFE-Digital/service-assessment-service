@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServiceAssessmentService.Data;
+using ServiceAssessmentService.Application.Database;
 
 #nullable disable
 
-namespace ServiceAssessmentService.Data.Migrations
+namespace ServiceAssessmentService.Application.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -155,7 +155,7 @@ namespace ServiceAssessmentService.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceAssessmentService.Data.Entities.AssessmentRequest", b =>
+            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.AssessmentRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,11 +165,8 @@ namespace ServiceAssessmentService.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("Deleted")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -198,8 +195,8 @@ namespace ServiceAssessmentService.Data.Migrations
                     b.Property<DateOnly?>("PhaseStartDate")
                         .HasColumnType("date");
 
-                    b.Property<DateTimeOffset>("Updated")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("UpdatedUtc")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -217,7 +214,7 @@ namespace ServiceAssessmentService.Data.Migrations
                             }));
                 });
 
-            modelBuilder.Entity("ServiceAssessmentService.Data.Entities.ServiceAssessmentServiceWebAppUser", b =>
+            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.ServiceAssessmentServiceWebAppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -293,7 +290,7 @@ namespace ServiceAssessmentService.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ServiceAssessmentService.Data.Entities.ServiceAssessmentServiceWebAppUser", null)
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.ServiceAssessmentServiceWebAppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -302,7 +299,7 @@ namespace ServiceAssessmentService.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ServiceAssessmentService.Data.Entities.ServiceAssessmentServiceWebAppUser", null)
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.ServiceAssessmentServiceWebAppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,7 +314,7 @@ namespace ServiceAssessmentService.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceAssessmentService.Data.Entities.ServiceAssessmentServiceWebAppUser", null)
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.ServiceAssessmentServiceWebAppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,7 +323,7 @@ namespace ServiceAssessmentService.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ServiceAssessmentService.Data.Entities.ServiceAssessmentServiceWebAppUser", null)
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.ServiceAssessmentServiceWebAppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

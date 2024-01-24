@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ServiceAssessmentService.Data;
+namespace ServiceAssessmentService.Application.Database;
 
 /// <summary>
 /// This class is used by the EF Core tools to create a DbContext for migrations.
@@ -13,8 +13,8 @@ namespace ServiceAssessmentService.Data;
 /// </summary>
 public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
 {
-    // private const string ConnectionString = "Server=localhost;Database=ServiceAssessmentPlus;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
-    private const string ConnectionString = "Server=serviceassessmentplus-dev.database.windows.net;Database=ServiceAssessmentPlus-dev;Authentication=Active Directory Default;";
+    private const string ConnectionString = "Server=localhost;Database=ServiceAssessmentPlus-local;Trusted_Connection=True;TrustServerCertificate=True;";
+    // private const string ConnectionString = "Server=serviceassessmentplus-dev.database.windows.net;Database=ServiceAssessmentPlus-dev;Authentication=Active Directory Integrated;";
 
     public DataContext CreateDbContext(string[] args)
     {
