@@ -34,10 +34,21 @@
                 </govuk-input>
 
                 <!-- PhaseConcluding field -->
-                <govuk-input asp-for="@Model.AssessmentRequestPageModel.PhaseConcluding">
-                    <govuk-input-label is-page-heading="false" class="govuk-label--l">What phase is concluding?</govuk-input-label>
-                    <govuk-input-hint>For example: Discovery, Alpha, Private Beta, Public Beta, Live.</govuk-input-hint>
-                </govuk-input>
+                <govuk-radios asp-for="@Model.AssessmentRequestPageModel.PhaseConcluding">
+                    <govuk-radios-fieldset>
+                        <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
+                            What phase is concluding?
+                        </govuk-radios-fieldset-legend>
+                        <govuk-radios-hint>For example: Discovery, Alpha, Private Beta, Public Beta, Live.</govuk-radios-hint>
+
+                        @foreach (var phase in Model.AllPhases)
+                        {
+                            <govuk-radios-item value="@phase.Name">
+                                @phase.Name
+                            </govuk-radios-item>
+                        }
+                    </govuk-radios-fieldset>
+                </govuk-radios>
 
                 <!-- AssessmentType field -->
                 <govuk-input asp-for="@Model.AssessmentRequestPageModel.AssessmentType">

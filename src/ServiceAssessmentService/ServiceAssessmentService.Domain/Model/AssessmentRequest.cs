@@ -6,7 +6,7 @@ public class AssessmentRequest
 
     public string Name { get; set; } = string.Empty;
 
-    public string PhaseConcluding { get; set; } = string.Empty;
+    public ProjectPhase? PhaseConcluding { get; set; }
 
     public string AssessmentType { get; set; } = string.Empty;
 

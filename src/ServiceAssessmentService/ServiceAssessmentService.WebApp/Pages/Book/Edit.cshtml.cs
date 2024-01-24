@@ -10,6 +10,8 @@ public class EditModel : PageModel
 {
     [BindProperty] public EditAssessmentRequestSubmitModel AssessmentRequestPageModel { get; set; }
 
+    public IEnumerable<ProjectPhase> AllPhases { get; set; }
+
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly ILogger<EditModel> _logger;
 
@@ -27,6 +29,8 @@ public class EditModel : PageModel
             _logger.LogInformation("Attempted to edit assessment request with ID {Id}, but it was not found", id);
             return NotFound();
         }
+        
+        AllPhases = ProjectPhase.Sequence;
 
         AssessmentRequestPageModel = EditAssessmentRequestSubmitModel.FromDomainModel(req);
 
@@ -39,6 +43,8 @@ public class EditModel : PageModel
         {
             return Page();
         }
+
+        AllPhases = ProjectPhase.Sequence;
 
         // Update values from submission
         var req = AssessmentRequestPageModel.ToDomainModel();
@@ -73,7 +79,7 @@ public class EditModel : PageModel
                 Id = Id,
                 Name = Name,
                 Description = Description,
-                PhaseConcluding = PhaseConcluding,
+                PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
                 AssessmentType = AssessmentType,
                 PhaseStartDate = PhaseStartDate,
                 PhaseEndDate = PhaseEndDate,
@@ -87,7 +93,7 @@ public class EditModel : PageModel
                 Id = request.Id,
                 Name = request.Name,
                 Description = request.Description,
-                PhaseConcluding = request.PhaseConcluding,
+                PhaseConcluding = request.PhaseConcluding?.Name ?? string.Empty,
                 AssessmentType = request.AssessmentType,
                 PhaseStartDate = request.PhaseStartDate,
                 PhaseEndDate = request.PhaseEndDate,

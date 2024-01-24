@@ -39,7 +39,7 @@ public class AssessmentRequestRepository
         {
             Id = assessmentRequest.Id,
             Name = assessmentRequest.Name,
-            PhaseConcluding = assessmentRequest.PhaseConcluding,
+            PhaseConcluding = assessmentRequest.PhaseConcluding?.Name ?? string.Empty,
             AssessmentType = assessmentRequest.AssessmentType,
             PhaseStartDate = assessmentRequest.PhaseStartDate,
             PhaseEndDate = assessmentRequest.PhaseEndDate,
@@ -76,7 +76,7 @@ public class AssessmentRequestRepository
         {
             Id = assessmentRequest.Id,
             Name = assessmentRequest.Name,
-            PhaseConcluding = assessmentRequest.PhaseConcluding,
+            PhaseConcluding = assessmentRequest.PhaseConcluding?.Name ?? string.Empty,
             AssessmentType = assessmentRequest.AssessmentType,
             PhaseStartDate = assessmentRequest.PhaseStartDate,
             PhaseEndDate = assessmentRequest.PhaseEndDate,

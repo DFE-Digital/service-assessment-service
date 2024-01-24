@@ -1,4 +1,6 @@
-﻿namespace ServiceAssessmentService.Application.Database.Entities;
+﻿using ServiceAssessmentService.Domain.Model;
+
+namespace ServiceAssessmentService.Application.Database.Entities;
 
 internal class AssessmentRequest : BaseEntity
 {
@@ -23,7 +25,7 @@ internal class AssessmentRequest : BaseEntity
         {
             Id = Id,
             Name = Name,
-            PhaseConcluding = PhaseConcluding,
+            PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
             AssessmentType = AssessmentType,
             PhaseStartDate = PhaseStartDate,
             PhaseEndDate = PhaseEndDate,

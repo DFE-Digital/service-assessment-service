@@ -1,8 +1,10 @@
+using System.Collections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ServiceAssessmentService.Application;
 using ServiceAssessmentService.Application.UseCases;
+using ServiceAssessmentService.Domain.Model;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book;
 
@@ -18,16 +20,22 @@ public class CreateModel : PageModel
     }
 
     [BindProperty] public NewAssessmentRequestSubmitModel? AssessmentRequestPageModel { get; set; }
+    
+    public IEnumerable<ProjectPhase> AllPhases { get; set; }
 
     public void OnGet()
     {
         // If null, initialise an empty request model (this models the HTTP/form values, later to be mapped into a domain model)
         AssessmentRequestPageModel ??= new NewAssessmentRequestSubmitModel();
+        
+        AllPhases = ProjectPhase.Sequence;
     }
 
 
     public async Task<IActionResult> OnPostAsync()
     {
+        AllPhases = ProjectPhase.Sequence;
+        
         if (!ModelState.IsValid)
         {
             _logger.LogDebug("Submitted ModelState is invalid");
@@ -73,7 +81,7 @@ public class CreateModel : PageModel
             {
                 Name = Name,
                 Description = Description,
-                PhaseConcluding = PhaseConcluding,
+                PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
                 AssessmentType = AssessmentType,
                 PhaseStartDate = PhaseStartDate,
                 PhaseEndDate = PhaseEndDate,
