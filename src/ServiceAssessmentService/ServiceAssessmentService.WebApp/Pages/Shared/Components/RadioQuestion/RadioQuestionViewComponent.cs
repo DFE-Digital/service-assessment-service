@@ -46,32 +46,7 @@ public class RadioQuestionViewComponent : ViewComponent
 
         private static GenericQuestionViewComponent.GenericQuestionHtmlModel? NestedQuestionHtmlModelFromDomain(Domain.Model.Questions.RadioQuestion.RadioOption o)
         {
-            var nestedQuestion = o.NestedQuestion;
-            if (nestedQuestion is null)
-            {
-                return null;
-            }
-
-            if (nestedQuestion.Type is QuestionType.SimpleText)
-            {
-                return SimpleTextQuestionViewComponent.SimpleTextQuestionHtmlModel.FromDomainModel(nestedQuestion as Domain.Model.Questions.SimpleTextQuestion);
-            }
-            else if (nestedQuestion.Type is QuestionType.LongText)
-            {
-                return LongTextQuestionViewComponent.LongTextQuestionHtmlModel.FromDomainModel(nestedQuestion as Domain.Model.Questions.LongTextQuestion);
-            }
-            else if (nestedQuestion.Type is QuestionType.DateOnly)
-            {
-                return DateOnlyQuestionViewComponent.DateOnlyQuestionHtmlModel.FromDomainModel(nestedQuestion as Domain.Model.Questions.DateOnlyQuestion);
-            }
-            else if (nestedQuestion.Type is QuestionType.Radio)
-            {
-                return RadioQuestionViewComponent.RadioQuestionHtmlModel.FromDomainModel(nestedQuestion as Domain.Model.Questions.RadioQuestion);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unknown question type {nestedQuestion.Type}");
-            }
+            return GenericQuestionViewComponent.GenericQuestionHtmlModel.FromDomain(o.NestedQuestion);
         }
 
 
