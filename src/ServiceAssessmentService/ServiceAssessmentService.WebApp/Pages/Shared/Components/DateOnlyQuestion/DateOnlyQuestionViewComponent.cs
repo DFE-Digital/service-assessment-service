@@ -5,8 +5,31 @@ namespace ServiceAssessmentService.WebApp.Pages.Shared.Components.DateOnlyQuesti
 
 public class DateOnlyQuestionViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke(GenericQuestionViewComponent.GenericQuestionHtmlModel question)
+    public IViewComponentResult Invoke(DateOnlyQuestionHtmlModel question)
     {
         return View(question);
+    }
+
+    public class DateOnlyQuestionHtmlModel : GenericQuestionViewComponent.GenericQuestionHtmlModel
+    {
+        private readonly Domain.Model.Questions.DateOnlyQuestion _question;
+
+        public static DateOnlyQuestionHtmlModel FromDomainModel(Domain.Model.Questions.DateOnlyQuestion question)
+        {
+            return new DateOnlyQuestionHtmlModel(question);
+        }
+
+        private DateOnlyQuestionHtmlModel(Domain.Model.Questions.DateOnlyQuestion question) : base(question)
+        {
+            _question = question;
+        }
+
+        public override string? AnswerDisplayText => DateOnlyAnswer.ToString();
+
+        public DateOnly? DateOnlyAnswer
+        {
+            get => _question.Answer;
+            set => _question.Answer = value;
+        }
     }
 }

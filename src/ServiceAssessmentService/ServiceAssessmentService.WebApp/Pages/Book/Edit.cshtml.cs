@@ -2,7 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceAssessmentService.Application.UseCases;
 using ServiceAssessmentService.Domain.Model;
+using ServiceAssessmentService.WebApp.Pages.Shared.Components.DateOnlyQuestion;
 using ServiceAssessmentService.WebApp.Pages.Shared.Components.GenericQuestion;
+using ServiceAssessmentService.WebApp.Pages.Shared.Components.LongTextQuestion;
+using ServiceAssessmentService.WebApp.Pages.Shared.Components.RadioQuestion;
+using ServiceAssessmentService.WebApp.Pages.Shared.Components.SimpleTextQuestion;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book;
 
@@ -101,7 +105,23 @@ public class EditModel : PageModel
                 AssessmentType = request.AssessmentType?.Name ?? string.Empty,
                 PhaseStartDate = request.PhaseStartDate,
                 PhaseEndDate = request.PhaseEndDate,
-                Questions = request.Questions.Select(q => new GenericQuestionViewComponent.GenericQuestionHtmlModel(q)),
+                Questions = request.Questions.Select<Domain.Model.Questions.Question, GenericQuestionViewComponent.GenericQuestionHtmlModel>(domainQuestion =>
+                {   
+                    switch (domainQuestion)
+                    {
+                        case Domain.Model.Questions.SimpleTextQuestion sq:
+                            return SimpleTextQuestionViewComponent.SimpleTextQuestionHtmlModel.FromDomainModel(sq);
+                        case Domain.Model.Questions.LongTextQuestion lq:
+                            return LongTextQuestionViewComponent.LongTextQuestionHtmlModel.FromDomainModel(lq);
+                        case Domain.Model.Questions.DateOnlyQuestion dq:
+                            return DateOnlyQuestionViewComponent.DateOnlyQuestionHtmlModel.FromDomainModel(dq);
+                        case Domain.Model.Questions.RadioQuestion rq:
+                            return RadioQuestionViewComponent.RadioQuestionHtmlModel.FromDomainModel(rq);
+                        default:
+                            throw new InvalidOperationException(
+                                $"Unknown question type {domainQuestion.GetType().Name}");
+                    }
+                }),
             };
         }
 

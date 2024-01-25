@@ -3,19 +3,19 @@
 
 @if (Model.Type is QuestionType.SimpleText)
 {
-    <vc:Simple-Text-Question question="@Model"></vc:Simple-Text-Question>
+    <vc:Simple-Text-Question question="@(Model as ServiceAssessmentService.WebApp.Pages.Shared.Components.SimpleTextQuestion.SimpleTextQuestionViewComponent.SimpleTextQuestionHtmlModel)"></vc:Simple-Text-Question>
 }
 else if (Model.Type is QuestionType.LongText)
 {
-    <vc:Long-Text-Question question="@Model"></vc:Long-Text-Question>
+    <vc:Long-Text-Question question="@(Model as ServiceAssessmentService.WebApp.Pages.Shared.Components.LongTextQuestion.LongTextQuestionViewComponent.LongTextQuestionHtmlModel)"></vc:Long-Text-Question>
 }
 else if (Model.Type is QuestionType.DateOnly)
 {
-    <vc:date-only-question question="@Model"></vc:date-only-question>
+    <vc:date-only-question question="@(Model as ServiceAssessmentService.WebApp.Pages.Shared.Components.DateOnlyQuestion.DateOnlyQuestionViewComponent.DateOnlyQuestionHtmlModel)"></vc:date-only-question>
 }
 else if (Model.Type is QuestionType.Radio)
 {
-    <vc:radio-question question="@Model"></vc:radio-question>
+    <vc:radio-question question="@(Model as ServiceAssessmentService.WebApp.Pages.Shared.Components.RadioQuestion.RadioQuestionViewComponent.RadioQuestionHtmlModel)"></vc:radio-question>
 }
 else
 {
