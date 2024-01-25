@@ -1,0 +1,27 @@
+﻿@using ServiceAssessmentService.Domain.Model.Questions
+@model ServiceAssessmentService.WebApp.Pages.Book.EditModel.QuestionHtmlModel
+
+@if (Model.Type is QuestionType.SimpleText)
+{
+    <vc:Simple-Text-Question question="@Model"></vc:Simple-Text-Question>
+}
+else if (Model.Type is QuestionType.LongText)
+{
+    <vc:Long-Text-Question question="@Model"></vc:Long-Text-Question>
+}
+else if (Model.Type is QuestionType.DateOnly)
+{
+    <vc:date-only-question question="@Model"></vc:date-only-question>
+}
+else if (Model.Type is QuestionType.Radio)
+{
+    <vc:radio-question question="@Model"></vc:radio-question>
+}
+else
+{
+    <div>
+        <p>
+            Unknown Model type: @Model.Type (@Model.Title)
+        </p>
+    </div>
+}

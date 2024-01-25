@@ -1,0 +1,10 @@
+﻿@model ServiceAssessmentService.WebApp.Pages.Book.EditModel.QuestionHtmlModel
+
+<govuk-date-input asp-for="@Model.DateOnlyAnswer">
+    <govuk-date-input-fieldset>
+        <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">@Model.Title</govuk-date-input-fieldset-legend>
+        @if(!string.IsNullOrWhiteSpace(Model.HintText)) {
+            <govuk-date-input-hint>@Model.HintText</govuk-date-input-hint>
+        }
+    </govuk-date-input-fieldset>
+</govuk-date-input>

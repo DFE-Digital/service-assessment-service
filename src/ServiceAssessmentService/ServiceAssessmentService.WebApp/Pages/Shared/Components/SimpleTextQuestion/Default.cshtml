@@ -1,0 +1,8 @@
+﻿@model ServiceAssessmentService.WebApp.Pages.Book.EditModel.QuestionHtmlModel
+
+<govuk-input asp-for="@Model.SimpleTextAnswer">
+    <govuk-input-label is-page-heading="false" class="govuk-label--l">@Model.Title</govuk-input-label>
+    @if(!string.IsNullOrWhiteSpace(Model.HintText)) {
+        <govuk-input-hint>@Model.HintText</govuk-input-hint>
+    }
+</govuk-input>

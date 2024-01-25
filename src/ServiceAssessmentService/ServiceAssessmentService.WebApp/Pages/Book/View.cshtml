@@ -96,9 +96,21 @@
                                 @Model.AssessmentRequest.UpdatedAt.ToString()
                             </dd>
                         </div>
+
+                        @foreach (var question in Model.AssessmentRequest.Questions)
+                        {
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @question.Title
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @question.AnswerDisplayText
+                                </dd>
+                            </div>
+                        }
                     </dl>
 
-                    <govuk-button-link asp-page="/Book/Edit" asp-route-id="@Model.AssessmentRequest.Id">Edit</govuk-button-link>"
+                    <govuk-button-link asp-page="/Book/Edit" asp-route-id="@Model.AssessmentRequest.Id">Edit</govuk-button-link>
                     <govuk-button-link asp-page="/Book/Delete" asp-route-id="@Model.AssessmentRequest.Id" class="govuk-button--warning">Delete</govuk-button-link>
 
                 </div>
