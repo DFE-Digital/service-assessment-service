@@ -61,6 +61,11 @@ public class RadioQuestion : Question
     public IEnumerable<RadioOption> Options { get; set; } = Enumerable.Empty<RadioOption>();
     public RadioOption? Answer { get; set; }
     public override string? AnswerDisplayText => Answer?.DisplayTitle;
+    
+    public void SetAnswer(string? value)
+    {
+        Answer = Options.FirstOrDefault(o => o.Value == value);
+    }
 
     public class RadioOption
     {

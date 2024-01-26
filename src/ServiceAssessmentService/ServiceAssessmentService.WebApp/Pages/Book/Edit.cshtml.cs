@@ -81,17 +81,19 @@ public class EditModel : PageModel
 
         public Domain.Model.AssessmentRequest ToDomainModel()
         {
-            return new Domain.Model.AssessmentRequest()
+            var assessmentRequest = new Domain.Model.AssessmentRequest()
             {
                 Id = Id,
                 Name = Name,
                 Description = Description,
-                PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
-                AssessmentType = ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType),
                 PhaseStartDate = PhaseStartDate,
                 PhaseEndDate = PhaseEndDate,
-                // Questions =  Questions.Select(q => q.ToDomainModel()),
             };
+            
+            assessmentRequest.PhaseConcluding.SetAnswer(ProjectPhase.FromName(PhaseConcluding)?.Name);
+            assessmentRequest.AssessmentType.SetAnswer(ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType)?.Name);
+            
+            return assessmentRequest;
         }
 
         public static EditAssessmentRequestHtmlModel FromDomainModel(AssessmentRequest request)
@@ -101,8 +103,8 @@ public class EditModel : PageModel
                 Id = request.Id,
                 Name = request.Name,
                 Description = request.Description,
-                PhaseConcluding = request.PhaseConcluding?.Name ?? string.Empty,
-                AssessmentType = request.AssessmentType?.Name ?? string.Empty,
+                PhaseConcluding = request.PhaseConcluding.AnswerDisplayText ?? string.Empty,
+                AssessmentType = request.AssessmentType.AnswerDisplayText ?? string.Empty,
                 PhaseStartDate = request.PhaseStartDate,
                 PhaseEndDate = request.PhaseEndDate,
                 Questions = request.Questions.Select<Domain.Model.Questions.Question, GenericQuestionViewComponent.GenericQuestionHtmlModel>(domainQuestion =>

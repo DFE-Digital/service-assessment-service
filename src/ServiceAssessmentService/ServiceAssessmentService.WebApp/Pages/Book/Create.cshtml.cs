@@ -80,15 +80,17 @@ public class CreateModel : PageModel
 
         public Domain.Model.AssessmentRequest ToDomainModel()
         {
-            return new Domain.Model.AssessmentRequest()
+            var assessmentRequest = new Domain.Model.AssessmentRequest()
             {
                 Name = Name,
                 Description = Description,
-                PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
-                AssessmentType = ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType),
                 PhaseStartDate = PhaseStartDate,
                 PhaseEndDate = PhaseEndDate,
             };
+            assessmentRequest.PhaseConcluding.SetAnswer(ProjectPhase.FromName(PhaseConcluding)?.Name);
+            assessmentRequest.AssessmentType.SetAnswer(ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType)?.Name);
+            
+            return assessmentRequest;
         }
     }
 }

@@ -12,7 +12,7 @@ public record AssessmentType(string Name)
     public static readonly AssessmentType Continuous = new("Continuous");
     public static readonly AssessmentType DepartmentalInternal = new("Internal (DfE)");
     public static readonly AssessmentType CrossGovernment = new("Cross-Government (CDDO)");
-    public static readonly AssessmentType ReAssessment = new("Re-Assessment");
+    //public static readonly AssessmentType ReAssessment = new("Re-Assessment");
 
     public static readonly AssessmentType[] All =
     {
@@ -21,7 +21,7 @@ public record AssessmentType(string Name)
         Continuous,
         DepartmentalInternal,
         CrossGovernment,
-        ReAssessment,
+        //ReAssessment,
     };
 
     public static AssessmentType? FromName(string name)

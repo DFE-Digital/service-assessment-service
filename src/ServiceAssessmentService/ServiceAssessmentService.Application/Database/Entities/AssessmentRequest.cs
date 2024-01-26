@@ -17,6 +17,8 @@ internal class AssessmentRequest : BaseEntity
     public DateOnly? PhaseEndDate { get; set; }
 
     public string? Description { get; set; }
+    
+    public virtual IEnumerable<Question> Questions { get; set; }
 
 
     public ServiceAssessmentService.Domain.Model.AssessmentRequest ToDomainModel()
@@ -25,14 +27,15 @@ internal class AssessmentRequest : BaseEntity
         {
             Id = Id,
             Name = Name,
-            PhaseConcluding = ProjectPhase.FromName(PhaseConcluding),
-            AssessmentType = ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType),
             PhaseStartDate = PhaseStartDate,
             PhaseEndDate = PhaseEndDate,
             Description = Description,
             CreatedAt = CreatedUtc,
             UpdatedAt = UpdatedUtc,
         };
+        
+        assessmentRequest.PhaseConcluding.SetAnswer(ProjectPhase.FromName(PhaseConcluding)?.Name);
+        assessmentRequest.AssessmentType.SetAnswer(ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType)?.Name);
 
         return assessmentRequest;
     }

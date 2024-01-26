@@ -21,7 +21,7 @@
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <h2 class="govuk-heading-l">
-                        @(Model.AssessmentRequest.Name ?? "Untitled") <small>(@(Model.AssessmentRequest.PhaseConcluding?.Name ?? "") @(Model.AssessmentRequest.AssessmentType?.Name ?? ""))</small>
+                        @(Model.AssessmentRequest.Name ?? "Untitled") <small>(@(Model.AssessmentRequest.PhaseConcluding.AnswerDisplayText ?? "") @(Model.AssessmentRequest.AssessmentType.AnswerDisplayText ?? ""))</small>
                     </h2>
 
                 </div>
@@ -51,7 +51,7 @@
                                 Assessment type
                             </dt>
                             <dd class="govuk-summary-list__value">
-                                @(Model.AssessmentRequest.AssessmentType?.Name ?? string.Empty)
+                                @(Model.AssessmentRequest.AssessmentType.AnswerDisplayText ?? string.Empty)
                             </dd>
                         </div>
                         <div class="govuk-summary-list__row">
@@ -59,7 +59,7 @@
                                 Phase concluding
                             </dt>
                             <dd class="govuk-summary-list__value">
-                                @(Model.AssessmentRequest.PhaseConcluding?.Name ?? string.Empty)
+                                @(Model.AssessmentRequest.PhaseConcluding.AnswerDisplayText ?? string.Empty)
                             </dd>
                         </div>
                         <div class="govuk-summary-list__row">
