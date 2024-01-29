@@ -20,7 +20,7 @@ public class CreateModel : PageModel
     }
 
     [BindProperty] public NewAssessmentRequestSubmitModel? AssessmentRequestPageModel { get; set; }
-    
+
     public IEnumerable<ProjectPhase> AllPhases { get; set; }
     public IEnumerable<ServiceAssessmentService.Domain.Model.AssessmentType> AllAssessmentTypes { get; set; }
 
@@ -28,7 +28,7 @@ public class CreateModel : PageModel
     {
         // If null, initialise an empty request model (this models the HTTP/form values, later to be mapped into a domain model)
         AssessmentRequestPageModel ??= new NewAssessmentRequestSubmitModel();
-        
+
         AllPhases = ProjectPhase.Sequence;
         AllAssessmentTypes = ServiceAssessmentService.Domain.Model.AssessmentType.All;
     }
@@ -63,33 +63,18 @@ public class CreateModel : PageModel
 
     public class NewAssessmentRequestSubmitModel
     {
-        public string Name { get; set; } = string.Empty;
-
-        public string PhaseConcluding { get; set; } = string.Empty;
-
-        public string AssessmentType { get; set; } = string.Empty;
-
-        public DateOnly? PhaseStartDate { get; set; }
-
-        public DateOnly? PhaseEndDate { get; set; }
-
-        public string? Description { get; set; }
-
-
+        //public Question
         // to domain model
 
         public Domain.Model.AssessmentRequest ToDomainModel()
         {
             var assessmentRequest = new Domain.Model.AssessmentRequest()
             {
-                Name = Name,
-                Description = Description,
-                PhaseStartDate = PhaseStartDate,
-                PhaseEndDate = PhaseEndDate,
+                Id = Guid.NewGuid(),
+                //Questions = Questions.Select(q => q.ToDomainModel()).ToList(),
+                Questions = new List<Domain.Model.Questions.Question>(),
             };
-            assessmentRequest.PhaseConcluding.SetAnswer(ProjectPhase.FromName(PhaseConcluding)?.Name);
-            assessmentRequest.AssessmentType.SetAnswer(ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType)?.Name);
-            
+
             return assessmentRequest;
         }
     }

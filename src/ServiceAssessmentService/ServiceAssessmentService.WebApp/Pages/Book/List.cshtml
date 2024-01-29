@@ -24,7 +24,7 @@
                         asp-page="/Book/View"
                         asp-route-id="@assessment.Id"
                         class="govuk-link">
-                        @assessment.Name
+                        @assessment.Name.AnswerDisplayText
                         (@(assessment.PhaseConcluding.AnswerDisplayText ?? "") @(assessment.AssessmentType.AnswerDisplayText ?? ""))
                     </a>
                 </li>

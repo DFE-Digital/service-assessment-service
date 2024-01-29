@@ -1,7 +1,7 @@
 ﻿@model ServiceAssessmentService.WebApp.Pages.Shared.Components.LongTextQuestion.LongTextQuestionViewComponent.LongTextQuestionHtmlModel
 
 
-<govuk-character-count asp-for="@Model.LongTextAnswer" max-length="500">
+<govuk-character-count asp-for="@Model.LongTextAnswer" max-length="500" name="@Model.Id">
     <govuk-character-count-label is-page-heading="false" class="govuk-label--l">@Model.Title</govuk-character-count-label>
     @if (!string.IsNullOrWhiteSpace(Model.HintText))
     {

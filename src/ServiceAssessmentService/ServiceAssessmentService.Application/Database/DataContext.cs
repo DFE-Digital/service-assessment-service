@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ServiceAssessmentService.Application.Database.Entities;
+using ServiceAssessmentService.Domain.Model.Questions;
 
 namespace ServiceAssessmentService.Application.Database;
 
@@ -12,14 +13,26 @@ public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
     }
 
     internal DbSet<Entities.AssessmentRequest> AssessmentRequests { get; set; } = null!;
+    internal DbSet<Entities.Question> Questions { get; set; } = null!;
+    internal DbSet<Entities.SimpleTextQuestion> SimpleTextQuestions { get; set; } = null!;
+    internal DbSet<Entities.LongTextQuestion> LongTextQuestions { get; set; } = null!;
+    internal DbSet<Entities.DateOnlyQuestion> DateOnlyQuestions { get; set; } = null!;
+    internal DbSet<Entities.RadioQuestion> RadioQuestions { get; set; } = null!;
+    internal DbSet<Entities.RadioOption> RadioOptions { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
+        // builder
+        //     .Entity<Entities.AssessmentRequest>()
+        //     .ToTable("AssessmentRequests", b => b.IsTemporal());
+
         builder
-            .Entity<Entities.AssessmentRequest>()
-            .ToTable("AssessmentRequests", b => b.IsTemporal());
+            .Entity<Entities.Question>()
+            .Property(e => e.Type)
+            .HasConversion<string>();
+
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

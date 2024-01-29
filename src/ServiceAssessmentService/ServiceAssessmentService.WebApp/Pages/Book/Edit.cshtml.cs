@@ -12,7 +12,8 @@ namespace ServiceAssessmentService.WebApp.Pages.Book;
 
 public class EditModel : PageModel
 {
-    [BindProperty] public EditAssessmentRequestHtmlModel AssessmentRequestPageModel { get; set; }
+    [BindProperty]
+    public EditAssessmentRequestHtmlModel AssessmentRequestPageModel { get; set; }
 
     public IEnumerable<ProjectPhase> AllPhases { get; set; }
     public IEnumerable<ServiceAssessmentService.Domain.Model.AssessmentType> AllAssessmentTypes { get; set; }
@@ -59,24 +60,12 @@ public class EditModel : PageModel
 
         await _assessmentRequestRepository.UpdateAsync(req);
 
-        return RedirectToPage("/Book/View", new {id});
+        return RedirectToPage("/Book/View", new { id });
     }
 
     public class EditAssessmentRequestHtmlModel
     {
         public Guid Id { get; set; }
-
-        public string Name { get; set; } = string.Empty;
-
-        public string PhaseConcluding { get; set; } = string.Empty;
-
-        public string AssessmentType { get; set; } = string.Empty;
-
-        public DateOnly? PhaseStartDate { get; set; }
-
-        public DateOnly? PhaseEndDate { get; set; }
-
-        public string? Description { get; set; }
 
 
         public Domain.Model.AssessmentRequest ToDomainModel()
@@ -84,15 +73,24 @@ public class EditModel : PageModel
             var assessmentRequest = new Domain.Model.AssessmentRequest()
             {
                 Id = Id,
-                Name = Name,
-                Description = Description,
-                PhaseStartDate = PhaseStartDate,
-                PhaseEndDate = PhaseEndDate,
+                Questions = Questions.Select<GenericQuestionViewComponent.GenericQuestionHtmlModel, Domain.Model.Questions.Question>(htmlQuestion =>
+                {
+                    switch (htmlQuestion)
+                    {
+                        case SimpleTextQuestionViewComponent.SimpleTextQuestionHtmlModel sq:
+                            return sq.ToDomain();
+                        case LongTextQuestionViewComponent.LongTextQuestionHtmlModel lq:
+                            return lq.ToDomain();
+                        case DateOnlyQuestionViewComponent.DateOnlyQuestionHtmlModel dq:
+                            return dq.ToDomain();
+                        case RadioQuestionViewComponent.RadioQuestionHtmlModel rq:
+                            return rq.ToDomain();
+                        default:
+                            throw new InvalidOperationException($"Unknown question type {htmlQuestion.GetType().Name}");
+                    }
+                }),
             };
-            
-            assessmentRequest.PhaseConcluding.SetAnswer(ProjectPhase.FromName(PhaseConcluding)?.Name);
-            assessmentRequest.AssessmentType.SetAnswer(ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType)?.Name);
-            
+
             return assessmentRequest;
         }
 
@@ -101,14 +99,8 @@ public class EditModel : PageModel
             return new EditAssessmentRequestHtmlModel()
             {
                 Id = request.Id,
-                Name = request.Name,
-                Description = request.Description,
-                PhaseConcluding = request.PhaseConcluding.AnswerDisplayText ?? string.Empty,
-                AssessmentType = request.AssessmentType.AnswerDisplayText ?? string.Empty,
-                PhaseStartDate = request.PhaseStartDate,
-                PhaseEndDate = request.PhaseEndDate,
                 Questions = request.Questions.Select<Domain.Model.Questions.Question, GenericQuestionViewComponent.GenericQuestionHtmlModel>(domainQuestion =>
-                {   
+                {
                     switch (domainQuestion)
                     {
                         case Domain.Model.Questions.SimpleTextQuestion sq:

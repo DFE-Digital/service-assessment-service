@@ -42,7 +42,7 @@
                                                 New @(assessment.PhaseConcluding.AnswerDisplayText ?? "") @(assessment.AssessmentType.AnswerDisplayText ?? "") request <span class="govuk-visually-hidden"> for @assessment.Name</span>
                                             </a>
                                         </th>
-                                        <td class="govuk-table__cell">@assessment.Name</td>
+                                        <td class="govuk-table__cell">@(assessment.Name.AnswerDisplayText ?? "No Name")</td>
                                     </tr>
                                 }
 

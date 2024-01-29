@@ -24,24 +24,12 @@ public class GenericQuestionViewComponent : ViewComponent
             _question = question;
         }
 
-        public virtual string Title
-        {
-            get => _question.Title;
-            set => _question.Title = value;
-        }
+        public virtual string Title { get; set; }
 
-        public virtual string HintText
-        {
-            get => _question.HintText;
-            set => _question.HintText = value;
-        }
+        public virtual string HintText { get; set; }
 
-        public virtual QuestionType Type
-        {
-            get => _question.Type;
-            set => _question.Type = value;
-        }
-        
+        public virtual QuestionType Type { get; set; }
+
         public abstract string? AnswerDisplayText { get; }
 
         public static GenericQuestionHtmlModel? FromDomain(Question? question)
@@ -54,6 +42,11 @@ public class GenericQuestionViewComponent : ViewComponent
                 Domain.Model.Questions.SimpleTextQuestion q => SimpleTextQuestionViewComponent.SimpleTextQuestionHtmlModel.FromDomainModel(q),
                 _ => null,
             };
+        }
+
+        public virtual Question ToDomain()
+        {
+            return _question;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ServiceAssessmentService.Domain.Model;
+using ServiceAssessmentService.Domain.Model.Questions;
 
 namespace ServiceAssessmentService.Application.Database.Entities;
 
@@ -6,19 +7,7 @@ internal class AssessmentRequest : BaseEntity
 {
     public Guid Id { get; set; }
 
-    public string Name { get; set; } = string.Empty;
-
-    public string PhaseConcluding { get; set; } = string.Empty;
-
-    public string AssessmentType { get; set; } = string.Empty;
-
-    public DateOnly? PhaseStartDate { get; set; }
-
-    public DateOnly? PhaseEndDate { get; set; }
-
-    public string? Description { get; set; }
-    
-    public virtual IEnumerable<Question> Questions { get; set; }
+    public virtual IEnumerable<Database.Entities.Question> Questions { get; set; } = new List<Database.Entities.Question>();
 
 
     public ServiceAssessmentService.Domain.Model.AssessmentRequest ToDomainModel()
@@ -26,16 +15,17 @@ internal class AssessmentRequest : BaseEntity
         var assessmentRequest = new ServiceAssessmentService.Domain.Model.AssessmentRequest
         {
             Id = Id,
-            Name = Name,
-            PhaseStartDate = PhaseStartDate,
-            PhaseEndDate = PhaseEndDate,
-            Description = Description,
+            Questions = new List<Domain.Model.Questions.Question>(),
             CreatedAt = CreatedUtc,
             UpdatedAt = UpdatedUtc,
         };
-        
-        assessmentRequest.PhaseConcluding.SetAnswer(ProjectPhase.FromName(PhaseConcluding)?.Name);
-        assessmentRequest.AssessmentType.SetAnswer(ServiceAssessmentService.Domain.Model.AssessmentType.FromName(AssessmentType)?.Name);
+
+
+        var domainQuestions = Questions.Select(e => e.ToDomainModel());
+        assessmentRequest.Questions = domainQuestions
+            .Where(e => e is not null)
+            .Select(e => e!)
+            .ToList();
 
         return assessmentRequest;
     }

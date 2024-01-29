@@ -24,26 +24,20 @@ public class AssessmentRequestRepository
 
     public async Task<Domain.Model.AssessmentRequest?> GetByIdAsync(Guid id)
     {
-        var assessmentRequest = await _dbContext.AssessmentRequests
+        var assessmentRequest1 = await _dbContext.AssessmentRequests
             .Where(e => e.Id == id)
-            .Select(e => e.ToDomainModel())
             .SingleOrDefaultAsync();
+
+        var assessmentRequest = assessmentRequest1?.ToDomainModel();
 
         return assessmentRequest;
     }
-
 
     public async Task<Domain.Model.AssessmentRequest?> CreateAsync(Domain.Model.AssessmentRequest assessmentRequest)
     {
         var entity = new AssessmentRequest
         {
             Id = assessmentRequest.Id,
-            Name = assessmentRequest.Name,
-            PhaseConcluding = assessmentRequest.PhaseConcluding.AnswerDisplayText ?? string.Empty,
-            AssessmentType = assessmentRequest.AssessmentType.AnswerDisplayText ?? string.Empty,
-            PhaseStartDate = assessmentRequest.PhaseStartDate,
-            PhaseEndDate = assessmentRequest.PhaseEndDate,
-            Description = assessmentRequest.Description,
         };
 
         _dbContext.AssessmentRequests.Add(entity);
@@ -72,22 +66,15 @@ public class AssessmentRequestRepository
 
     public async Task<Domain.Model.AssessmentRequest?> UpdateAsync(Domain.Model.AssessmentRequest assessmentRequest)
     {
-        
+
         var entity = await _dbContext.AssessmentRequests
-            .SingleOrDefaultAsync( e => e.Id == assessmentRequest.Id);
-        
+            .SingleOrDefaultAsync(e => e.Id == assessmentRequest.Id);
+
         if (entity is null)
         {
             return null;
         }
 
-        entity.Name = assessmentRequest.Name;
-        entity.PhaseConcluding = assessmentRequest.PhaseConcluding.AnswerDisplayText ?? string.Empty;
-        entity.AssessmentType = assessmentRequest.AssessmentType.AnswerDisplayText ?? string.Empty;
-        entity.PhaseStartDate = assessmentRequest.PhaseStartDate;
-        entity.PhaseEndDate = assessmentRequest.PhaseEndDate;
-        entity.Description = assessmentRequest.Description;
-        
         _dbContext.AssessmentRequests.Update(entity);
         await _dbContext.SaveChangesAsync();
 

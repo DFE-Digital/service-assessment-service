@@ -4,8 +4,7 @@ public abstract class Question
 {
     public Guid Id { get; set; }
     public Guid TemplatedFromId { get; set; }
-    public required AssessmentRequest AssessmentRequest { get; set; }
-    
+
     public required QuestionType Type { get; set; }
 
     public string Title { get; set; } = string.Empty;
@@ -20,7 +19,7 @@ public class SimpleTextQuestion : Question
     {
         Type = QuestionType.SimpleText;
     }
-    
+
     public int MaxLengthChars { get; set; } = 250;
     public string? Answer { get; set; }
     public override string? AnswerDisplayText => Answer;
@@ -33,7 +32,7 @@ public class LongTextQuestion : Question
     {
         Type = QuestionType.LongText;
     }
-    
+
     public int MaxLengthChars { get; set; } = 250;
     public string? Answer { get; set; }
     public override string? AnswerDisplayText => Answer;
@@ -45,7 +44,7 @@ public class DateOnlyQuestion : Question
     {
         Type = QuestionType.DateOnly;
     }
-    
+
     public DateOnly? Answer { get; set; }
     public override string? AnswerDisplayText => Answer.ToString();
 }
@@ -57,21 +56,26 @@ public class RadioQuestion : Question
     {
         Type = QuestionType.Radio;
     }
-    
+
     public IEnumerable<RadioOption> Options { get; set; } = Enumerable.Empty<RadioOption>();
-    public RadioOption? Answer { get; set; }
-    public override string? AnswerDisplayText => Answer?.DisplayTitle;
-    
-    public void SetAnswer(string? value)
+    public RadioOption? SelectedOption { get; set; }
+    public override string? AnswerDisplayText => SelectedOption?.DisplayTitle;
+
+    public void SetAnswer(Guid? id)
     {
-        Answer = Options.FirstOrDefault(o => o.Value == value);
+        SelectedOption = Options.FirstOrDefault(o => o.Id == id);
+    }
+
+    public void SetAnswer(string? displayValue)
+    {
+        SelectedOption = Options.FirstOrDefault(o => o.DisplayTitle == displayValue);
     }
 
     public class RadioOption
     {
+        public required Guid Id { get; init; }
         public string DisplayTitle { get; set; } = string.Empty;
-        public string Value { get; set; } = string.Empty;
-        
+
         public Question? NestedQuestion { get; set; } = null!;
     }
 }

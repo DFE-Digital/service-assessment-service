@@ -16,13 +16,18 @@ public class DateOnlyQuestionViewComponent : ViewComponent
 
         public static DateOnlyQuestionHtmlModel FromDomainModel(Domain.Model.Questions.DateOnlyQuestion question)
         {
-            return new DateOnlyQuestionHtmlModel(question);
+            return new DateOnlyQuestionHtmlModel(question)
+            {
+                Id = question.Id,
+            };
         }
 
         private DateOnlyQuestionHtmlModel(Domain.Model.Questions.DateOnlyQuestion question) : base(question)
         {
             _question = question;
         }
+
+        public required Guid Id { get; set; }
 
         public override string? AnswerDisplayText => DateOnlyAnswer.ToString();
 

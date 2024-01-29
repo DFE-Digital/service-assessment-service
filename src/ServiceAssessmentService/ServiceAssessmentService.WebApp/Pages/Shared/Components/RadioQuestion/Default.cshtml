@@ -1,7 +1,7 @@
 @model ServiceAssessmentService.WebApp.Pages.Shared.Components.RadioQuestion.RadioQuestionViewComponent.RadioQuestionHtmlModel
 
 
-<govuk-radios asp-for="@Model.RadioAnswer">
+<govuk-radios asp-for="@Model.RadioAnswer" name="@Model.Id">
     <govuk-radios-fieldset>
         <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--l">@Model.Title</govuk-radios-fieldset-legend>
         @if (!string.IsNullOrWhiteSpace(Model.HintText))
@@ -10,7 +10,7 @@
         }
         @foreach (var radioItem in Model.RadioOptions)
         {
-            <govuk-radios-item value="@radioItem.Value">
+            <govuk-radios-item value="@radioItem.Id">
                 @radioItem.DisplayTitle
                 @if (radioItem.NestedQuestion is not null)
                 {

@@ -31,14 +31,16 @@ public class RadioQuestionViewComponent : ViewComponent
             _question = question;
         }
 
+        public string Id => _question.Id.ToString();
+
         public override string? AnswerDisplayText => RadioAnswer;
 
 
         public IEnumerable<RadioOptionHtmlModel> RadioOptions => _question switch
         {
             Domain.Model.Questions.RadioQuestion q => q.Options.Select(o => new RadioOptionHtmlModel(
-                o, 
-                q.Answer == o,
+                o,
+                q.SelectedOption == o,
                 NestedQuestionHtmlModelFromDomain(o)
             )),
             _ => Enumerable.Empty<RadioOptionHtmlModel>(),
@@ -52,8 +54,8 @@ public class RadioQuestionViewComponent : ViewComponent
 
         public string? RadioAnswer
         {
-            get => _question.Answer?.Value;
-            set => _question.Answer = _question.Options.FirstOrDefault(o => o.Value == value);
+            get => _question.SelectedOption?.DisplayTitle;
+            set => _question.SelectedOption = _question.Options.FirstOrDefault(o => o.DisplayTitle == value);
         }
 
 
@@ -71,8 +73,8 @@ public class RadioQuestionViewComponent : ViewComponent
                 _nestedQuestion = nestedQuestion;
             }
 
+            public Guid Id => _option.Id;
             public string DisplayTitle => _option.DisplayTitle;
-            public string Value => _option.Value;
             public bool IsSelected => _isSelected;
 
             public GenericQuestionViewComponent.GenericQuestionHtmlModel? NestedQuestion => _nestedQuestion;

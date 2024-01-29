@@ -1,6 +1,6 @@
 ﻿@model ServiceAssessmentService.WebApp.Pages.Shared.Components.DateOnlyQuestion.DateOnlyQuestionViewComponent.DateOnlyQuestionHtmlModel
 
-<govuk-date-input asp-for="@Model.DateOnlyAnswer">
+<govuk-date-input asp-for="@Model.DateOnlyAnswer" name-prefix="@Model.Id">
     <govuk-date-input-fieldset>
         <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">@Model.Title</govuk-date-input-fieldset-legend>
         @if (!string.IsNullOrWhiteSpace(Model.HintText))

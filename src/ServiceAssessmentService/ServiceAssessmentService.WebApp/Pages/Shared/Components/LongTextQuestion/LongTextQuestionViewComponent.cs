@@ -16,13 +16,18 @@ public class LongTextQuestionViewComponent : ViewComponent
 
         public static LongTextQuestionHtmlModel FromDomainModel(Domain.Model.Questions.LongTextQuestion question)
         {
-            return new LongTextQuestionHtmlModel(question);
+            return new LongTextQuestionHtmlModel(question)
+            {
+                Id = question.Id,
+            };
         }
 
         private LongTextQuestionHtmlModel(Domain.Model.Questions.LongTextQuestion question) : base(question)
         {
             _question = question;
         }
+
+        public required Guid Id { get; set; }
 
         public override string? AnswerDisplayText => LongTextAnswer;
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceAssessmentService.Application.Database;
 
@@ -11,9 +12,11 @@ using ServiceAssessmentService.Application.Database;
 namespace ServiceAssessmentService.Application.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240129134658_InitialDatabaseQuestionModel")]
+    partial class InitialDatabaseQuestionModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,12 +167,33 @@ namespace ServiceAssessmentService.Application.Migrations
                     b.Property<DateTime>("CreatedUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("PeriodEnd")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("PeriodEnd");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("PeriodStart");
+
                     b.Property<DateTime>("UpdatedUtc")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AssessmentRequests");
+                    b.ToTable("AssessmentRequests", (string)null);
+
+                    b.ToTable(tb => tb.IsTemporal(ttb =>
+                            {
+                                ttb.UseHistoryTable("AssessmentRequestsHistory");
+                                ttb
+                                    .HasPeriodStart("PeriodStart")
+                                    .HasColumnName("PeriodStart");
+                                ttb
+                                    .HasPeriodEnd("PeriodEnd")
+                                    .HasColumnName("PeriodEnd");
+                            }));
                 });
 
             modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.Question", b =>
@@ -180,11 +204,6 @@ namespace ServiceAssessmentService.Application.Migrations
 
                     b.Property<Guid?>("AssessmentRequestId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("HintText")
                         .IsRequired()
@@ -197,9 +216,8 @@ namespace ServiceAssessmentService.Application.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -208,39 +226,6 @@ namespace ServiceAssessmentService.Application.Migrations
                     b.HasIndex("TemplatedFromId");
 
                     b.ToTable("Questions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Question");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.RadioOption", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DisplayTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("QuestionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("RadioQuestionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("RadioQuestionId");
-
-                    b.ToTable("RadioOptions");
                 });
 
             modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.ServiceAssessmentServiceWebAppUser", b =>
@@ -306,48 +291,6 @@ namespace ServiceAssessmentService.Application.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.DateOnlyQuestion", b =>
-                {
-                    b.HasBaseType("ServiceAssessmentService.Application.Database.Entities.Question");
-
-                    b.Property<DateOnly?>("DateOnlyAnswer")
-                        .HasColumnType("date");
-
-                    b.HasDiscriminator().HasValue("DateOnlyQuestion");
-                });
-
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.LongTextQuestion", b =>
-                {
-                    b.HasBaseType("ServiceAssessmentService.Application.Database.Entities.Question");
-
-                    b.Property<string>("LongTextAnswer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("LongTextQuestion");
-                });
-
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.RadioQuestion", b =>
-                {
-                    b.HasBaseType("ServiceAssessmentService.Application.Database.Entities.Question");
-
-                    b.Property<Guid?>("SelectedOptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("SelectedOptionId");
-
-                    b.HasDiscriminator().HasValue("RadioQuestion");
-                });
-
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.SimpleTextQuestion", b =>
-                {
-                    b.HasBaseType("ServiceAssessmentService.Application.Database.Entities.Question");
-
-                    b.Property<string>("SimpleTextAnswer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("SimpleTextQuestion");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -416,38 +359,9 @@ namespace ServiceAssessmentService.Application.Migrations
                     b.Navigation("TemplatedFrom");
                 });
 
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.RadioOption", b =>
-                {
-                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.RadioQuestion", null)
-                        .WithMany("Options")
-                        .HasForeignKey("RadioQuestionId");
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.RadioQuestion", b =>
-                {
-                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.RadioOption", "SelectedOption")
-                        .WithMany()
-                        .HasForeignKey("SelectedOptionId");
-
-                    b.Navigation("SelectedOption");
-                });
-
             modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.AssessmentRequest", b =>
                 {
                     b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.RadioQuestion", b =>
-                {
-                    b.Navigation("Options");
                 });
 #pragma warning restore 612, 618
         }

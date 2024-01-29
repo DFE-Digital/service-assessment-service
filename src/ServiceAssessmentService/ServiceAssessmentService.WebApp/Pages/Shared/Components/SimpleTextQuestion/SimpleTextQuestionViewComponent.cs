@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServiceAssessmentService.Domain.Model.Questions;
 using ServiceAssessmentService.WebApp.Pages.Shared.Components.GenericQuestion;
 
 namespace ServiceAssessmentService.WebApp.Pages.Shared.Components.SimpleTextQuestion;
@@ -16,13 +17,18 @@ public class SimpleTextQuestionViewComponent : ViewComponent
 
         public static SimpleTextQuestionHtmlModel FromDomainModel(Domain.Model.Questions.SimpleTextQuestion question)
         {
-            return new SimpleTextQuestionHtmlModel(question);
+            return new SimpleTextQuestionHtmlModel(question)
+            {
+                Id = question.Id,
+            };
         }
 
         private SimpleTextQuestionHtmlModel(Domain.Model.Questions.SimpleTextQuestion question) : base(question)
         {
             _question = question;
         }
+
+        public required Guid Id { get; set; }
 
         public override string? AnswerDisplayText => SimpleTextAnswer;
 
