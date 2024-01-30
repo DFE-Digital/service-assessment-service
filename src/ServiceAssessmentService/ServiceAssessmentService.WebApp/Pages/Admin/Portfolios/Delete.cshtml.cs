@@ -7,38 +7,38 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.Portfolios;
 
 public class DeleteModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly PortfolioRepository _portfolioRepository;
     private readonly ILogger<DeleteModel> _logger;
+
+    public DeleteModel(PortfolioRepository portfolioRepository, ILogger<DeleteModel> logger)
+    {
+        _portfolioRepository = portfolioRepository;
+        _logger = logger;
+    }
 
     [BindProperty]
     public Portfolio? Portfolio { get; set; }
 
-    public DeleteModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<DeleteModel> logger)
-    {
-        _assessmentRequestRepository = assessmentRequestRepository;
-        _logger = logger;
-    }
-    
     public async Task<IActionResult> OnGet(Guid id)
     {
-        Portfolio = await _assessmentRequestRepository.GetPortfolioByIdAsync(id);
+        Portfolio = await _portfolioRepository.GetPortfolioByIdAsync(id);
         if (Portfolio is null)
         {
             return NotFound($"Portfolio with ID {id} not found");
         }
-        
+
         return new PageResult();
     }
-    
+
     public async Task<IActionResult> OnPost(Guid id)
     {
-        Portfolio = await _assessmentRequestRepository.GetPortfolioByIdAsync(id);
+        Portfolio = await _portfolioRepository.GetPortfolioByIdAsync(id);
         if (Portfolio is null)
         {
             return NotFound($"Portfolio with ID {id} not found");
         }
-        
-        await _assessmentRequestRepository.DeletePortfolioAsync(id);
+
+        await _portfolioRepository.DeletePortfolioAsync(id);
         return RedirectToPage("List");
     }
 }

@@ -7,20 +7,21 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.Portfolios;
 
 public class ListModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly PortfolioRepository _portfolioRepository;
     private readonly ILogger<ListModel> _logger;
 
-    public ListModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<ListModel> logger)
+    public ListModel(PortfolioRepository portfolioRepository, ILogger<ListModel> logger)
     {
-        _assessmentRequestRepository = assessmentRequestRepository;
+        _portfolioRepository = portfolioRepository;
         _logger = logger;
     }
 
+    [BindProperty]
     public IEnumerable<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
-    
+
     public async Task<IActionResult> OnGet()
     {
-        Portfolios = await _assessmentRequestRepository.GetPortfoliosAsync();
+        Portfolios = await _portfolioRepository.GetPortfoliosAsync();
         return new PageResult();
     }
 }

@@ -11,11 +11,24 @@ public class EditModel : PageModel
     [BindProperty] public EditAssessmentRequestSubmitModel AssessmentRequestPageModel { get; set; }
 
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly AssessmentTypeRepository _assessmentTypeRepository;
+    private readonly PhaseRepository _phaseRepository;
+    private readonly PortfolioRepository _portfolioRepository;
+
     private readonly ILogger<EditModel> _logger;
 
-    public EditModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<EditModel> logger)
+    public EditModel(
+        AssessmentRequestRepository assessmentRequestRepository
+        , AssessmentTypeRepository assessmentTypeRepository
+        , PhaseRepository phaseRepository
+        , PortfolioRepository portfolioRepository
+        , ILogger<EditModel> logger
+    )
     {
         _assessmentRequestRepository = assessmentRequestRepository;
+        _assessmentTypeRepository = assessmentTypeRepository;
+        _phaseRepository = phaseRepository;
+        _portfolioRepository = portfolioRepository;
         _logger = logger;
     }
 
@@ -40,9 +53,9 @@ public class EditModel : PageModel
             AssessmentRequestPageModel = newModel;
             return Page();
         }
-        
-        var phases = await _assessmentRequestRepository.GetPhasesAsync();
-        var assessmentTypes = await _assessmentRequestRepository.GetAssessmentTypesAsync();
+
+        var phases = await _phaseRepository.GetPhasesAsync();
+        var assessmentTypes = await _assessmentTypeRepository.GetAssessmentTypesAsync();
 
         // Update values from submission
         var req = AssessmentRequestPageModel.ToDomainModel(phases, assessmentTypes);
@@ -86,7 +99,7 @@ public class EditModel : PageModel
                 PhaseEndDate = PhaseEndDate,
             };
         }
-        
+
         public static EditAssessmentRequestSubmitModel FromDomainModel(AssessmentRequest request)
         {
             return new EditAssessmentRequestSubmitModel()

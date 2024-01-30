@@ -16,26 +16,26 @@
             </div>
         </div>
 
-        @if(!Model.Phases.Any())
+        @if (!Model.Phases.Any())
         {
             <p>There are no phases to view or manage.</p>
             <govuk-button-link asp-page="/Admin/Phases/Seed">Seed Many</govuk-button-link>
-        } 
+        }
         else
         {
-        <ul>
-            @foreach (var phase in Model.Phases.OrderBy(p => p.SortOrder))
-            {
-                <li>
-                    <a
-                        asp-page="/Admin/Phases/View"
-                        asp-route-id="@phase.Id"
-                        class="govuk-link">
+            <ul>
+                @foreach (var phase in Model.Phases.OrderBy(p => p.SortOrder))
+                {
+                    <li>
+                        <a
+                            asp-page="/Admin/Phases/View"
+                            asp-route-id="@phase.Id"
+                            class="govuk-link">
                             @(string.IsNullOrWhiteSpace(phase.Name) ? "Unnamed phase" : phase.Name)
-                    </a>
-                </li>
-            }
-        </ul>
+                        </a>
+                    </li>
+                }
+            </ul>
         }
 
         <govuk-button-link asp-page="/Admin/Phases/Create">Create New</govuk-button-link>

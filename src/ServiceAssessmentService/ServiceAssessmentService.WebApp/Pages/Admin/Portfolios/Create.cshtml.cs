@@ -7,17 +7,17 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.Portfolios;
 
 public class CreateModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly PortfolioRepository _portfolioRepository;
     private readonly ILogger<CreateModel> _logger;
+
+    public CreateModel(PortfolioRepository portfolioRepository, ILogger<CreateModel> logger)
+    {
+        _portfolioRepository = portfolioRepository;
+        _logger = logger;
+    }
 
     [BindProperty]
     public Portfolio? Portfolio { get; set; }
-
-    public CreateModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<CreateModel> logger)
-    {
-        _assessmentRequestRepository = assessmentRequestRepository;
-        _logger = logger;
-    }
 
     public IActionResult OnGet()
     {
@@ -29,19 +29,13 @@ public class CreateModel : PageModel
     {
         Portfolio = newPortfolio;
 
-        var result = await _assessmentRequestRepository.CreatePortfolioAsync(newPortfolio);
-
+        var result = await _portfolioRepository.CreatePortfolioAsync(newPortfolio);
         if (result is null)
         {
             _logger.LogWarning("Failed to create portfolio {Portfolio}", newPortfolio);
             return Page();
         }
-        else
-        {
-            return RedirectToPage("View", new { Id = result.Id });
-        }
+
+        return RedirectToPage("View", new { Id = result.Id });
     }
-
-
-
 }

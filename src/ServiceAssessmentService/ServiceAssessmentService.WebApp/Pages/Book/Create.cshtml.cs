@@ -10,27 +10,40 @@ namespace ServiceAssessmentService.WebApp.Pages.Book;
 public class CreateModel : PageModel
 {
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly AssessmentTypeRepository _assessmentTypeRepository;
+    private readonly PhaseRepository _phaseRepository;
+    private readonly PortfolioRepository _portfolioRepository;
+
     private readonly ILogger<CreateModel> _logger;
-    
-    public CreateModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<CreateModel> logger)
+
+    public CreateModel(
+        AssessmentRequestRepository assessmentRequestRepository
+        , AssessmentTypeRepository assessmentTypeRepository
+        , PhaseRepository phaseRepository
+        , PortfolioRepository portfolioRepository
+        , ILogger<CreateModel> logger
+    )
     {
         _assessmentRequestRepository = assessmentRequestRepository;
+        _assessmentTypeRepository = assessmentTypeRepository;
+        _phaseRepository = phaseRepository;
+        _portfolioRepository = portfolioRepository;
         _logger = logger;
     }
-    
+
     public IEnumerable<AssessmentType> AssessmentTypes { get; set; }
 
     public IEnumerable<Phase> Phases { get; set; }
-    
-    
-    [BindProperty] 
+
+
+    [BindProperty]
     public NewAssessmentRequestFormModel? AssessmentRequestPageModel { get; set; }
 
     public async Task<IActionResult> OnGet()
     {
-        Phases = await _assessmentRequestRepository.GetPhasesAsync(); 
-        AssessmentTypes = await _assessmentRequestRepository.GetAssessmentTypesAsync();
-        
+        Phases = await _phaseRepository.GetPhasesAsync();
+        AssessmentTypes = await _assessmentTypeRepository.GetAssessmentTypesAsync();
+
         // If null, initialise an empty request model (this models the HTTP/form values, later to be mapped into a domain model)
         AssessmentRequestPageModel ??= new NewAssessmentRequestFormModel();
 
@@ -51,9 +64,9 @@ public class CreateModel : PageModel
             _logger.LogWarning("Submitted AssessmentRequestPageModel is null");
             return Page();
         }
-        
-        Phases = await _assessmentRequestRepository.GetPhasesAsync(); 
-        AssessmentTypes = await _assessmentRequestRepository.GetAssessmentTypesAsync();
+
+        Phases = await _phaseRepository.GetPhasesAsync();
+        AssessmentTypes = await _assessmentTypeRepository.GetAssessmentTypesAsync();
 
 
         var assessmentRequest = AssessmentRequestPageModel.ToDomainModel(Phases, AssessmentTypes);

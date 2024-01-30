@@ -7,25 +7,26 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.AssessmentTypes;
 
 public class ViewModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly ILogger<ViewModel> _logger;
 
-    public AssessmentType? AssessmentType { get; set; }
-
-    public ViewModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<ViewModel> logger)
+    public ViewModel(AssessmentTypeRepository assessmentTypeRepository, ILogger<ViewModel> logger)
     {
-        _assessmentRequestRepository = assessmentRequestRepository;
+        _assessmentTypeRepository = assessmentTypeRepository;
         _logger = logger;
     }
-    
+
+    [BindProperty]
+    public AssessmentType? AssessmentType { get; set; }
+
     public async Task<IActionResult> OnGet(Guid id)
     {
-        AssessmentType = await _assessmentRequestRepository.GetAssessmentTypeByIdAsync(id);
+        AssessmentType = await _assessmentTypeRepository.GetAssessmentTypeByIdAsync(id);
         if (AssessmentType is null)
         {
             return NotFound($"AssessmentType with ID {id} not found");
         }
-        
+
         return new PageResult();
     }
 }

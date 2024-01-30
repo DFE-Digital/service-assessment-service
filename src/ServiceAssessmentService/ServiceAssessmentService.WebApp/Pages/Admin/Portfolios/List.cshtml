@@ -16,26 +16,26 @@
             </div>
         </div>
 
-        @if(!Model.Portfolios.Any())
+        @if (!Model.Portfolios.Any())
         {
             <p>There are no portfolios to view or manage.</p>
             <govuk-button-link asp-page="/Admin/Portfolios/Seed">Seed Many</govuk-button-link>
-        } 
+        }
         else
         {
-        <ul>
-            @foreach (var portfolio in Model.Portfolios.OrderBy(p => p.SortOrder))
-            {
-                <li>
-                    <a
-                        asp-page="/Admin/Portfolios/View"
-                        asp-route-id="@portfolio.Id"
-                        class="govuk-link">
+            <ul>
+                @foreach (var portfolio in Model.Portfolios.OrderBy(p => p.SortOrder))
+                {
+                    <li>
+                        <a
+                            asp-page="/Admin/Portfolios/View"
+                            asp-route-id="@portfolio.Id"
+                            class="govuk-link">
                             @(string.IsNullOrWhiteSpace(portfolio.Name) ? "Unnamed portfolio" : portfolio.Name)
-                    </a>
-                </li>
-            }
-        </ul>
+                        </a>
+                    </li>
+                }
+            </ul>
         }
 
         <govuk-button-link asp-page="/Admin/Portfolios/Create">Create New</govuk-button-link>

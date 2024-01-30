@@ -7,26 +7,27 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.Portfolios;
 
 public class SeedModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly PortfolioRepository _portfolioRepository;
     private readonly ILogger<SeedModel> _logger;
 
-    public IEnumerable<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
-
-    public SeedModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<SeedModel> logger)
+    public SeedModel(PortfolioRepository portfolioRepository, ILogger<SeedModel> logger)
     {
-        _assessmentRequestRepository = assessmentRequestRepository;
+        _portfolioRepository = portfolioRepository;
         _logger = logger;
     }
 
+    [BindProperty]
+    public IEnumerable<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
+
     public async Task<IActionResult> OnGet()
     {
-        Portfolios = await _assessmentRequestRepository.GetPortfoliosAsync();
+        Portfolios = await _portfolioRepository.GetPortfoliosAsync();
         return new PageResult();
     }
 
     public async Task<IActionResult> OnPost()
     {
-        await _assessmentRequestRepository.SeedPortfoliosAsync();
+        await _portfolioRepository.SeedPortfoliosAsync();
 
         return RedirectToPage("/Admin/Portfolios/List");
     }

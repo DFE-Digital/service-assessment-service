@@ -7,26 +7,27 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.Phases;
 
 public class SeedModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly PhaseRepository _phaseRepository;
     private readonly ILogger<SeedModel> _logger;
 
-    public IEnumerable<Phase> Phases { get; set; } = new List<Phase>();
-
-    public SeedModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<SeedModel> logger)
+    public SeedModel(PhaseRepository phaseRepository, ILogger<SeedModel> logger)
     {
-        _assessmentRequestRepository = assessmentRequestRepository;
+        _phaseRepository = phaseRepository;
         _logger = logger;
     }
 
+    [BindProperty]
+    public IEnumerable<Phase> Phases { get; set; } = new List<Phase>();
+
     public async Task<IActionResult> OnGet()
     {
-        Phases = await _assessmentRequestRepository.GetPhasesAsync();
+        Phases = await _phaseRepository.GetPhasesAsync();
         return new PageResult();
     }
 
     public async Task<IActionResult> OnPost()
     {
-        await _assessmentRequestRepository.SeedPhasesAsync();
+        await _phaseRepository.SeedPhasesAsync();
 
         return RedirectToPage("/Admin/Phases/List");
     }

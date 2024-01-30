@@ -7,17 +7,17 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.AssessmentTypes;
 
 public class CreateModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly ILogger<CreateModel> _logger;
+
+    public CreateModel(AssessmentTypeRepository assessmentTypeRepository, ILogger<CreateModel> logger)
+    {
+        _assessmentTypeRepository = assessmentTypeRepository;
+        _logger = logger;
+    }
 
     [BindProperty]
     public AssessmentType? AssessmentType { get; set; }
-
-    public CreateModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<CreateModel> logger)
-    {
-        _assessmentRequestRepository = assessmentRequestRepository;
-        _logger = logger;
-    }
 
     public IActionResult OnGet()
     {
@@ -29,19 +29,13 @@ public class CreateModel : PageModel
     {
         AssessmentType = newAssessmentType;
 
-        var result = await _assessmentRequestRepository.CreateAssessmentTypeAsync(newAssessmentType);
-
+        var result = await _assessmentTypeRepository.CreateAssessmentTypeAsync(newAssessmentType);
         if (result is null)
         {
             _logger.LogWarning("Failed to create assessmentType {AssessmentType}", newAssessmentType);
             return Page();
         }
-        else
-        {
-            return RedirectToPage("View", new { Id = result.Id });
-        }
+
+        return RedirectToPage("View", new { Id = result.Id });
     }
-
-
-
 }

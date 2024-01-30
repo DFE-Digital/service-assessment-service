@@ -7,26 +7,27 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.AssessmentTypes;
 
 public class SeedModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly ILogger<SeedModel> _logger;
 
-    public IEnumerable<AssessmentType> AssessmentTypes { get; set; } = new List<AssessmentType>();
-
-    public SeedModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<SeedModel> logger)
+    public SeedModel(AssessmentTypeRepository assessmentTypeRepository, ILogger<SeedModel> logger)
     {
-        _assessmentRequestRepository = assessmentRequestRepository;
+        _assessmentTypeRepository = assessmentTypeRepository;
         _logger = logger;
     }
 
+    [BindProperty]
+    public IEnumerable<AssessmentType> AssessmentTypes { get; set; } = new List<AssessmentType>();
+
     public async Task<IActionResult> OnGet()
     {
-        AssessmentTypes = await _assessmentRequestRepository.GetAssessmentTypesAsync();
+        AssessmentTypes = await _assessmentTypeRepository.GetAssessmentTypesAsync();
         return new PageResult();
     }
 
     public async Task<IActionResult> OnPost()
     {
-        await _assessmentRequestRepository.SeedAssessmentTypesAsync();
+        await _assessmentTypeRepository.SeedAssessmentTypesAsync();
 
         return RedirectToPage("/Admin/AssessmentTypes/List");
     }

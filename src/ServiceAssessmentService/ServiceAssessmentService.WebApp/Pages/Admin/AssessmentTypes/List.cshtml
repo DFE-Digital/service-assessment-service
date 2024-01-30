@@ -16,26 +16,26 @@
             </div>
         </div>
 
-        @if(!Model.AssessmentTypes.Any())
+        @if (!Model.AssessmentTypes.Any())
         {
             <p>There are no assessment types to view or manage.</p>
             <govuk-button-link asp-page="/Admin/AssessmentTypes/Seed">Seed Many</govuk-button-link>
-        } 
+        }
         else
         {
-        <ul>
-            @foreach (var assessmentType in Model.AssessmentTypes.OrderBy(p => p.SortOrder))
-            {
-                <li>
-                    <a
-                        asp-page="/Admin/AssessmentTypes/View"
-                        asp-route-id="@assessmentType.Id"
-                        class="govuk-link">
+            <ul>
+                @foreach (var assessmentType in Model.AssessmentTypes.OrderBy(p => p.SortOrder))
+                {
+                    <li>
+                        <a
+                            asp-page="/Admin/AssessmentTypes/View"
+                            asp-route-id="@assessmentType.Id"
+                            class="govuk-link">
                             @(string.IsNullOrWhiteSpace(assessmentType.Name) ? "Unnamed assessmentType" : assessmentType.Name)
-                    </a>
-                </li>
-            }
-        </ul>
+                        </a>
+                    </li>
+                }
+            </ul>
         }
 
         <govuk-button-link asp-page="/Admin/AssessmentTypes/Create">Create New</govuk-button-link>

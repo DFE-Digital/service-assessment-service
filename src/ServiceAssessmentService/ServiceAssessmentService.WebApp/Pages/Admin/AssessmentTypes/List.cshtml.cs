@@ -7,20 +7,21 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.AssessmentTypes;
 
 public class ListModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly ILogger<ListModel> _logger;
 
-    public ListModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<ListModel> logger)
+    public ListModel(AssessmentTypeRepository assessmentTypeRepository, ILogger<ListModel> logger)
     {
-        _assessmentRequestRepository = assessmentRequestRepository;
+        _assessmentTypeRepository = assessmentTypeRepository;
         _logger = logger;
     }
 
+    [BindProperty]
     public IEnumerable<AssessmentType> AssessmentTypes { get; set; } = new List<AssessmentType>();
-    
+
     public async Task<IActionResult> OnGet()
     {
-        AssessmentTypes = await _assessmentRequestRepository.GetAssessmentTypesAsync();
+        AssessmentTypes = await _assessmentTypeRepository.GetAssessmentTypesAsync();
         return new PageResult();
     }
 }

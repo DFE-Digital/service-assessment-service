@@ -7,17 +7,21 @@ namespace ServiceAssessmentService.WebApp.Pages.Admin.Phases;
 
 public class CreateModel : PageModel
 {
-    private readonly AssessmentRequestRepository _assessmentRequestRepository;
+    private readonly PhaseRepository _phaseRepository;
+
     private readonly ILogger<CreateModel> _logger;
+
+    public CreateModel(PhaseRepository phaseRepository, ILogger<CreateModel> logger
+    )
+    {
+        _phaseRepository = phaseRepository;
+        _logger = logger;
+    }
+
 
     [BindProperty]
     public Phase? Phase { get; set; }
 
-    public CreateModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<CreateModel> logger)
-    {
-        _assessmentRequestRepository = assessmentRequestRepository;
-        _logger = logger;
-    }
 
     public IActionResult OnGet()
     {
@@ -29,19 +33,13 @@ public class CreateModel : PageModel
     {
         Phase = newPhase;
 
-        var result = await _assessmentRequestRepository.CreatePhaseAsync(newPhase);
-
+        var result = await _phaseRepository.CreatePhaseAsync(newPhase);
         if (result is null)
         {
             _logger.LogWarning("Failed to create phase {Phase}", newPhase);
             return Page();
         }
-        else
-        {
-            return RedirectToPage("View", new { Id = result.Id });
-        }
+
+        return RedirectToPage("View", new { Id = result.Id });
     }
-
-
-
 }
