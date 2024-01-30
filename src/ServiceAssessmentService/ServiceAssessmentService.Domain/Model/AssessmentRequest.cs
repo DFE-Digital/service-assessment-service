@@ -6,9 +6,9 @@ public class AssessmentRequest
 
     public string Name { get; set; } = string.Empty;
 
-    public string PhaseConcluding { get; set; } = string.Empty;
+    public Phase? PhaseConcluding { get; set; } = null;
 
-    public string AssessmentType { get; set; } = string.Empty;
+    public AssessmentType? AssessmentType { get; set; } = null;
 
     public DateOnly? PhaseStartDate { get; set; }
 

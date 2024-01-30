@@ -1,0 +1,65 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.AssessmentTypes.ViewModel
+
+@{
+    ViewData["Title"] = "Viewing assessmentType";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">Vieing assessmentTypes</h1>
+            </div>
+        </div>
+
+        @if (Model.AssessmentType is null)
+        {
+            <p>AssessmentType not found.</p>
+        }
+        else
+        {
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        ID
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.AssessmentType.Id
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.AssessmentType.Name
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Display Name (mid-sentence case)
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.AssessmentType.DisplayNameMidSentenceCase
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Sort Order
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.AssessmentType.SortOrder
+                    </dd>
+                </div>
+            </dl>
+
+            <govuk-button-link asp-page="/Admin/AssessmentTypes/Edit" asp-route-id="@Model.AssessmentType.Id">Edit</govuk-button-link>
+            <govuk-button-link asp-page="/Admin/AssessmentTypes/Delete" asp-route-id="@Model.AssessmentType.Id" class="govuk-button--warning">Delete</govuk-button-link>
+        }
+
+    </div>
+</div>

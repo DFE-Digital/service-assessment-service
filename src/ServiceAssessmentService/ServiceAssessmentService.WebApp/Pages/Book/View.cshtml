@@ -21,7 +21,7 @@
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <h2 class="govuk-heading-l">
-                        @(Model.AssessmentRequest.Name ?? "Untitled") <small>(@(Model.AssessmentRequest.PhaseConcluding ?? "") @(Model.AssessmentRequest.AssessmentType))</small>
+                        @(Model.AssessmentRequest.Name ?? "Untitled") <small>(@(Model.AssessmentRequest.PhaseConcluding?.Name ?? "") @(Model.AssessmentRequest.AssessmentType?.Name ?? ""))</small>
                     </h2>
 
                 </div>
@@ -98,7 +98,7 @@
                         </div>
                     </dl>
 
-                    <govuk-button-link asp-page="/Book/Edit" asp-route-id="@Model.AssessmentRequest.Id">Edit</govuk-button-link>"
+                    <govuk-button-link asp-page="/Book/Edit" asp-route-id="@Model.AssessmentRequest.Id">Edit</govuk-button-link>
                     <govuk-button-link asp-page="/Book/Delete" asp-route-id="@Model.AssessmentRequest.Id" class="govuk-button--warning">Delete</govuk-button-link>
 
                 </div>

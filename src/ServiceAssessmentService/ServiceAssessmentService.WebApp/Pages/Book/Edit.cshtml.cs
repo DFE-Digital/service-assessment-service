@@ -33,15 +33,19 @@ public class EditModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(Guid id)
+    public async Task<IActionResult> OnPostAsync(Guid id, EditAssessmentRequestSubmitModel newModel)
     {
         if (!ModelState.IsValid)
         {
+            AssessmentRequestPageModel = newModel;
             return Page();
         }
+        
+        var phases = await _assessmentRequestRepository.GetPhasesAsync();
+        var assessmentTypes = await _assessmentRequestRepository.GetAssessmentTypesAsync();
 
         // Update values from submission
-        var req = AssessmentRequestPageModel.ToDomainModel();
+        var req = AssessmentRequestPageModel.ToDomainModel(phases, assessmentTypes);
         req.Id = id;
 
         await _assessmentRequestRepository.UpdateAsync(req);
@@ -66,20 +70,23 @@ public class EditModel : PageModel
         public string? Description { get; set; }
 
 
-        public Domain.Model.AssessmentRequest ToDomainModel()
+        public Domain.Model.AssessmentRequest ToDomainModel(IEnumerable<Phase> phases, IEnumerable<AssessmentType> assessmentTypes)
         {
+            var phaseConcluding = phases.SingleOrDefault(p => p.Id.ToString() == PhaseConcluding);
+            var assessmentType = assessmentTypes.SingleOrDefault(a => a.Id.ToString() == AssessmentType);
+
             return new Domain.Model.AssessmentRequest()
             {
                 Id = Id,
                 Name = Name,
                 Description = Description,
-                PhaseConcluding = PhaseConcluding,
-                AssessmentType = AssessmentType,
+                PhaseConcluding = phaseConcluding,
+                AssessmentType = assessmentType,
                 PhaseStartDate = PhaseStartDate,
                 PhaseEndDate = PhaseEndDate,
             };
         }
-
+        
         public static EditAssessmentRequestSubmitModel FromDomainModel(AssessmentRequest request)
         {
             return new EditAssessmentRequestSubmitModel()
@@ -87,8 +94,8 @@ public class EditModel : PageModel
                 Id = request.Id,
                 Name = request.Name,
                 Description = request.Description,
-                PhaseConcluding = request.PhaseConcluding,
-                AssessmentType = request.AssessmentType,
+                PhaseConcluding = request.PhaseConcluding?.Id.ToString() ?? string.Empty,
+                AssessmentType = request.AssessmentType?.Id.ToString() ?? string.Empty,
                 PhaseStartDate = request.PhaseStartDate,
                 PhaseEndDate = request.PhaseEndDate,
             };

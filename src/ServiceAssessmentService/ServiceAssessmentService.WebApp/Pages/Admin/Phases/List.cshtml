@@ -1,0 +1,44 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.Phases.ListModel
+
+@{
+    ViewData["Title"] = "Listing phases";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">All phases</h1>
+            </div>
+        </div>
+
+        @if(!Model.Phases.Any())
+        {
+            <p>There are no phases to view or manage.</p>
+            <govuk-button-link asp-page="/Admin/Phases/Seed">Seed Many</govuk-button-link>
+        } 
+        else
+        {
+        <ul>
+            @foreach (var phase in Model.Phases.OrderBy(p => p.SortOrder))
+            {
+                <li>
+                    <a
+                        asp-page="/Admin/Phases/View"
+                        asp-route-id="@phase.Id"
+                        class="govuk-link">
+                            @(string.IsNullOrWhiteSpace(phase.Name) ? "Unnamed phase" : phase.Name)
+                    </a>
+                </li>
+            }
+        </ul>
+        }
+
+        <govuk-button-link asp-page="/Admin/Phases/Create">Create New</govuk-button-link>
+
+    </div>
+</div>
