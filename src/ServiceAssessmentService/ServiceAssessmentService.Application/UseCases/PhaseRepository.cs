@@ -52,14 +52,8 @@ public class PhaseRepository
         {
             new() {Id = Guid.NewGuid(), Name = "Discovery", DisplayNameMidSentenceCase = "discovery", SortOrder = 10},
             new() {Id = Guid.NewGuid(), Name = "Alpha", DisplayNameMidSentenceCase = "alpha", SortOrder = 20},
-            new()
-            {
-                Id = Guid.NewGuid(), Name = "Private Beta", DisplayNameMidSentenceCase = "private beta", SortOrder = 30
-            },
-            new()
-            {
-                Id = Guid.NewGuid(), Name = "Public Beta", DisplayNameMidSentenceCase = "public beta", SortOrder = 40
-            },
+            new() {Id = Guid.NewGuid(), Name = "Private Beta", DisplayNameMidSentenceCase = "private beta", SortOrder = 30,},
+            new() {Id = Guid.NewGuid(), Name = "Public Beta", DisplayNameMidSentenceCase = "public beta", SortOrder = 40,},
             new() {Id = Guid.NewGuid(), Name = "Live", DisplayNameMidSentenceCase = "live", SortOrder = 50},
         };
 

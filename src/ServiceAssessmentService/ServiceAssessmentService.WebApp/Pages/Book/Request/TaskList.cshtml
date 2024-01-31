@@ -115,7 +115,7 @@
                         
                                 <li class="app-task-list__item">
                                     <span class="app-task-list__task-name">
-                                        <a asp-page="/Book/Request/Question/StartDate" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Start date</a>
+                                        <a asp-page="/Book/Request/Question/PhaseStartDate" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Start date</a>
                                     </span>
                                     <span class="app-task-list__task-value">
                                         @((Model.AssessmentRequest.PhaseStartDate is null) ? notYetSupplied : Model.AssessmentRequest.PhaseStartDate)
@@ -134,7 +134,7 @@
                         
                                 <li class="app-task-list__item">
                                     <span class="app-task-list__task-name">
-                                        <a asp-page="/Book/Request/Question/EndDate" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">End date</a>
+                                        <a asp-page="/Book/Request/Question/PhaseEndDate" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">End date</a>
                                     </span>
                                     <span class="app-task-list__task-value">
                                         @((Model.AssessmentRequest.PhaseEndDate is null) ? notYetSupplied : Model.AssessmentRequest.PhaseEndDate)

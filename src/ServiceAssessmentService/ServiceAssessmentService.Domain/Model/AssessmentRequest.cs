@@ -133,7 +133,52 @@ public class AssessmentRequest
 
     #endregion
 
+
+    #region Phase start date
     public DateOnly? PhaseStartDate { get; set; }
+
+    public DateValidationResult ValidatePhaseStartDate()
+    {
+        var result = new DateValidationResult();
+        result.IsValid = true;
+
+        if (PhaseStartDate is null)
+        {
+            result.IsValid = false;
+            result.DateValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(PhaseStartDate),
+                ErrorMessage = "Phase start date is required",
+            });
+        }
+        else
+        {
+            // if (PhaseStartDate < DateOnly.FromDateTime(DateTime.UtcNow))
+            // {
+            //     result.IsValid = false;
+            //     result.ValidationErrors.Add(new ValidationError
+            //     {
+            //         FieldName = nameof(PhaseStartDate),
+            //         ErrorMessage = "Phase start date cannot be in the past",
+            //     });
+            // }
+
+
+            // TODO: Now that the proposed year/month/day values result in a "valid" date, apply additional validations on the resulting date?
+            // TODO: Consider if date is "recent" (i.e., within last x years?)
+            // TODO: Consider if date is in the future? (not necessarily a problem if e.g., a discovery is starting next month and the team are being proactive in booking assessment? perhaps this is a warning on the task list page?)
+            // TODO: Consider if date is absurdly far in the future? (e.g., 100 years from now)
+            // TODO: Consider relation to other dates (e.g., start date expected to be before end date) - warning vs error?
+        }
+
+        return result;
+    }
+
+    public bool IsPhaseStartDateComplete()
+    {
+        return PhaseStartDate is not null;
+    }
+    #endregion
 
     public DateOnly? PhaseEndDate { get; set; }
 
@@ -170,11 +215,6 @@ public class AssessmentRequest
     //         _ => throw new Exception(),
     //     };
     // }
-
-    public bool IsPhaseStartDateComplete()
-    {
-        return PhaseStartDate is not null;
-    }
 
     public bool IsPhaseEndDateComplete()
     {
