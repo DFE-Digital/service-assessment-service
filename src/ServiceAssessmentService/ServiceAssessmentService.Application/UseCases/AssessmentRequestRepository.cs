@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ServiceAssessmentService.Application.Database;
+using ServiceAssessmentService.Domain.Model;
 
 namespace ServiceAssessmentService.Application.UseCases;
 
@@ -19,6 +20,9 @@ public class AssessmentRequestRepository
     public async Task<IEnumerable<Domain.Model.AssessmentRequest>> GetAllAssessmentRequests()
     {
         var allAssessmentRequests = await _dbContext.AssessmentRequests
+            .Include(e => e.PhaseConcluding)
+            .Include(e => e.AssessmentTypeRequested)
+            .Include(e => e.Portfolio)
             .Select(e => e.ToDomainModel())
             .ToListAsync();
 
@@ -28,6 +32,9 @@ public class AssessmentRequestRepository
     public async Task<Domain.Model.AssessmentRequest?> GetByIdAsync(Guid id)
     {
         var assessmentRequest = await _dbContext.AssessmentRequests
+            .Include(e => e.PhaseConcluding)
+            .Include(e => e.AssessmentTypeRequested)
+            .Include(e => e.Portfolio)
             .Where(e => e.Id == id)
             .Select(e => e.ToDomainModel())
             .SingleOrDefaultAsync();
@@ -96,4 +103,83 @@ public class AssessmentRequestRepository
         // Return the updated entity
         return await GetByIdAsync(entity.Id);
     }
+
+    public async Task<TextValidationResult> UpdateDescriptionAsync(Guid id, string newDescription)
+    {
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new TextValidationResult();
+            validationResult.ValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found"
+            });
+            validationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+        // Do specific update
+        assessmentRequest.Description = newDescription;
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateDescriptionResult = domainModel.ValidateDescription();
+
+        // If valid, save it to the database
+        if (validateDescriptionResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateDescriptionResult;
+    }
+
+    public async Task<TextValidationResult> UpdateNameAsync(Guid id, string newName)
+    {
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new TextValidationResult();
+            validationResult.ValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found"
+            });
+            validationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+        // Do specific update
+        assessmentRequest.Name = newName;
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateDescriptionResult = domainModel.ValidateName();
+
+        // If valid, save it to the database
+        if (validateDescriptionResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateDescriptionResult;
+    }
 }
+

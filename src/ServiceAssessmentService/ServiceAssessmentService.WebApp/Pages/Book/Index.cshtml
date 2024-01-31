@@ -1,0 +1,105 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Book.IndexModel
+
+@{
+    ViewData["Title"] = "";
+    ViewData["Section"] = SiteSection.BookingRequest;
+}
+
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <h1 class="govuk-heading-l ">Book an assessment</h1>
+        </div>
+
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <h2 class="govuk-heading-m">Start a request</h2>
+
+                <p>If you want to, you can check the <a href="/generic/assessments">assessments section</a> to see if a request has already been submitted for your discovery.</p>
+
+                <p>You can book a discovery peer review for your own project or on behalf of a team.</p>
+
+                <govuk-button-link is-start-button="true" asp-area="Book" asp-controller="BookingRequest" asp-action="PhaseConcluding">
+                    Start now
+                </govuk-button-link>
+
+                <govuk-summary-card>
+                    <govuk-summary-card-title>Continue with a draft</govuk-summary-card-title>
+                    <govuk-summary-list>
+
+                        @if (!Model.DraftAssessmentRequests.Any())
+                        {
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>
+                                    You have no draft assessments
+                                </govuk-summary-list-row-key>
+                            </govuk-summary-list-row>
+                        }
+                        else
+                        {
+                            foreach (var assessmentRequest in Model.DraftAssessmentRequests.OrderBy(e => e.Name))
+                            {
+                                <govuk-summary-list-row>
+                                    <govuk-summary-list-row-key>
+                                        <a asp-page="/Book/Request/TaskList" asp-route-id="@assessmentRequest.Id">@assessmentRequest.Name</a>
+                                    </govuk-summary-list-row-key>
+                                    <govuk-summary-list-row-value>
+                                        <ul class="govuk-list govuk-list">
+                                            <li>Phase: @(assessmentRequest.PhaseConcluding?.Name ?? "Unspecified phase")</li>
+                                            <li>Assessment type: @(assessmentRequest.AssessmentType?.Name ?? "Unspecified assessment type")</li>
+                                            <li>Started: @(assessmentRequest.CreatedAt.Date.ToLongDateString())</li>
+                                            <li>Last updated: @(assessmentRequest.UpdatedAt.Date.ToLongDateString())</li>
+                                        </ul>
+                                    </govuk-summary-list-row-value>
+                                </govuk-summary-list-row>
+                            }
+                        }
+                    </govuk-summary-list>
+                </govuk-summary-card>
+
+                <h2 class="govuk-heading-l">Before you start</h2>
+                <p>Read the <a href="https://dfe-standards-manual-prototype.herokuapp.com/service-assurance/" target="_blank" rel="noopener"> step by step guidance</a> to help you understand what a discovery peer review is, how to prepare and what to expect.</p>
+                <h3 class="govuk-heading-s">If you need help using the service</h3>
+                <p>Contact the <a href="/">service assessment team</a>.</p>
+            </div>
+
+            <div class="govuk-grid-column-one-third">
+                <aside class="govuk-related-navigation">
+                    <h2 class="govuk-heading-m">Other resources and guidance</h2>
+                    <ul class="govuk-list govuk-list--spaced">
+                        <li>
+                            <a href="https://apply-the-service-standard.education.gov.uk/" target="_blank" rel="noopener">Apply the Service Standard in DfE</a>
+                        </li>
+                        <li>
+                            <a href="https://design.education.gov.uk/" target="_blank" rel="noopener">Design Manual</a>
+                        </li>
+                        <li>
+                            <a href="https://user-research.education.gov.uk/" target="_blank" rel="noopener">User Research in DfE</a>
+                        </li>
+                        <li>
+                            <a href="https://technical-guidance.education.gov.uk/" target="_blank" rel="noopener">DfE Technical Guidance</a>
+                        </li>
+                        <li>
+                            <a href="https://dfe-digital.github.io/architecture/#dfe-architecture" target="_blank" rel="noopener">DfE Architecture</a>
+                        </li>
+                        <li>
+                            <a href="https://design-system.service.gov.uk/" target="_blank" rel="noopener">GOV.UK Design System</a>
+                        </li>
+                        <li>
+                            <a href="https://www.gov.uk/service-manual" target="_blank" rel="noopener">GOV.UK Service Manual</a>
+                        </li>
+                        <li>
+                            <a href="https://www.gov.uk/service-manual/communities/design-community" target="_blank" rel="noopener">Cross government design community</a>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>

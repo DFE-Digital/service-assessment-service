@@ -1,0 +1,43 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Book.Request.Question.NamePageModel
+@{
+    ViewData["Title"] = "Creating assessment request";
+    ViewData["Section"] = SiteSection.BookingRequest;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-two-thirds">
+                @* Omitting the form action/asp-path results in the form being submitted to the same URL (desirable behaviour) *@
+                <form asp-route-id="@Model.Id">
+
+                    <govuk-input name="@(Model.FormElementName)" asp-for="@(Model.Name)">
+                        <govuk-input-label is-page-heading="true" class="govuk-label--l">@Model.QuestionText</govuk-input-label>
+                        @if (!string.IsNullOrWhiteSpace(Model.QuestionHint))
+                        {
+                            <govuk-input-hint>@Model.QuestionHint</govuk-input-hint>
+                        }
+
+                        @if (Model.Errors.Any())
+                        {
+                            @* string.Join here is a workaround, to allow for there to be multiple potential error messages, but the govuk-frontend-taghelpers library permits only one error message entry *@
+                            <govuk-input-error-message>
+                                @string.Join(", ", Model.Errors)
+                            </govuk-input-error-message>
+                        }
+                    </govuk-input>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        <a asp-page="/Book/Request/TaskList" asp-route-id="@Model.Id" class="govuk-link">Skip and return to later</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
