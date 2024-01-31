@@ -7,11 +7,11 @@ public class AssessmentRequest
     {
         // { nameof(AssessmentType), x => x.IsAssessmentTypeComplete() },
         // { nameof(PhaseConcluding), x => x.IsPhaseConcludingComplete() },
-        { nameof(Name), x => x.IsNameComplete() },
-        { nameof(Description), x => x.IsDescriptionComplete() },
+        {nameof(Name), x => x.IsNameComplete()},
+        {nameof(Description), x => x.IsDescriptionComplete()},
         // { nameof(IsProjectCodeKnown), x => x.IsProjectCodeComplete() },
-        { nameof(PhaseStartDate), x => x.IsPhaseStartDateComplete() },
-        { nameof(PhaseEndDate), x => x.IsPhaseEndDateComplete() },
+        {nameof(PhaseStartDate), x => x.IsPhaseStartDateComplete()},
+        {nameof(PhaseEndDate), x => x.IsPhaseEndDateComplete()},
         // { nameof(ReviewDates), x => x.IsReviewDatesComplete() },
         // { nameof(Portfolio), x => x.IsPortfolioComplete() },
         // { nameof(DeputyDirector), x => x.IsDeputyDirectorComplete() },
@@ -22,10 +22,22 @@ public class AssessmentRequest
 
     public Guid Id { get; set; }
 
+
+    public Phase? PhaseConcluding { get; set; } = null;
+
+    public AssessmentType? AssessmentType { get; set; } = null;
+
+    // public bool? IsReassessment { get; set; } = null;
+
+
+    #region Name
+
     public string Name { get; set; } = string.Empty;
+
     public TextValidationResult ValidateName()
     {
         var result = new TextValidationResult();
+        result.IsValid = true;
 
         if (string.IsNullOrWhiteSpace(Name))
         {
@@ -38,21 +50,33 @@ public class AssessmentRequest
         }
         else
         {
-            result.IsValid = true;
+            if (Name.Any(c => c < 32 || 126 < c))
+            {
+                /*
+                 * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                 * Add a warning if any characters fall outside this range
+                 * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                 */
+                result.ValidationWarnings.Add(new ValidationWarning
+                {
+                    FieldName = nameof(Name),
+                    WarningMessage =
+                        "Name contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
+                });
+            }
         }
 
         return result;
     }
 
-    public Phase? PhaseConcluding { get; set; } = null;
+    public bool IsNameComplete()
+    {
+        return !string.IsNullOrWhiteSpace(Name);
+    }
 
-    public AssessmentType? AssessmentType { get; set; } = null;
+    #endregion
 
-    public DateOnly? PhaseStartDate { get; set; }
-
-    public DateOnly? PhaseEndDate { get; set; }
-
-
+    #region Description
 
     public const int DescriptionMaxLengthChars = 500;
     public string? Description { get; set; }
@@ -60,6 +84,7 @@ public class AssessmentRequest
     public TextValidationResult ValidateDescription()
     {
         var result = new TextValidationResult();
+        result.IsValid = true;
 
         if (string.IsNullOrWhiteSpace(Description))
         {
@@ -70,29 +95,52 @@ public class AssessmentRequest
                 ErrorMessage = "Description is required",
             });
         }
-        else if (Description.Length > DescriptionMaxLengthChars)
-        {
-            result.IsValid = false;
-            result.ValidationErrors.Add(new ValidationError
-            {
-                FieldName = nameof(Description),
-                ErrorMessage = $"Description must be {DescriptionMaxLengthChars} characters or fewer",
-            });
-        }
         else
         {
-            result.IsValid = true;
+            if (Description.Length > DescriptionMaxLengthChars)
+            {
+                result.IsValid = false;
+                result.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(Description),
+                    ErrorMessage = $"Description must be {DescriptionMaxLengthChars} characters or fewer",
+                });
+            }
+
+            if (Description.Any(c => c < 32 || 126 < c))
+            {
+                /*
+                 * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                 * Add a warning if any characters fall outside this range
+                 * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                 */
+                result.ValidationWarnings.Add(new ValidationWarning
+                {
+                    FieldName = nameof(Description),
+                    WarningMessage =
+                        "Description contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
+                });
+            }
         }
 
         return result;
     }
 
+    public bool IsDescriptionComplete()
+    {
+        return !string.IsNullOrWhiteSpace(Description);
+    }
+
+    #endregion
+
+    public DateOnly? PhaseStartDate { get; set; }
+
+    public DateOnly? PhaseEndDate { get; set; }
 
 
     public DateTimeOffset CreatedAt { get; set; }
 
     public DateTimeOffset UpdatedAt { get; set; }
-
 
 
     public bool IsAssessmentTypeComplete()
@@ -103,16 +151,6 @@ public class AssessmentRequest
     public bool IsPhaseConcludingComplete()
     {
         return PhaseConcluding is not null;
-    }
-
-    public bool IsNameComplete()
-    {
-        return !string.IsNullOrWhiteSpace(Name);
-    }
-
-    public bool IsDescriptionComplete()
-    {
-        return !string.IsNullOrWhiteSpace(Description);
     }
 
 
@@ -232,7 +270,6 @@ public class AssessmentRequest
         {
             return $"In progress";
         }
-
     }
 
     public bool IsFullyComplete()
@@ -242,6 +279,7 @@ public class AssessmentRequest
 
         return (countCompleted == count);
     }
+
     public bool IsPartiallyComplete()
     {
         var count = StepCount();
@@ -259,5 +297,4 @@ public class AssessmentRequest
     {
         return _completionStatus.Count(x => x.Value(this));
     }
-
 }
