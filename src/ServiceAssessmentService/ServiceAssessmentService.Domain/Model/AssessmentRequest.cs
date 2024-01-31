@@ -180,7 +180,53 @@ public class AssessmentRequest
     }
     #endregion
 
+    #region Phase end date
     public DateOnly? PhaseEndDate { get; set; }
+
+    public DateValidationResult ValidatePhaseEndDate()
+    {
+        var result = new DateValidationResult();
+        result.IsValid = true;
+
+        if (PhaseEndDate is null)
+        {
+            result.IsValid = false;
+            result.DateValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(PhaseEndDate),
+                ErrorMessage = "Phase end date is required",
+            });
+        }
+        else
+        {
+            // if (PhaseEndDate < DateOnly.FromDateTime(DateTime.UtcNow))
+            // {
+            //     result.IsValid = false;
+            //     result.ValidationErrors.Add(new ValidationError
+            //     {
+            //         FieldName = nameof(PhaseEndDate),
+            //         ErrorMessage = "Phase end date cannot be in the past",
+            //     });
+            // }
+
+
+            // TODO: Now that the proposed year/month/day values result in a "valid" date, apply additional validations on the resulting date?
+            // TODO: Consider if date is "recent" (i.e., within last x years?)
+            // TODO: Consider if date is in the future? (not necessarily a problem if e.g., a discovery is ending next month and the team are being proactive in booking assessment? perhaps this is a warning on the task list page?)
+            // TODO: Consider if date is absurdly far in the future? (e.g., 100 years from now)
+            // TODO: Consider relation to other dates (e.g., end date expected to be before end date) - warning vs error?
+        }
+
+        return result;
+    }
+
+    public bool IsPhaseEndDateComplete()
+    {
+        return PhaseEndDate is not null;
+    }
+    #endregion
+
+
 
 
     public DateTimeOffset CreatedAt { get; set; }
@@ -216,10 +262,6 @@ public class AssessmentRequest
     //     };
     // }
 
-    public bool IsPhaseEndDateComplete()
-    {
-        return PhaseEndDate is not null;
-    }
 
     // public bool IsReviewDatesComplete()
     // {

@@ -6,21 +6,21 @@ using ServiceAssessmentService.Domain.Model;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book.Request.Question;
 
-public class PhaseStartDateModel : PageModel
+public class PhaseEndDateModel : PageModel
 {
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly PhaseRepository _phaseRepository;
     private readonly PortfolioRepository _portfolioRepository;
 
-    private readonly ILogger<PhaseStartDateModel> _logger;
+    private readonly ILogger<PhaseEndDateModel> _logger;
 
-    public PhaseStartDateModel(
+    public PhaseEndDateModel(
         AssessmentRequestRepository assessmentRequestRepository
         , AssessmentTypeRepository assessmentTypeRepository
         , PhaseRepository phaseRepository
         , PortfolioRepository portfolioRepository
-        , ILogger<PhaseStartDateModel> logger
+        , ILogger<PhaseEndDateModel> logger
     )
     {
         _assessmentRequestRepository = assessmentRequestRepository;
@@ -36,11 +36,11 @@ public class PhaseStartDateModel : PageModel
     public Phase? Phase { get; set; } = null;
 
     [BindProperty]
-    public int? StartDateDayValue { get; set; }
+    public int? EndDateDayValue { get; set; }
     [BindProperty]
-    public int? StartDateMonthValue { get; set; }
+    public int? EndDateMonthValue { get; set; }
     [BindProperty]
-    public int? StartDateYearValue { get; set; }
+    public int? EndDateYearValue { get; set; }
 
 
     public List<string> DayErrors { get; set; } = new List<string>();
@@ -89,13 +89,13 @@ public class PhaseStartDateModel : PageModel
     public List<string> AllWarnings => DayWarnings.Concat(MonthWarnings).Concat(YearWarnings).Concat(DateWarnings).ToList();
 
 
-    // private const string _formElementName = "service-phase-start-date";
+    // private const string _formElementName = "service-phase-end-date";
     // public string FormElementName => _formElementName;
 
-    private const string _dateFormNamePrefix = "service-phase-start-date";
+    private const string _dateFormNamePrefix = "service-phase-end-date";
     public string DateFormNamePrefix => _dateFormNamePrefix;
 
-    public string QuestionText => $"When did your {Phase?.DisplayNameMidSentenceCase ?? "phase"} start?";
+    public string QuestionText => $"When will your {Phase?.DisplayNameMidSentenceCase ?? "phase"} end?";
 
     public string QuestionHint => $"For example, 18 2 2023.";
 
@@ -111,9 +111,9 @@ public class PhaseStartDateModel : PageModel
 
         Id = id;
         Phase = req.PhaseConcluding;
-        StartDateYearValue = req.PhaseStartDate?.Year;
-        StartDateMonthValue = req.PhaseStartDate?.Month;
-        StartDateDayValue = req.PhaseStartDate?.Day;
+        EndDateYearValue = req.PhaseEndDate?.Year;
+        EndDateMonthValue = req.PhaseEndDate?.Month;
+        EndDateDayValue = req.PhaseEndDate?.Day;
 
         return Page();
     }
@@ -132,7 +132,7 @@ public class PhaseStartDateModel : PageModel
             return NotFound();
         }
 
-        var changeResult = await _assessmentRequestRepository.UpdateStartDateByPartsAsync(id, newYear, newMonth, newDay);
+        var changeResult = await _assessmentRequestRepository.UpdateEndDateByPartsAsync(id, newYear, newMonth, newDay);
         if (!changeResult.IsValid)
         {
             var yearIsInt = int.TryParse(newYear, out int year);
@@ -141,9 +141,9 @@ public class PhaseStartDateModel : PageModel
 
             Id = id;
             Phase = req.PhaseConcluding;
-            StartDateYearValue = yearIsInt ? year : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
-            StartDateMonthValue = monthIsInt ? month : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
-            StartDateDayValue = dayIsInt ? day : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            EndDateYearValue = yearIsInt ? year : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            EndDateMonthValue = monthIsInt ? month : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            EndDateDayValue = dayIsInt ? day : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
 
             DayErrors = changeResult.DayValidationErrors.Select(e => e.ErrorMessage).ToList();
             MonthErrors = changeResult.MonthValidationErrors.Select(e => e.ErrorMessage).ToList();
