@@ -261,26 +261,3 @@ public class AssessmentRequest
     }
 
 }
-
-
-
-public class ValidationError
-{
-    public string FieldName { get; set; } = null!;
-    public string ErrorMessage { get; set; } = null!;
-}
-
-public class ValidationWarning
-{
-    public string FieldName { get; set; } = null!;
-    public string WarningMessage { get; set; } = null!;
-}
-
-public class TextValidationResult
-{
-    public bool IsValid { get; set; }
-
-    public List<ValidationWarning> ValidationWarnings { get; set; } = new();
-    public List<ValidationError> ValidationErrors { get; set; } = new();
-}
-
