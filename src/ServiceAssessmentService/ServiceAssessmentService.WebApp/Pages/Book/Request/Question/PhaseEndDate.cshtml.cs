@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.ModelBinding;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceAssessmentService.Application.UseCases;
@@ -36,6 +37,9 @@ public class PhaseEndDateModel : PageModel
     public Phase? Phase { get; set; } = null;
 
     [BindProperty]
+    public string? IsEndDateKnownValue { get; set; }
+
+    [BindProperty]
     public int? EndDateDayValue { get; set; }
     [BindProperty]
     public int? EndDateMonthValue { get; set; }
@@ -43,11 +47,13 @@ public class PhaseEndDateModel : PageModel
     public int? EndDateYearValue { get; set; }
 
 
+    public List<string> RadioErrors { get; set; } = new List<string>();
+
     public List<string> DayErrors { get; set; } = new List<string>();
     public List<string> MonthErrors { get; set; } = new List<string>();
     public List<string> YearErrors { get; set; } = new List<string>();
     public List<string> DateErrors { get; set; } = new List<string>();
-    public List<string> AllErrors => DayErrors.Concat(MonthErrors).Concat(YearErrors).Concat(DateErrors).ToList();
+    public List<string> AllDateErrors => DayErrors.Concat(MonthErrors).Concat(YearErrors).Concat(DateErrors).ToList();
 
 
     public DateInputErrorComponents ErrorItems
@@ -89,15 +95,30 @@ public class PhaseEndDateModel : PageModel
     public List<string> AllWarnings => DayWarnings.Concat(MonthWarnings).Concat(YearWarnings).Concat(DateWarnings).ToList();
 
 
-    // private const string _formElementName = "service-phase-end-date";
-    // public string FormElementName => _formElementName;
+
 
     private const string _dateFormNamePrefix = "service-phase-end-date";
     public string DateFormNamePrefix => _dateFormNamePrefix;
 
-    public string QuestionText => $"When will your {Phase?.DisplayNameMidSentenceCase ?? "phase"} end?";
+    public string RadioQuestionText => $"Do you have an end date for your {Phase?.DisplayNameMidSentenceCase ?? "phase"}?";
+    public string RadioQuestionHint => $"Select one option.";
 
-    public string QuestionHint => $"For example, 18 2 2023.";
+    public string DateQuestionText => $"When will your {Phase?.DisplayNameMidSentenceCase ?? "phase"} end?";
+    public string DateQuestionHint => $"For example, 18 2 2023.";
+
+
+
+    private const string _isDateKnownFormElementName = "service-is-phase-end-date-known";
+    public string IsDateKnownFormElementName => _isDateKnownFormElementName;
+
+    private const string _isDateKnownRadioPrefix = "is-phase-end-date-known";
+    public string IsDateKnownRadioPrefix => _isDateKnownRadioPrefix;
+
+    public const string _isEndDateKnownValueYes = "yes";
+    public String IsEndDateKnownValueYes => _isEndDateKnownValueYes;
+
+    public const string _isEndDateKnownValueNo = "no";
+    public String IsEndDateKnownValueNo => _isEndDateKnownValueNo;
 
 
     public async Task<IActionResult> OnGet(Guid id)
@@ -111,6 +132,12 @@ public class PhaseEndDateModel : PageModel
 
         Id = id;
         Phase = req.PhaseConcluding;
+        IsEndDateKnownValue = req.IsPhaseEndDateKnown switch
+        {
+            true => _isEndDateKnownValueYes,
+            false => _isEndDateKnownValueNo,
+            _ => null,
+        };
         EndDateYearValue = req.PhaseEndDate?.Year;
         EndDateMonthValue = req.PhaseEndDate?.Month;
         EndDateDayValue = req.PhaseEndDate?.Day;
@@ -120,6 +147,7 @@ public class PhaseEndDateModel : PageModel
 
     public async Task<IActionResult> OnPost(
         Guid id,
+        [FromForm(Name = _isDateKnownFormElementName), AllowEmpty] string? newIsDateKnown,
         [FromForm(Name = _dateFormNamePrefix + ".Day"), AllowEmpty] string? newDay,
         [FromForm(Name = _dateFormNamePrefix + ".Month"), AllowEmpty] string? newMonth,
         [FromForm(Name = _dateFormNamePrefix + ".Year"), AllowEmpty] string? newYear
@@ -132,7 +160,15 @@ public class PhaseEndDateModel : PageModel
             return NotFound();
         }
 
-        var changeResult = await _assessmentRequestRepository.UpdateEndDateByPartsAsync(id, newYear, newMonth, newDay);
+
+        bool? isEndDateKnown = newIsDateKnown switch
+        {
+            _isEndDateKnownValueYes => true,
+            _isEndDateKnownValueNo => false,
+            _ => null,
+        };
+
+        var changeResult = await _assessmentRequestRepository.UpdateEndDateByPartsAsync(id, isEndDateKnown, newYear, newMonth, newDay);
         if (!changeResult.IsValid)
         {
             var yearIsInt = int.TryParse(newYear, out int year);
@@ -141,6 +177,7 @@ public class PhaseEndDateModel : PageModel
 
             Id = id;
             Phase = req.PhaseConcluding;
+            IsEndDateKnownValue = newIsDateKnown;
             EndDateYearValue = yearIsInt ? year : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
             EndDateMonthValue = monthIsInt ? month : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
             EndDateDayValue = dayIsInt ? day : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.

@@ -1,4 +1,4 @@
-﻿namespace ServiceAssessmentService.Domain.Model;
+﻿namespace ServiceAssessmentService.Domain.Model.Validations;
 
 public class TextValidationResult
 {

@@ -20,6 +20,7 @@ internal class AssessmentRequest : BaseEntity
 
     public DateOnly? PhaseStartDate { get; set; }
 
+    public bool? IsPhaseEndDateKnown { get; set; } = null;
     public DateOnly? PhaseEndDate { get; set; }
 
     public string? Description { get; set; }
@@ -55,6 +56,7 @@ internal class AssessmentRequest : BaseEntity
             PhaseConcluding = PhaseConcluding?.ToDomainModel(),
             AssessmentType = AssessmentTypeRequested?.ToDomainModel(),
             PhaseStartDate = PhaseStartDate,
+            IsPhaseEndDateKnown = IsPhaseEndDateKnown,
             PhaseEndDate = PhaseEndDate,
             Description = Description,
             CreatedAt = CreatedUtc,
