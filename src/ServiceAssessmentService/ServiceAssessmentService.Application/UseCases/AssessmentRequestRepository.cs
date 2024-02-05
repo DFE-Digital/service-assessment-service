@@ -203,7 +203,7 @@ public class AssessmentRequestRepository
 
         DateOnly? proposedDate = null;
         (var datePartsValidationResult, proposedDate) = ValidateDateParts(newYear, newMonth, newDay, proposedDate);
-        if(!datePartsValidationResult.IsValid)
+        if (!datePartsValidationResult.IsValid)
         {
             return datePartsValidationResult;
         }
@@ -281,8 +281,8 @@ public class AssessmentRequestRepository
         else if (isEndDateKnown == true)
         {
             (var datePartsValidationResult, proposedDate) = ValidateDateParts(newYear, newMonth, newDay, proposedDate);
-            
-            if(!datePartsValidationResult.IsValid)
+
+            if (!datePartsValidationResult.IsValid)
             {
                 return datePartsValidationResult;
             }

@@ -59,13 +59,17 @@ public class AssessmentRequest
                  * Add a warning if any characters fall outside this range
                  * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
                  */
+                result.IsValid = false;
                 result.ValidationWarnings.Add(new ValidationWarning
                 {
                     FieldName = nameof(Name),
-                    WarningMessage =
-                        "Name contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
+                    WarningMessage = "Name contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
                 });
             }
+
+            // TODO: Consider max length (probably 100 chars?)
+            // TODO: Consider rejecting newlines with an error, as name should normally be a short phrase only without newlines.
+            // TODO: Consider handling of accented characters and multi-byte characters (e.g., emoji)
         }
 
         return result;
@@ -248,7 +252,7 @@ public class AssessmentRequest
         }
         else
         {
-            throw new Exception();
+            throw new InvalidOperationException("IsPhaseEndDateKnown is not null or true or false");
         }
 
 
