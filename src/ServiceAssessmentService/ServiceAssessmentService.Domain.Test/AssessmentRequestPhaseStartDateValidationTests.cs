@@ -20,7 +20,7 @@ public class AssessmentRequestPhaseStartDateValidationTests
         // Assert
         Assert.True(result);
     }
-    
+
     [Fact]
 
     public void IsPhaseStartDateValid_ReturnTrue_WhenPhaseStartDateIsNotNullOrEmptyOrWhitespace()
@@ -81,7 +81,7 @@ public class AssessmentRequestPhaseStartDateValidationTests
             Assert.Empty(result.YearValidationWarnings);
         });
     }
-    
+
 
     [Fact]
     public void When_PhaseStartDate_IsBefore_EarliestPermittedPhaseStartDate_Then_DateIsNotValid()
@@ -111,7 +111,7 @@ public class AssessmentRequestPhaseStartDateValidationTests
             Assert.Empty(result.YearValidationWarnings);
         });
     }
-    
+
     [Fact]
     public void When_PhaseStartDate_IsAfter_LatestPermittedPhaseStartDate_Then_DateIsNotValid()
     {
@@ -140,7 +140,7 @@ public class AssessmentRequestPhaseStartDateValidationTests
             Assert.Empty(result.YearValidationWarnings);
         });
     }
-    
-    
-    
+
+
+
 }

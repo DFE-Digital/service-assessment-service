@@ -62,56 +62,56 @@
                                     </span>
                                 </li>
 
-                        <li class="app-task-list__item">
-                            <span class="app-task-list__task-name">
-                                <a asp-page="/Book/Request/Question/Description" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Summary</a>
-                            </span>
-                            <span class="app-task-list__task-value">
-                                @(Model.AssessmentRequest.Description ?? notYetSupplied)
-                            </span>
-                            <span class="app-task-list__task-tag">
-                                @if (Model.AssessmentRequest.IsDescriptionComplete())
-                                {
-                                    <strong class="govuk-tag app-task-list__tag">Completed</strong>
-                                }
-                                else
-                                {
-                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
-                                }
-                            </span>
-                        </li>
+                                <li class="app-task-list__item">
+                                    <span class="app-task-list__task-name">
+                                        <a asp-page="/Book/Request/Question/Description" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Summary</a>
+                                    </span>
+                                    <span class="app-task-list__task-value">
+                                        @(Model.AssessmentRequest.Description ?? notYetSupplied)
+                                    </span>
+                                    <span class="app-task-list__task-tag">
+                                        @if (Model.AssessmentRequest.IsDescriptionComplete())
+                                        {
+                                            <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                        }
+                                    </span>
+                                </li>
                         
-                        @*         <li class="app-task-list__item"> *@
-                        @*             <span class="app-task-list__task-name"> *@
-                        @*                 <a asp-page="/Book/Request/Question/ProjectCode" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Project code</a> *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-value"> *@
-                        @*                 @{ *@
-                        @*                     if (Model.AssessmentRequest.IsProjectCodeKnown == false) *@
-                        @*                     { *@
-                        @*                         <span>Not known</span> *@
-                        @*                     } *@
-                        @*                     else if (Model.AssessmentRequest.IsProjectCodeKnown == true) *@
-                        @*                     { *@
-                        @*                         @Model.AssessmentRequest.ProjectCode *@
-                        @*                     } *@
-                        @*                     else *@
-                        @*                     { *@
-                        @*                         <span>@notYetSupplied</span> *@
-                        @*                     } *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-tag"> *@
-                        @*                 @if (Model.AssessmentRequest.IsProjectCodeComplete()) *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag app-task-list__tag">Completed</strong> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*         </li> *@
+                                <li class="app-task-list__item">
+                                    <span class="app-task-list__task-name">
+                                        <a asp-page="/Book/Request/Question/ProjectCode" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Project code</a>
+                                    </span>
+                                    <span class="app-task-list__task-value">
+                                        @{
+                                            if (Model.AssessmentRequest.IsProjectCodeKnown == false)
+                                            {
+                                                <span>Not known</span>
+                                            }
+                                            else if (Model.AssessmentRequest.IsProjectCodeKnown == true)
+                                            {
+                                                @Model.AssessmentRequest.ProjectCode
+                                            }
+                                            else
+                                            {
+                                                <span>@notYetSupplied</span>
+                                            }
+                                        }
+                                    </span>
+                                    <span class="app-task-list__task-tag">
+                                        @if (Model.AssessmentRequest.IsProjectCodeComplete())
+                                        {
+                                            <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                        }
+                                    </span>
+                                </li>
                         
                                 <li class="app-task-list__item">
                                     <span class="app-task-list__task-name">

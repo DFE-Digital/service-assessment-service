@@ -240,10 +240,10 @@ public class AssessmentRequestRepository
         {
             var validationResult = new RadioConditionalValidationResult<DateValidationResult>()
             {
-                IsValid = true,
-                NestedValidationResult = new DateValidationResult()
+                IsValid = false,
+                NestedValidationResult = new()
                 {
-                    IsValid = true,
+                    IsValid = false,
                 },
             };
 
@@ -252,8 +252,6 @@ public class AssessmentRequestRepository
                 FieldName = nameof(assessmentRequest.Id),
                 ErrorMessage = $"Assessment request with ID {id} not found",
             });
-            validationResult.IsValid = false;
-            validationResult.NestedValidationResult.IsValid = false;
 
             return validationResult;
         }
@@ -432,5 +430,52 @@ public class AssessmentRequestRepository
 
         // If we got this far, the given date parts have been able to be parsed into a valid date
         return (datePartsValidationResult, proposedDate);
+    }
+
+    public async Task<RadioConditionalValidationResult<TextValidationResult>> UpdateProjectCode(Guid id, bool? newIsProjectCodeKnown, string? newProjectCode)
+    {
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new RadioConditionalValidationResult<TextValidationResult>()
+            {
+                IsValid = false,
+                NestedValidationResult = new()
+                {
+                    IsValid = false,
+                },
+            };
+
+            validationResult.RadioQuestionValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found",
+            });
+
+            return validationResult;
+        }
+
+        // Do specific update
+        assessmentRequest.IsProjectCodeKnown = newIsProjectCodeKnown;
+        assessmentRequest.ProjectCode = newProjectCode;
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateProjectCodeResult = domainModel.ValidateProjectCode();
+
+        // If valid, save it to the database
+        if (validateProjectCodeResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateProjectCodeResult;
     }
 }

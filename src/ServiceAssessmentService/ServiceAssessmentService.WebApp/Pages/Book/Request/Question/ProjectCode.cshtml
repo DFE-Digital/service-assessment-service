@@ -1,0 +1,79 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Book.Request.Question.ProjectCode
+@{
+    ViewData["Title"] = "Creating assessment request";
+    ViewData["Section"] = SiteSection.BookingRequest;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-two-thirds">
+                @* Omitting the form action/asp-path results in the form being submitted to the same URL (desirable behaviour) *@
+                <form asp-route-id="@Model.Id">
+
+                    <govuk-radios name="@Model.IsProjectCodeKnownFormElementName" id-prefix="@Model.IsProjectCodeKnownRadioPrefix" asp-for="@Model.IsProjectCodeKnownValue">
+                        <govuk-radios-fieldset>
+                                <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                                    @Model.RadioQuestionText
+                                </govuk-radios-fieldset-legend>
+
+                                @* @if (Model.RadioQuestionHint is not null) *@
+                                @* { *@
+                                @*     <govuk-radios-hint>@Model.RadioQuestionHint</govuk-radios-hint> *@
+                                @* } *@
+                                
+                                <govuk-radios-hint>
+                                    <p class="govuk-body">This code is sometimes called a project ID. It starts with DDaT.</p>
+                                    <p class="govuk-body">For example, <code>DDaT_22/23_001</code>.</p>
+                                    <p class="govuk-body">Find the code on the <a href="https://educationgovuk.sharepoint.com/:x:/r/sites/efarafdg/c/_layouts/15/Doc.aspx?sourcedoc=%7B7086CF76-D57F-41B5-92E3-853C107AB68F%7D&amp;file=DDaT%20Portfolio%20Tracker.xlsx&amp;action=default&amp;mobileredirect=true&amp;DefaultItemOpen=1&amp;cid=f4f6cbd1-a864-4102-aed3-962ca11d120f" class="govuk-link" rel="noreferrer noopener" target="_blank">DDaT portfolio tracker (opens in new tab)</a>, or speak to your <a href="https://educationgovuk.sharepoint.com/sites/lvewp00038/SitePages/DDaT-Business-Partners.aspx" class="govuk-link" rel="noreferrer noopener" target="_blank">business partner (opens in new tab)</a>.</p>
+                                </govuk-radios-hint>                 
+
+
+                            @if (Model.RadioErrors.Any())
+                            {
+                                <govuk-radios-error-message error-items="Model.ErrorItems">@(string.Join(", ", Model.RadioErrors))</govuk-radios-error-message>
+                            }
+
+                            <govuk-radios-item value="@Model.IsProjectCodeKnownValueYes">
+                                Yes
+                                <govuk-radios-item-conditional>
+                                    <govuk-input id="project_code_input" name="@Model.ProjectCodeFormElementName" asp-for="@Model.ProjectCodeValue" type="text" spellcheck="false" class="govuk-!-width-one-third">
+                                        <govuk-input-label is-page-heading="false" class="govuk-label--s">
+                                            @Model.ProjectCodeQuestionText
+                                        </govuk-input-label>
+
+                                        @if(Model.ProjectCodeQuestionHint is not null)
+                                        {
+                                            <govuk-input-hint>
+                                                @Model.ProjectCodeQuestionHint
+                                            </govuk-input-hint>
+                                        }
+
+                                        @if (Model.ProjectCodeErrors.Count > 0)
+                                        {
+                                            <govuk-input-error-message>@(string.Join(", ", Model.ProjectCodeErrors))</govuk-input-error-message>
+                                        }
+                                    </govuk-input>
+                                </govuk-radios-item-conditional>
+                            </govuk-radios-item>
+
+                            <govuk-radios-item value="@Model.IsProjectCodeKnownValueNo">
+                                No
+                            </govuk-radios-item>
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        <a asp-page="/Book/Request/TaskList" asp-route-id="@Model.Id" class="govuk-link">Skip and return to later</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

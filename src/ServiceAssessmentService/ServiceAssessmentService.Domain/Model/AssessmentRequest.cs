@@ -11,7 +11,7 @@ public class AssessmentRequest
         // { nameof(PhaseConcluding), x => x.IsPhaseConcludingComplete() },
         {nameof(Name), x => x.IsNameComplete()},
         {nameof(Description), x => x.IsDescriptionComplete()},
-        // { nameof(IsProjectCodeKnown), x => x.IsProjectCodeComplete() },
+        {nameof(ProjectCode), x => x.IsProjectCodeComplete() },
         {nameof(PhaseStartDate), x => x.IsPhaseStartDateComplete()},
         {nameof(PhaseEndDate), x => x.IsPhaseEndDateComplete()},
         // { nameof(ReviewDates), x => x.IsReviewDatesComplete() },
@@ -147,6 +147,90 @@ public class AssessmentRequest
 
     #endregion
 
+    #region Project code
+
+    public bool? IsProjectCodeKnown { get; set; } = null;
+
+    public string? ProjectCode { get; set; } = string.Empty;
+
+    public RadioConditionalValidationResult<TextValidationResult> ValidateProjectCode()
+    {
+        var radioValidationResult = new RadioConditionalValidationResult<TextValidationResult>()
+        {
+            IsValid = true,
+            NestedValidationResult = new TextValidationResult()
+            {
+                IsValid = true,
+            }
+        };
+
+        if (IsProjectCodeKnown == false)
+        {
+            if (!string.IsNullOrWhiteSpace(ProjectCode))
+            {
+                // Project code not known - must not have a project code specified
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(ProjectCode),
+                    ErrorMessage =
+                        "Project code must not be specified if the project code is declared as not known",
+                });
+            }
+            else
+            {
+                // Project declared as not known, and no code provided -- valid.
+            }
+        }
+        else if (IsProjectCodeKnown == true)
+        {
+            // Project code known - must have a project code specified
+            if (string.IsNullOrWhiteSpace(ProjectCode))
+            {
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(ProjectCode),
+                    ErrorMessage = "Project code is required if the project code is declared as known",
+                });
+            }
+            else
+            {
+                // Project declared as known, and code provided -- valid.
+            }
+        }
+        else
+        {
+            radioValidationResult.IsValid = false;
+            radioValidationResult.RadioQuestionValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(IsProjectCodeKnown),
+                ErrorMessage = "Please select whether the project code is known",
+            });
+        }
+
+        return radioValidationResult;
+    }
+
+    public bool IsProjectCodeComplete()
+    {
+        if (IsProjectCodeKnown is true && !string.IsNullOrWhiteSpace(ProjectCode))
+        {
+            // Declared as known, and code provided - complete.
+            return true;
+        }
+
+        if (IsProjectCodeKnown is false && string.IsNullOrWhiteSpace(ProjectCode))
+        {
+            // Declared as not known, and no code provided - complete.
+            return true;
+        }
+
+        // Any other combination is incomplete.
+        return false;
+    }
+
+    #endregion
 
     #region Phase start date
 

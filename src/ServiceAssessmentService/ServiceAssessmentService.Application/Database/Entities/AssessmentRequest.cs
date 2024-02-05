@@ -52,9 +52,11 @@ internal class AssessmentRequest : BaseEntity
         var domainModel = new ServiceAssessmentService.Domain.Model.AssessmentRequest
         {
             Id = Id,
-            Name = Name,
             PhaseConcluding = PhaseConcluding?.ToDomainModel(),
             AssessmentType = AssessmentTypeRequested?.ToDomainModel(),
+            Name = Name,
+            IsProjectCodeKnown = IsProjectCodeKnown,
+            ProjectCode = ProjectCode,
             PhaseStartDate = PhaseStartDate,
             IsPhaseEndDateKnown = IsPhaseEndDateKnown,
             PhaseEndDate = PhaseEndDate,

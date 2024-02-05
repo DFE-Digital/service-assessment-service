@@ -138,11 +138,10 @@ public class AssessmentRequestPhaseEndDateValidationTests
     public void When_IsPhaseEndDateKnown_IsFalse_And_PhaseEndDate_IsNotNull_Then_RadioIsValid_And_NestedIsInvalid()
     {
         // Arrange
-        var arbitraryValidDate = new DateOnly(2022, 1, 1);
         var assessmentRequest = new AssessmentRequest
         {
             IsPhaseEndDateKnown = false,
-            PhaseEndDate = arbitraryValidDate,
+            PhaseEndDate = ArbitraryValidDate,
         };
 
         // Act
@@ -158,8 +157,33 @@ public class AssessmentRequestPhaseEndDateValidationTests
 
             // ...and inner date question is invalid (should be null)
             Assert.False(result.NestedValidationResult.IsValid);
-            Assert.Contains(result.NestedValidationResult.DateValidationErrors,
-                v => v.FieldName == nameof(assessmentRequest.PhaseEndDate));
+            Assert.Contains(result.NestedValidationResult.DateValidationErrors, v => v.FieldName == nameof(assessmentRequest.PhaseEndDate));
+            Assert.Empty(result.NestedValidationResult.DateValidationWarnings);
+        });
+    }
+
+    [Fact]
+    public void When_IsPhaseEndDateKnown_IsNull_And_PhaseEndDate_IsNotNull_Then_RadioIsNotValid_And_NestedIsValid()
+    {
+        // Arrange
+        var assessmentRequest = new AssessmentRequest
+        {
+            IsPhaseEndDateKnown = null,
+            PhaseEndDate = ArbitraryValidDate,
+        };
+
+        // Act
+        var result = assessmentRequest.ValidatePhaseEndDate();
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.False(result.IsValid);
+            Assert.Contains(result.RadioQuestionValidationErrors, v => v.FieldName == nameof(assessmentRequest.IsPhaseEndDateKnown));
+            Assert.Empty(result.RadioQuestionValidationWarnings);
+
+            Assert.True(result.NestedValidationResult.IsValid);
+            Assert.Empty(result.NestedValidationResult.DateValidationErrors);
             Assert.Empty(result.NestedValidationResult.DateValidationWarnings);
         });
     }

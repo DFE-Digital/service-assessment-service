@@ -102,7 +102,7 @@ public class AssessmentRequestDescriptionValidationTests
         Assert.False(result.IsValid);
         Assert.Contains(result.ValidationWarnings, v => v.FieldName == nameof(assessmentRequest.Description));
     }
-    
+
     [Theory]
     [InlineData("Test description with \n (line feed)")]
     [InlineData("Test description with \r (carriage return)")]
