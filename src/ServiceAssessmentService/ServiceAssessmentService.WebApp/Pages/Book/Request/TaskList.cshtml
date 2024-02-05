@@ -464,9 +464,10 @@
 
                     <h2 class="govuk-heading-m">Delete draft</h2>
                     <p>If you no longer want to proceed with this request, you can delete it.</p>
-                    <form action="/book/request/delete/rece6zEGl2IvHZoi0" method="get">
-                        <button class="govuk-button govuk-button--warning" data-module="govuk-button">Delete draft</button>
-                    </form>
+                    <govuk-button-link asp-page="/Book/Request/Delete" class="govuk-button--warning" asp-route-id="@Model.AssessmentRequest.Id">
+                        Delete draft
+                    </govuk-button-link>
+
                 </div>
             </div>
         }
