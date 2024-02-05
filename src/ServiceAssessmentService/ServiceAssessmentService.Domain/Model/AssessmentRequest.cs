@@ -64,7 +64,7 @@ public class AssessmentRequest
                 {
                     FieldName = nameof(Name),
                     WarningMessage =
-                        "Name contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                        "Name contains non-standard ASCII characters -- non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
                 });
             }
 
@@ -116,7 +116,8 @@ public class AssessmentRequest
                 });
             }
 
-            if (Description.Any(c => c < 32 || 126 < c))
+            // Allow newlines without warning/error as this is a long text multi-line field
+            if (Description.Any(c => (c != '\n' && c != '\r') && (c < 32 || 126 < c)))
             {
                 /*
                  * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
@@ -128,7 +129,7 @@ public class AssessmentRequest
                 {
                     FieldName = nameof(Description),
                     WarningMessage =
-                        "Description contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                        "Description contains non-standard ASCII characters -- non-standard characters (e.g., curly \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
                 });
             }
 

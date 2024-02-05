@@ -63,10 +63,10 @@ public class AssessmentRequestDescriptionValidationTests
     [InlineData("Test description with \u0007 (bell)")]
     [InlineData("Test description with \u0008 (backspace)")]
     [InlineData("Test description with \u0009 (horizontal tab)")]
-    [InlineData("Test description with \u000A (line feed)")] // TODO: We may want to allow newline characters
+    // [InlineData("Test description with \u000A (line feed)")] // Commented out as newline characters are explicitly permitted
     [InlineData("Test description with \u000B (vertical tab)")]
     [InlineData("Test description with \u000C (form feed)")]
-    [InlineData("Test description with \u000D (carriage return)")] // TODO: We may want to allow newline characters
+    // [InlineData("Test description with \u000D (carriage return)")] // Commented out as newline characters are explicitly permitted
     [InlineData("Test description with \u000E (shift out)")]
     [InlineData("Test description with \u000F (shift in)")]
     [InlineData("Test description with \u0010 (data link escape)")]
@@ -101,6 +101,26 @@ public class AssessmentRequestDescriptionValidationTests
         // Assert
         Assert.False(result.IsValid);
         Assert.Contains(result.ValidationWarnings, v => v.FieldName == nameof(assessmentRequest.Description));
+    }
+    
+    [Theory]
+    [InlineData("Test description with \n (line feed)")]
+    [InlineData("Test description with \r (carriage return)")]
+    public void ValidateDescription_ReturnsValid_WhenDescriptionContainsNewlineCharacters(string? description)
+    {
+        // Arrange
+        var assessmentRequest = new AssessmentRequest
+        {
+            Description = description,
+        };
+
+        // Act
+        var result = assessmentRequest.ValidateDescription();
+
+        // Assert
+        Assert.True(result.IsValid);
+        Assert.Empty(result.ValidationWarnings);
+        Assert.Empty(result.ValidationErrors);
     }
 
 
