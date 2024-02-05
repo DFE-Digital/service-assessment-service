@@ -63,7 +63,7 @@ public class AssessmentRequest
                 result.ValidationWarnings.Add(new ValidationWarning
                 {
                     FieldName = nameof(Name),
-                    WarningMessage = "Name contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
+                    WarningMessage = "Name contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
                 });
             }
 
@@ -124,7 +124,7 @@ public class AssessmentRequest
                 result.ValidationWarnings.Add(new ValidationWarning
                 {
                     FieldName = nameof(Description),
-                    WarningMessage = "Description contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
+                    WarningMessage = "Description contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
                 });
             }
 
