@@ -104,7 +104,9 @@ public class AssessmentRequest
         }
         else
         {
-            if (Description.Length > DescriptionMaxLengthChars)
+            // UI count of characters may differ from actual count due to newline handling
+            // TODO: Consistent newline char handling everywhere (e.g., normalise everywhere to \n)
+            if (Description.ReplaceLineEndings("\n").Length > DescriptionMaxLengthChars)
             {
                 result.IsValid = false;
                 result.ValidationErrors.Add(new ValidationError
