@@ -231,63 +231,86 @@ public class AssessmentRequestRepository
     }
 
 
-    // TODO: Figure out the nested validation result logic...
-    public async Task<DateValidationResult> UpdateEndDateByPartsAsync(Guid id, bool? isEndDateKnown, string? newYear, string? newMonth, string? newDay)
+    public async Task<RadioConditionalValidationResult<DateValidationResult>> UpdateEndDateByPartsAsync(Guid id,
+        bool? isEndDateKnown, string? newYear, string? newMonth, string? newDay)
     {
         // Validate the assessment request being edited, exists
         var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
         if (assessmentRequest is null)
         {
-            var validationResult = new DateValidationResult();
-            validationResult.DateValidationErrors.Add(new()
+            var validationResult = new RadioConditionalValidationResult<DateValidationResult>()
+            {
+                IsValid = true,
+                NestedValidationResult = new DateValidationResult()
+                {
+                    IsValid = true,
+                },
+            };
+
+            validationResult.RadioQuestionValidationErrors.Add(new()
             {
                 FieldName = nameof(assessmentRequest.Id),
                 ErrorMessage = $"Assessment request with ID {id} not found",
             });
             validationResult.IsValid = false;
+            validationResult.NestedValidationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+
+        if ((isEndDateKnown != true) && (newYear is not null || newMonth is not null || newDay is not null))
+        {
+            // Fail-fast if any date parts are given, but the end date is not declared as known (no/false, or blank/null)
+            // TODO: Consider just discarding/dumping the date parts if user selects no/false, rather than returning an error
+            // NOTE: Thorough validation is performed later (including if setting a date is valid in combination with the "is phase end date known" question)
+            var validationResult = new RadioConditionalValidationResult<DateValidationResult>()
+            {
+                IsValid = false,
+                NestedValidationResult = new DateValidationResult()
+                {
+                    IsValid = false,
+                },
+            };
+
+            validationResult.RadioQuestionValidationErrors.Add(new()
+            {
+                FieldName = nameof(isEndDateKnown),
+                ErrorMessage = "Declare the end date as known if providing a date",
+            });
+            validationResult.IsValid = false;
+            validationResult.NestedValidationResult.IsValid = false;
+            validationResult.NestedValidationResult.DateValidationErrors.Add(new()
+            {
+                FieldName = "Date",
+                ErrorMessage = "Clear the date parts if declaring the end date is not known",
+            });
 
             return validationResult;
         }
 
 
         DateOnly? proposedDate = null;
-
-
-        // Validate the outer radio first
-        if (isEndDateKnown is null)
-        {
-            var validationResult = new DateValidationResult();
-            validationResult.IsValid = false;
-            validationResult.DateValidationErrors.Add(new()
-            {
-                FieldName = nameof(isEndDateKnown),
-                ErrorMessage = $"Select whether the end date is known",
-            });
-
-            return validationResult;
-        }
-        else if (isEndDateKnown == false && (newYear != null || newMonth != null || newDay != null))
-        {
-            var validationResult = new DateValidationResult();
-            validationResult.IsValid = false;
-            validationResult.DateValidationErrors.Add(new()
-            {
-                FieldName = nameof(isEndDateKnown),
-                ErrorMessage = $"End date is declared as not known, but date parts have been provided",
-            });
-
-            return validationResult;
-        }
-        else if (isEndDateKnown == true)
+        if (newYear is not null || newMonth is not null || newDay is not null)
         {
             (var datePartsValidationResult, proposedDate) = ValidateDateParts(newYear, newMonth, newDay, proposedDate);
-
+            // Date parts provided, but unable to parse them as a valid date
+            // Fail-fast here, due to not being able to construct a DateOnly from the parts for assignment to the domain model
             if (!datePartsValidationResult.IsValid)
             {
-                return datePartsValidationResult;
+                return new RadioConditionalValidationResult<DateValidationResult>()
+                {
+                    IsValid = true,
+                    NestedValidationResult = datePartsValidationResult,
+                };
             }
         }
 
+        /*
+         * TODO: Consider ways to remove this validation logic from here and keep it all within the domain
+         * - e.g., using a method to assign the phase end date from parts would still require checking the result
+         *   (unless the domain model has properties/fields representing individual date parts rather than a DateTime?)
+         */
 
         // Do specific update
         assessmentRequest.IsPhaseEndDateKnown = isEndDateKnown;

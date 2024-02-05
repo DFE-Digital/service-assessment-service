@@ -1,10 +1,8 @@
 ﻿namespace ServiceAssessmentService.Domain.Model.Validations;
 
 
-public class DateValidationResult
+public class DateValidationResult : ValidationResult
 {
-    public bool IsValid { get; set; } = true;
-
     public List<ValidationError> YearValidationErrors { get; set; } = new();
     public List<ValidationError> MonthValidationErrors { get; set; } = new();
     public List<ValidationError> DayValidationErrors { get; set; } = new();

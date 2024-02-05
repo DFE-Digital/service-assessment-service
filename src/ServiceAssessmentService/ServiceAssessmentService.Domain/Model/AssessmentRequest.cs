@@ -63,7 +63,8 @@ public class AssessmentRequest
                 result.ValidationWarnings.Add(new ValidationWarning
                 {
                     FieldName = nameof(Name),
-                    WarningMessage = "Name contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                    WarningMessage =
+                        "Name contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
                 });
             }
 
@@ -124,7 +125,8 @@ public class AssessmentRequest
                 result.ValidationWarnings.Add(new ValidationWarning
                 {
                     FieldName = nameof(Description),
-                    WarningMessage = "Description contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                    WarningMessage =
+                        "Description contains non-standard ASCII characters -non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
                 });
             }
 
@@ -144,6 +146,7 @@ public class AssessmentRequest
 
 
     #region Phase start date
+
     public DateOnly? PhaseStartDate { get; set; }
 
     public DateValidationResult ValidatePhaseStartDate()
@@ -187,6 +190,7 @@ public class AssessmentRequest
     {
         return PhaseStartDate is not null;
     }
+
     #endregion
 
     #region Phase end date
@@ -194,31 +198,33 @@ public class AssessmentRequest
     public bool? IsPhaseEndDateKnown { get; set; } = null;
     public DateOnly? PhaseEndDate { get; set; }
 
-    public DateValidationResult ValidatePhaseEndDate()
+    public RadioConditionalValidationResult<DateValidationResult> ValidatePhaseEndDate()
     {
-        var result = new DateValidationResult();
-        result.IsValid = true;
-
-        if (IsPhaseEndDateKnown is null)
+        var radioValidationResult = new RadioConditionalValidationResult<DateValidationResult>()
         {
-            result.IsValid = false;
-            result.DateValidationErrors.Add(new ValidationError
+            IsValid = true,
+            NestedValidationResult = new DateValidationResult()
             {
-                FieldName = nameof(IsPhaseEndDateKnown),
-                ErrorMessage = "Please select whether the phase end date is known",
-            });
-        }
-        else if (IsPhaseEndDateKnown == false)
+                IsValid = true,
+            }
+        };
+
+        if (IsPhaseEndDateKnown == false)
         {
-            // Phase end date not known - must not have an end date specified
             if (PhaseEndDate is not null)
             {
-                result.IsValid = false;
-                result.DateValidationErrors.Add(new ValidationError
+                // Phase end date not known - must not have an end date specified
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.DateValidationErrors.Add(new ValidationError
                 {
                     FieldName = nameof(PhaseEndDate),
-                    ErrorMessage = "Phase end date must not be specified if the phase end date is declared as not known",
+                    ErrorMessage =
+                        "Phase end date must not be specified if the phase end date is declared as not known",
                 });
+            }
+            else
+            {
+                // Phase declared as not known, and no date provided -- valid.
             }
         }
         else if (IsPhaseEndDateKnown == true)
@@ -226,49 +232,64 @@ public class AssessmentRequest
             // Phase end date known - must have an end date specified
             if (PhaseEndDate is null)
             {
-                result.IsValid = false;
-                result.DateValidationErrors.Add(new ValidationError
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.DateValidationErrors.Add(new ValidationError
                 {
                     FieldName = nameof(PhaseEndDate),
                     ErrorMessage = "Phase end date is required if the phase end date is declared as known",
                 });
             }
+            // else if (PhaseEndDate < DateOnly.FromDateTime(DateTime.UtcNow))
+            // {
+            //     result.IsValid = false;
+            //     result.ValidationErrors.Add(new ValidationError
+            //     {
+            //         FieldName = nameof(PhaseEndDate),
+            //         ErrorMessage = "Phase end date cannot be in the past",
+            //     });
+            // }
+            // TODO: Now that the proposed year/month/day values result in a "valid" date, apply additional validations on the resulting date?
+            // TODO: Consider if date is "recent" (i.e., within last x years?)
+            // TODO: Consider if date is in the future? (not necessarily a problem if e.g., a discovery is ending next month and the team are being proactive in booking assessment? perhaps this is a warning on the task list page?)
+            // TODO: Consider if date is absurdly far in the future? (e.g., 100 years from now)
+            // TODO: Consider relation to other dates (e.g., end date expected to be before end date) - warning vs error?
             else
             {
-                // if (PhaseEndDate < DateOnly.FromDateTime(DateTime.UtcNow))
-                // {
-                //     result.IsValid = false;
-                //     result.ValidationErrors.Add(new ValidationError
-                //     {
-                //         FieldName = nameof(PhaseEndDate),
-                //         ErrorMessage = "Phase end date cannot be in the past",
-                //     });
-                // }
-
-
-                // TODO: Now that the proposed year/month/day values result in a "valid" date, apply additional validations on the resulting date?
-                // TODO: Consider if date is "recent" (i.e., within last x years?)
-                // TODO: Consider if date is in the future? (not necessarily a problem if e.g., a discovery is ending next month and the team are being proactive in booking assessment? perhaps this is a warning on the task list page?)
-                // TODO: Consider if date is absurdly far in the future? (e.g., 100 years from now)
-                // TODO: Consider relation to other dates (e.g., end date expected to be before end date) - warning vs error?
+                // Phase declared as known, and acceptable date provided -- valid.
             }
         }
         else
         {
-            throw new InvalidOperationException("IsPhaseEndDateKnown is not null or true or false");
+            radioValidationResult.IsValid = false;
+            radioValidationResult.RadioQuestionValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(IsPhaseEndDateKnown),
+                ErrorMessage = "Please select whether the phase end date is known",
+            });
         }
 
-
-        return result;
+        return radioValidationResult;
     }
 
     public bool IsPhaseEndDateComplete()
     {
-        return PhaseEndDate is not null;
+        if (IsPhaseEndDateKnown is true && PhaseEndDate is not null)
+        {
+            // Declared as known, and date provided - complete.
+            return true;
+        }
+
+        if (IsPhaseEndDateKnown is false && PhaseEndDate is null)
+        {
+            // Declared as not known, and no date provided - complete.
+            return true;
+        }
+
+        // Any other combination is incomplete.
+        return false;
     }
+
     #endregion
-
-
 
 
     public DateTimeOffset CreatedAt { get; set; }

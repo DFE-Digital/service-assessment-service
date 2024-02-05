@@ -169,7 +169,7 @@ public class PhaseEndDateModel : PageModel
         };
 
         var changeResult = await _assessmentRequestRepository.UpdateEndDateByPartsAsync(id, isEndDateKnown, newYear, newMonth, newDay);
-        if (!changeResult.IsValid)
+        if (!changeResult.IsValid || !changeResult.NestedValidationResult.IsValid)
         {
             var yearIsInt = int.TryParse(newYear, out int year);
             var monthIsInt = int.TryParse(newMonth, out int month);
@@ -182,15 +182,17 @@ public class PhaseEndDateModel : PageModel
             EndDateMonthValue = monthIsInt ? month : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
             EndDateDayValue = dayIsInt ? day : null;   // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
 
-            DayErrors = changeResult.DayValidationErrors.Select(e => e.ErrorMessage).ToList();
-            MonthErrors = changeResult.MonthValidationErrors.Select(e => e.ErrorMessage).ToList();
-            YearErrors = changeResult.YearValidationErrors.Select(e => e.ErrorMessage).ToList();
-            DateErrors = changeResult.DateValidationErrors.Select(e => e.ErrorMessage).ToList();
+            RadioErrors = changeResult.RadioQuestionValidationErrors.Select(e => e.ErrorMessage).ToList();
 
-            DayWarnings = changeResult.DayValidationWarnings.Select(e => e.WarningMessage).ToList();
-            MonthWarnings = changeResult.MonthValidationWarnings.Select(e => e.WarningMessage).ToList();
-            YearWarnings = changeResult.YearValidationWarnings.Select(e => e.WarningMessage).ToList();
-            DateWarnings = changeResult.DateValidationWarnings.Select(e => e.WarningMessage).ToList();
+            DayErrors = changeResult.NestedValidationResult.DayValidationErrors.Select(e => e.ErrorMessage).ToList();
+            MonthErrors = changeResult.NestedValidationResult.MonthValidationErrors.Select(e => e.ErrorMessage).ToList();
+            YearErrors = changeResult.NestedValidationResult.YearValidationErrors.Select(e => e.ErrorMessage).ToList();
+            DateErrors = changeResult.NestedValidationResult.DateValidationErrors.Select(e => e.ErrorMessage).ToList();
+
+            DayWarnings = changeResult.NestedValidationResult.DayValidationWarnings.Select(e => e.WarningMessage).ToList();
+            MonthWarnings = changeResult.NestedValidationResult.MonthValidationWarnings.Select(e => e.WarningMessage).ToList();
+            YearWarnings = changeResult.NestedValidationResult.YearValidationWarnings.Select(e => e.WarningMessage).ToList();
+            DateWarnings = changeResult.NestedValidationResult.DateValidationWarnings.Select(e => e.WarningMessage).ToList();
 
             return Page();
         }
