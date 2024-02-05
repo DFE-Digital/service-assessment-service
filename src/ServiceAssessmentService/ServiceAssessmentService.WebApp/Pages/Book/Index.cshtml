@@ -25,9 +25,11 @@
 
                 <p>You can book a discovery peer review for your own project or on behalf of a team.</p>
 
-                <govuk-button-link is-start-button="true" asp-area="Book" asp-controller="BookingRequest" asp-action="PhaseConcluding">
-                    Start now
-                </govuk-button-link>
+                <form asp-page="/Book/Request/StartNew" method="post">
+                    <govuk-button is-start-button="true" type="submit">
+                        Start now
+                    </govuk-button>
+                </form>
 
                 <govuk-summary-card>
                     <govuk-summary-card-title>Continue with a draft</govuk-summary-card-title>
@@ -47,7 +49,7 @@
                             {
                                 <govuk-summary-list-row>
                                     <govuk-summary-list-row-key>
-                                        <a asp-page="/Book/Request/TaskList" asp-route-id="@assessmentRequest.Id">@assessmentRequest.Name</a>
+                                        <a asp-page="/Book/Request/TaskList" asp-route-id="@assessmentRequest.Id">@(string.IsNullOrWhiteSpace(assessmentRequest.Name) ? "Unspecified name" : assessmentRequest.Name)</a>
                                     </govuk-summary-list-row-key>
                                     <govuk-summary-list-row-value>
                                         <ul class="govuk-list govuk-list">
