@@ -424,7 +424,7 @@ public class AssessmentRequestRepository
             dateValidationResult.DateValidationErrors.Add(new()
             {
                 FieldName = "Date",
-                ErrorMessage = $"{day}/{month}/{year} is not recognised as a valid day/month/year date",
+                ErrorMessage = $"{day}/{month}/{year} is not recognised as a valid day/month/year date between {AssessmentRequest.EarliestPermittedPhaseEndDate} and {AssessmentRequest.LatestPermittedPhaseEndDate}.",
             });
 
             return (dateValidationResult, proposedDate);

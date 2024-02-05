@@ -149,6 +149,10 @@ public class AssessmentRequest
 
     public DateOnly? PhaseStartDate { get; set; }
 
+    public static readonly DateOnly EarliestPermittedPhaseStartDate = new(2000, 1, 1); // TODO: Consider making these relative to the current date
+
+    public static readonly DateOnly LatestPermittedPhaseStartDate = new(2050, 1, 1); // TODO: Consider making these relative to the current date
+
     public DateValidationResult ValidatePhaseStartDate()
     {
         var result = new DateValidationResult();
@@ -161,6 +165,24 @@ public class AssessmentRequest
             {
                 FieldName = nameof(PhaseStartDate),
                 ErrorMessage = "Phase start date is required",
+            });
+        }
+        else if (PhaseStartDate < EarliestPermittedPhaseStartDate)
+        {
+            result.IsValid = false;
+            result.DateValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(PhaseStartDate),
+                ErrorMessage = $"Phase start date cannot be before {EarliestPermittedPhaseStartDate}",
+            });
+        }
+        else if (PhaseStartDate > LatestPermittedPhaseStartDate)
+        {
+            result.IsValid = false;
+            result.DateValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(PhaseStartDate),
+                ErrorMessage = $"Phase start date cannot be after {LatestPermittedPhaseStartDate}",
             });
         }
         else
