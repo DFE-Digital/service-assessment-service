@@ -38,8 +38,8 @@ public class NamePageModel : PageModel
     public string Name { get; set; }
 
 
-    public List<string> Errors { get; set; } = new List<string>();
-    public List<string> Warnings { get; set; } = new List<string>();
+    public List<string> Errors { get; set; } = new();
+    public List<string> Warnings { get; set; } = new();
 
 
     private const string _formElementName = "service-description";
@@ -47,7 +47,7 @@ public class NamePageModel : PageModel
 
     public string QuestionText => $"What is the purpose of your {Phase?.DisplayNameMidSentenceCase ?? "service"}?";
 
-    public string QuestionHint => $"Tell us the purpose of your {Phase?.DisplayNameMidSentenceCase ?? "service"}." +
+    public string? QuestionHint => $"Tell us the purpose of your {Phase?.DisplayNameMidSentenceCase ?? "service"}." +
                             "For example, if it's part of a wider service or based on policy intent." +
                             "This description will help us to arrange a review panel with the most relevant experience.";
 

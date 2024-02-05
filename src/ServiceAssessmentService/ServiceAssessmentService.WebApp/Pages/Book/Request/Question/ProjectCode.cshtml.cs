@@ -37,9 +37,9 @@ public class ProjectCode : PageModel
     [BindProperty]
     public string? ProjectCodeValue { get; set; }
 
-    public List<string> RadioErrors { get; set; } = new List<string>();
+    public List<string> RadioErrors { get; set; } = new();
 
-    public List<string> ProjectCodeErrors { get; set; } = new List<string>();
+    public List<string> ProjectCodeErrors { get; set; } = new();
 
 
     private const string _isProjectCodeKnownFormElementName = "service-is-project-code-known";

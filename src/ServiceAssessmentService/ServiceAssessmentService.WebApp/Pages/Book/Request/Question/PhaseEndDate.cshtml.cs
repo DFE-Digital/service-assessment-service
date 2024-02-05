@@ -47,12 +47,12 @@ public class PhaseEndDateModel : PageModel
     public int? EndDateYearValue { get; set; }
 
 
-    public List<string> RadioErrors { get; set; } = new List<string>();
+    public List<string> RadioErrors { get; set; } = new();
 
-    public List<string> DayErrors { get; set; } = new List<string>();
-    public List<string> MonthErrors { get; set; } = new List<string>();
-    public List<string> YearErrors { get; set; } = new List<string>();
-    public List<string> DateErrors { get; set; } = new List<string>();
+    public List<string> DayErrors { get; set; } = new();
+    public List<string> MonthErrors { get; set; } = new();
+    public List<string> YearErrors { get; set; } = new();
+    public List<string> DateErrors { get; set; } = new();
     public List<string> AllDateErrors => DayErrors.Concat(MonthErrors).Concat(YearErrors).Concat(DateErrors).ToList();
 
 
@@ -88,10 +88,10 @@ public class PhaseEndDateModel : PageModel
     }
 
 
-    public List<string> DayWarnings { get; set; } = new List<string>();
-    public List<string> MonthWarnings { get; set; } = new List<string>();
-    public List<string> YearWarnings { get; set; } = new List<string>();
-    public List<string> DateWarnings { get; set; } = new List<string>();
+    public List<string> DayWarnings { get; set; } = new();
+    public List<string> MonthWarnings { get; set; } = new();
+    public List<string> YearWarnings { get; set; } = new();
+    public List<string> DateWarnings { get; set; } = new();
     public List<string> AllWarnings => DayWarnings.Concat(MonthWarnings).Concat(YearWarnings).Concat(DateWarnings).ToList();
 
 

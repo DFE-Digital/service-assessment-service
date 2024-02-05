@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using ServiceAssessmentService.Application.Database;
 using ServiceAssessmentService.Domain.Model;
 using ServiceAssessmentService.Domain.Model.Validations;
+using AssessmentType = ServiceAssessmentService.Application.Database.Entities.AssessmentType;
 
 namespace ServiceAssessmentService.Application.UseCases;
 
@@ -478,4 +479,105 @@ public class AssessmentRequestRepository
         // Return the result
         return validateProjectCodeResult;
     }
+
+    public async Task<RadioValidationResult> UpdateAssessmentTypeAsync(Guid id, string? newAssessmentTypeId)
+    {
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new RadioValidationResult();
+            validationResult.ValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found",
+            });
+            validationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+        var availableAssessmentTypes = await _dbContext.AssessmentTypes.ToListAsync();
+
+        // Do specific update
+        if (newAssessmentTypeId is null)
+        {
+            assessmentRequest.AssessmentTypeRequestedId = null;
+            assessmentRequest.AssessmentTypeRequested = null;
+        }
+        else
+        {
+            assessmentRequest.AssessmentTypeRequestedId = Guid.Parse(newAssessmentTypeId);
+            assessmentRequest.AssessmentTypeRequested = availableAssessmentTypes.SingleOrDefault(e => e.Id.ToString() == newAssessmentTypeId);
+        }
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateDescriptionResult = domainModel.ValidateAssessmentType(availableAssessmentTypes.Select(x => x.ToDomainModel()));
+
+        // If valid, save it to the database
+        if (validateDescriptionResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateDescriptionResult;
+    }
+
+    public async Task<RadioValidationResult> UpdatePhaseConcludingAsync(Guid id, string? newPhaseConcludingId)
+    {
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new RadioValidationResult();
+            validationResult.ValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found",
+            });
+            validationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+        var availablePhaseConcludings = await _dbContext.Phases.ToListAsync();
+
+        // Do specific update
+        if (newPhaseConcludingId is null)
+        {
+            assessmentRequest.PhaseConcludingId = null;
+            assessmentRequest.PhaseConcluding = null;
+        }
+        else
+        {
+            assessmentRequest.PhaseConcludingId = Guid.Parse(newPhaseConcludingId);
+            assessmentRequest.PhaseConcluding = availablePhaseConcludings.SingleOrDefault(e => e.Id.ToString() == newPhaseConcludingId);
+        }
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateDescriptionResult = domainModel.ValidatePhaseConcluding(availablePhaseConcludings.Select(x => x.ToDomainModel()));
+
+        // If valid, save it to the database
+        if (validateDescriptionResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateDescriptionResult;
+    }
+
 }

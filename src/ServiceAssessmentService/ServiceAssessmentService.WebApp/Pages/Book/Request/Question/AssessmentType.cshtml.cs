@@ -2,24 +2,25 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceAssessmentService.Application.UseCases;
 using ServiceAssessmentService.Domain.Model;
+using ServiceAssessmentService.WebApp.Pages.Shared;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book.Request.Question;
 
-public class DescriptionPageModel : PageModel
+public class AssessmentTypePageModel : PageModel
 {
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly PhaseRepository _phaseRepository;
     private readonly PortfolioRepository _portfolioRepository;
 
-    private readonly ILogger<NamePageModel> _logger;
+    private readonly ILogger<AssessmentTypePageModel> _logger;
 
-    public DescriptionPageModel(
+    public AssessmentTypePageModel(
         AssessmentRequestRepository assessmentRequestRepository
         , AssessmentTypeRepository assessmentTypeRepository
         , PhaseRepository phaseRepository
         , PortfolioRepository portfolioRepository
-        , ILogger<NamePageModel> logger
+        , ILogger<AssessmentTypePageModel> logger
     )
     {
         _assessmentRequestRepository = assessmentRequestRepository;
@@ -31,27 +32,25 @@ public class DescriptionPageModel : PageModel
 
     public Guid? Id { get; set; } = Guid.Empty;
 
-    public Phase? Phase { get; set; } = null;
+
+    public IEnumerable<AssessmentType> AssessmentTypes { get; set; } = new List<AssessmentType>();
+
+    public IEnumerable<RadioItem> AvailableAssessmentTypes { get; set; } = new List<RadioItem>();
 
     [BindProperty]
-    public string? Description { get; set; } = string.Empty;
+    public string? SelectedAssessmentTypeId { get; set; } = null;
 
-
-    public int MaxLength => AssessmentRequest.DescriptionMaxLengthChars;
 
     public List<string> Errors { get; set; } = new();
     public List<string> Warnings { get; set; } = new();
 
 
-    private const string _formElementName = "service-description";
+    private const string _formElementName = "service-assessment-type";
     public string FormElementName => _formElementName;
 
-    public string QuestionText => $"What is the purpose of your {Phase?.DisplayNameMidSentenceCase ?? "service"}?";
+    public string QuestionText => $"What type of assessment are you requesting?";
 
-    public string? QuestionHint => $"Tell us the purpose of your {Phase?.DisplayNameMidSentenceCase ?? "service"}." +
-                            "For example, if it's part of a wider service or based on policy intent." +
-                            "This description will help us to arrange a review panel with the most relevant experience.";
-
+    public string? QuestionHint => null;
 
     public async Task<IActionResult> OnGet(Guid id)
     {
@@ -62,14 +61,20 @@ public class DescriptionPageModel : PageModel
             return NotFound();
         }
 
+        AssessmentTypes = await _assessmentTypeRepository.GetAssessmentTypesAsync();
+        AvailableAssessmentTypes = AssessmentTypes.Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
+
         Id = req.Id;
-        Description = req.Description;
-        Phase = req.PhaseConcluding;
+        SelectedAssessmentTypeId = req.AssessmentType?.Id.ToString();
 
         return Page();
     }
 
-    public async Task<IActionResult> OnPost(Guid id, [FromForm(Name = _formElementName), AllowEmpty] string newDescription)
+    public async Task<IActionResult> OnPost(
+        Guid id,
+        [FromForm(Name = _formElementName), AllowEmpty]
+        string? newAssessmentTypeId
+    )
     {
         var req = await _assessmentRequestRepository.GetByIdAsync(id);
         if (req == null)
@@ -78,11 +83,17 @@ public class DescriptionPageModel : PageModel
             return NotFound();
         }
 
-        var changeResult = await _assessmentRequestRepository.UpdateDescriptionAsync(id, newDescription);
+        // TODO: Consider only setting the assessment type once (rejecting any attempts to set/update it if it's already set).
+
+        var changeResult = await _assessmentRequestRepository.UpdateAssessmentTypeAsync(req.Id, newAssessmentTypeId);
         if (!changeResult.IsValid || changeResult.ValidationErrors.Any())
         {
+
+            AssessmentTypes = await _assessmentTypeRepository.GetAssessmentTypesAsync();
+            AvailableAssessmentTypes = AssessmentTypes.Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
+
             Id = req.Id;
-            Description = newDescription; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            SelectedAssessmentTypeId = req.AssessmentType?.Id.ToString(); // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
             Warnings = changeResult.ValidationWarnings.Select(e => e.WarningMessage).ToList();
             Errors = changeResult.ValidationErrors.Select(e => e.ErrorMessage).ToList();
             return Page();
@@ -91,4 +102,5 @@ public class DescriptionPageModel : PageModel
         //return RedirectToPage("/Book/Request/TaskList", new { id });
         return RedirectToPage("/Book/Request/Question/ProjectCode", new { id });
     }
+
 }

@@ -43,10 +43,10 @@ public class PhaseStartDateModel : PageModel
     public int? StartDateYearValue { get; set; }
 
 
-    public List<string> DayErrors { get; set; } = new List<string>();
-    public List<string> MonthErrors { get; set; } = new List<string>();
-    public List<string> YearErrors { get; set; } = new List<string>();
-    public List<string> DateErrors { get; set; } = new List<string>();
+    public List<string> DayErrors { get; set; } = new();
+    public List<string> MonthErrors { get; set; } = new();
+    public List<string> YearErrors { get; set; } = new();
+    public List<string> DateErrors { get; set; } = new();
     public List<string> AllErrors => DayErrors.Concat(MonthErrors).Concat(YearErrors).Concat(DateErrors).ToList();
 
 
@@ -82,10 +82,10 @@ public class PhaseStartDateModel : PageModel
     }
 
 
-    public List<string> DayWarnings { get; set; } = new List<string>();
-    public List<string> MonthWarnings { get; set; } = new List<string>();
-    public List<string> YearWarnings { get; set; } = new List<string>();
-    public List<string> DateWarnings { get; set; } = new List<string>();
+    public List<string> DayWarnings { get; set; } = new();
+    public List<string> MonthWarnings { get; set; } = new();
+    public List<string> YearWarnings { get; set; } = new();
+    public List<string> DateWarnings { get; set; } = new();
     public List<string> AllWarnings => DayWarnings.Concat(MonthWarnings).Concat(YearWarnings).Concat(DateWarnings).ToList();
 
 
@@ -97,7 +97,7 @@ public class PhaseStartDateModel : PageModel
 
     public string QuestionText => $"When did your {Phase?.DisplayNameMidSentenceCase ?? "phase"} start?";
 
-    public string QuestionHint => $"For example, 18 2 2023.";
+    public string? QuestionHint => $"For example, 18 2 2023.";
 
 
     public async Task<IActionResult> OnGet(Guid id)

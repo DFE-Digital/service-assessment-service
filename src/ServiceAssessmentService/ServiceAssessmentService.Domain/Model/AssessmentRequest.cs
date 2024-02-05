@@ -7,11 +7,11 @@ public class AssessmentRequest
     // dictionary of field name and completion status
     private readonly Dictionary<string, Func<AssessmentRequest, bool>> _completionStatus = new()
     {
-        // { nameof(AssessmentType), x => x.IsAssessmentTypeComplete() },
-        // { nameof(PhaseConcluding), x => x.IsPhaseConcludingComplete() },
+        {nameof(AssessmentType), x => x.IsAssessmentTypeComplete()},
+        {nameof(PhaseConcluding), x => x.IsPhaseConcludingComplete()},
         {nameof(Name), x => x.IsNameComplete()},
         {nameof(Description), x => x.IsDescriptionComplete()},
-        {nameof(ProjectCode), x => x.IsProjectCodeComplete() },
+        {nameof(ProjectCode), x => x.IsProjectCodeComplete()},
         {nameof(PhaseStartDate), x => x.IsPhaseStartDateComplete()},
         {nameof(PhaseEndDate), x => x.IsPhaseEndDateComplete()},
         // { nameof(ReviewDates), x => x.IsReviewDatesComplete() },
@@ -25,11 +25,99 @@ public class AssessmentRequest
     public Guid Id { get; set; }
 
 
+    #region Assessment type
+
     public Phase? PhaseConcluding { get; set; } = null;
+
+    public RadioValidationResult ValidatePhaseConcluding(IEnumerable<Phase?> availablePhases)
+    {
+        var result = new RadioValidationResult();
+        result.IsValid = true;
+
+        if (PhaseConcluding is null)
+        {
+            result.IsValid = false;
+            result.ValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(PhaseConcluding),
+                ErrorMessage = "Assessment type is required",
+            });
+        }
+        else
+        {
+            if (!availablePhases.Select(x => x?.Id).Contains(PhaseConcluding.Id))
+            {
+                result.IsValid = false;
+                result.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(PhaseConcluding),
+                    ErrorMessage = "Assessment type is not valid",
+                });
+            }
+            else
+            {
+                // Assessment type set and no validation errors - valid.
+            }
+        }
+
+        return result;
+    }
+
+    public bool IsPhaseConcludingComplete()
+    {
+        return PhaseConcluding is not null;
+    }
+
+    #endregion
+
+
+    #region Assessment type
 
     public AssessmentType? AssessmentType { get; set; } = null;
 
-    // public bool? IsReassessment { get; set; } = null;
+
+    public RadioValidationResult ValidateAssessmentType(IEnumerable<AssessmentType?> availableAssessmentTypes)
+    {
+        var result = new RadioValidationResult();
+        result.IsValid = true;
+
+        if (AssessmentType is null)
+        {
+            result.IsValid = false;
+            result.ValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(AssessmentType),
+                ErrorMessage = "Assessment type is required",
+            });
+        }
+        else
+        {
+            if (!availableAssessmentTypes.Select(x => x?.Id).Contains(AssessmentType.Id))
+            {
+                result.IsValid = false;
+                result.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(AssessmentType),
+                    ErrorMessage = "Assessment type is not valid",
+                });
+            }
+            else
+            {
+                // Assessment type set and no validation errors - valid.
+            }
+        }
+
+        return result;
+    }
+
+    public bool IsAssessmentTypeComplete()
+    {
+        return AssessmentType is not null;
+    }
+
+    #endregion
+
+    public bool? IsReassessment { get; set; } = null;
 
 
     #region Name
@@ -212,6 +300,23 @@ public class AssessmentRequest
         return radioValidationResult;
     }
 
+    // public bool IsProjectCodeComplete()
+    // {
+    //     return IsProjectCodeKnown switch
+    //     {
+    //         null =>
+    //             // Not yet declared if project code is known, thus is incomplete.
+    //             false,
+    //         false =>
+    //             // Project code declared as not known, the actual project code is not required.
+    //             true,
+    //         true when !string.IsNullOrWhiteSpace(ProjectCode) =>
+    //             // Project code declared as known, and the actual project code is provided -- all information provided, thus is complete.
+    //             true,
+    //         _ => throw new Exception(),
+    //     };
+    // }
+
     public bool IsProjectCodeComplete()
     {
         if (IsProjectCodeKnown is true && !string.IsNullOrWhiteSpace(ProjectCode))
@@ -236,9 +341,11 @@ public class AssessmentRequest
 
     public DateOnly? PhaseStartDate { get; set; }
 
-    public static readonly DateOnly EarliestPermittedPhaseStartDate = new(2000, 1, 1); // TODO: Consider making these relative to the current date
+    public static readonly DateOnly
+        EarliestPermittedPhaseStartDate = new(2000, 1, 1); // TODO: Consider making these relative to the current date
 
-    public static readonly DateOnly LatestPermittedPhaseStartDate = new(2050, 1, 1); // TODO: Consider making these relative to the current date
+    public static readonly DateOnly
+        LatestPermittedPhaseStartDate = new(2050, 1, 1); // TODO: Consider making these relative to the current date
 
     public DateValidationResult ValidatePhaseStartDate()
     {
@@ -307,9 +414,11 @@ public class AssessmentRequest
     public bool? IsPhaseEndDateKnown { get; set; } = null;
     public DateOnly? PhaseEndDate { get; set; }
 
-    public static readonly DateOnly EarliestPermittedPhaseEndDate = new(2000, 1, 1); // TODO: Consider making these relative to the current date
+    public static readonly DateOnly
+        EarliestPermittedPhaseEndDate = new(2000, 1, 1); // TODO: Consider making these relative to the current date
 
-    public static readonly DateOnly LatestPermittedPhaseEndDate = new(2050, 1, 1); // TODO: Consider making these relative to the current date
+    public static readonly DateOnly
+        LatestPermittedPhaseEndDate = new(2050, 1, 1); // TODO: Consider making these relative to the current date
 
     public RadioConditionalValidationResult<DateValidationResult> ValidatePhaseEndDate()
     {
@@ -426,35 +535,6 @@ public class AssessmentRequest
     public DateTimeOffset CreatedAt { get; set; }
 
     public DateTimeOffset UpdatedAt { get; set; }
-
-
-    public bool IsAssessmentTypeComplete()
-    {
-        return AssessmentType is not null;
-    }
-
-    public bool IsPhaseConcludingComplete()
-    {
-        return PhaseConcluding is not null;
-    }
-
-
-    // public bool IsProjectCodeComplete()
-    // {
-    //     return IsProjectCodeKnown switch
-    //     {
-    //         null =>
-    //             // Not yet declared if project code is known, thus is incomplete.
-    //             false,
-    //         false =>
-    //             // Project code declared as not known, the actual project code is not required.
-    //             true,
-    //         true when !string.IsNullOrWhiteSpace(ProjectCode) =>
-    //             // Project code declared as known, and the actual project code is provided -- all information provided, thus is complete.
-    //             true,
-    //         _ => throw new Exception(),
-    //     };
-    // }
 
 
     // public bool IsReviewDatesComplete()
