@@ -120,13 +120,16 @@ public class AssessmentRequest
                  * Add a warning if any characters fall outside this range
                  * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
                  */
+                result.IsValid = false;
                 result.ValidationWarnings.Add(new ValidationWarning
                 {
                     FieldName = nameof(Description),
-                    WarningMessage =
-                        "Description contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
+                    WarningMessage = "Description contains non-standard ASCII characters - \"smart quotes\" (e.g., copy/pasting from MS Word) and other non-standard characters may not be intentional and may not be displayed correctly in some systems",
                 });
             }
+
+            // TODO: Allow newlines without warning/error as this is a long text multi-line field
+            // TODO: Consider handling of accented characters and multi-byte characters (e.g., emoji)
         }
 
         return result;
