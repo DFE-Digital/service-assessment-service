@@ -6,14 +6,14 @@ using ServiceAssessmentService.Domain.Model;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book;
 
-public class DeleteModel : PageModel
+public class DeletePageModel : PageModel
 {
     public AssessmentRequest AssessmentRequest { get; set; }
 
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
-    private readonly ILogger<DeleteModel> _logger;
+    private readonly ILogger<DeletePageModel> _logger;
 
-    public DeleteModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<DeleteModel> logger)
+    public DeletePageModel(AssessmentRequestRepository assessmentRequestRepository, ILogger<DeletePageModel> logger)
     {
         _assessmentRequestRepository = assessmentRequestRepository;
         _logger = logger;
@@ -43,6 +43,6 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        return RedirectToPage("/Book/List");
+        return RedirectToPage("/Book");
     }
 }

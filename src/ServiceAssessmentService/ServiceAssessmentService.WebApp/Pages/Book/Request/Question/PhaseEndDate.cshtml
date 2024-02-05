@@ -1,0 +1,74 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Book.Request.Question.PhaseEndDateModel
+@{
+    ViewData["Title"] = Model.RadioQuestionText;
+    ViewData["Section"] = SiteSection.BookingRequest;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-two-thirds">
+                @* Omitting the form action/asp-path results in the form being submitted to the same URL (desirable behaviour) *@
+                <form asp-route-id="@Model.Id">
+
+                    <govuk-radios name="@Model.IsDateKnownFormElementName" id-prefix="@Model.IsDateKnownRadioPrefix" asp-for="@Model.IsEndDateKnownValue">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--l">
+                                @Model.RadioQuestionText
+                            </govuk-radios-fieldset-legend>
+
+                            <govuk-radios-hint>@Model.RadioQuestionHint</govuk-radios-hint>
+
+
+                            @if (Model.RadioErrors.Any())
+                            {
+                                <govuk-radios-error-message error-items="Model.ErrorItems">@(string.Join(", ", Model.RadioErrors))</govuk-radios-error-message>
+                            }
+
+                            <govuk-radios-item value="@Model.IsEndDateKnownValueYes">
+                                Yes
+                                <govuk-radios-item-conditional>
+
+                                    <govuk-date-input id="@Model.DateFormNamePrefix" name-prefix="@Model.DateFormNamePrefix">
+                                        <govuk-date-input-fieldset>
+                                            <govuk-date-input-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--s">
+                                                @Model.DateQuestionText
+                                            </govuk-date-input-fieldset-legend>
+                                            <govuk-date-input-hint>@Model.DateQuestionHint</govuk-date-input-hint>
+
+                                            @if (Model.AllDateErrors.Count > 0)
+                                            {
+                                                <govuk-date-input-error-message
+                                                    error-items="@Model.ErrorItems">
+                                                    @(string.Join(", ", Model.AllDateErrors))
+                                                </govuk-date-input-error-message>
+                                            }
+
+                                            <govuk-date-input-day value="@Model.EndDateDayValue"/>
+                                            <govuk-date-input-month value="@Model.EndDateMonthValue"/>
+                                            <govuk-date-input-year value="@Model.EndDateYearValue"/>
+                                        </govuk-date-input-fieldset>
+                                    </govuk-date-input>
+                                </govuk-radios-item-conditional>
+                            </govuk-radios-item>
+
+                            <govuk-radios-item value="@Model.IsEndDateKnownValueNo">
+                                No
+                            </govuk-radios-item>
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        <a asp-page="/Book/Request/TaskList" asp-route-id="@Model.Id" class="govuk-link">Skip and return to later</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

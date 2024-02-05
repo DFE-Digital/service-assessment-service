@@ -1,0 +1,28 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.Phases.DeleteModel
+@{
+    ViewData["Title"] = "Deleting phase";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">Are you sure you want to delete the phase @Model.Phase.DisplayNameMidSentenceCase?</h1>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form method="post" asp-route-id="@Model.Phase.Id">
+                    <govuk-button type="submit" class="govuk-button--warning">Delete</govuk-button>
+                    <govuk-button-link>Cancel</govuk-button-link>
+                    @* <a asp-page="/Admin/Phases/List" class="govuk-link">Cancel</a> *@
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,4 +12,5 @@ internal enum SiteSection
     Dashboard,
     BookingRequest,
     MyAccount,
+    Admin,
 }

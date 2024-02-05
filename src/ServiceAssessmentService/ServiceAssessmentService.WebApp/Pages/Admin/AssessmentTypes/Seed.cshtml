@@ -1,0 +1,33 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.AssessmentTypes.SeedModel
+
+@{
+    ViewData["Title"] = "Seeding Assessment Type";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">Seed assessment types</h1>
+            </div>
+        </div>
+
+        @if (Model.AssessmentTypes.Any())
+        {
+            <p>Values already exist - this functionality is only to initialise some values from scratch.</p>
+            <p>Return to the list to view/manage existing entries.</p>
+            <p>Deleting all existing entries will allow you to use this seeding functionality.</p>
+        }
+        else
+        {
+            <form method="post">
+                <govuk-button type="submit">Seed</govuk-button>
+            </form>
+        }
+
+    </div>
+</div>

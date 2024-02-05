@@ -161,15 +161,38 @@ namespace ServiceAssessmentService.Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AssessmentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("AssessmentTypeRequestedId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("DeliveryManagerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DeputyDirectorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("HasDeliveryManager")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HasProductOwnerManager")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsDeputyDirectorTheSeniorResponsibleOfficer")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsPhaseEndDateKnown")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsProjectCodeKnown")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsReassessment")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -185,9 +208,8 @@ namespace ServiceAssessmentService.Application.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("PeriodStart");
 
-                    b.Property<string>("PhaseConcluding")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("PhaseConcludingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly?>("PhaseEndDate")
                         .HasColumnType("date");
@@ -195,10 +217,40 @@ namespace ServiceAssessmentService.Application.Migrations
                     b.Property<DateOnly?>("PhaseStartDate")
                         .HasColumnType("date");
 
+                    b.Property<Guid?>("PortfolioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductOwnerManagerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestedReviewDates")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SeniorResponsibleOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("UpdatedUtc")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssessmentTypeRequestedId");
+
+                    b.HasIndex("DeliveryManagerId");
+
+                    b.HasIndex("DeputyDirectorId");
+
+                    b.HasIndex("PhaseConcludingId");
+
+                    b.HasIndex("PortfolioId");
+
+                    b.HasIndex("ProductOwnerManagerId");
+
+                    b.HasIndex("SeniorResponsibleOfficerId");
 
                     b.ToTable("AssessmentRequests", (string)null);
 
@@ -212,6 +264,92 @@ namespace ServiceAssessmentService.Application.Migrations
                                     .HasPeriodEnd("PeriodEnd")
                                     .HasColumnName("PeriodEnd");
                             }));
+                });
+
+            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.AssessmentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DisplayNameMidSentenceCase")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AssessmentTypes");
+                });
+
+            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.Person", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("People");
+                });
+
+            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.Phase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DisplayNameMidSentenceCase")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Phases");
+                });
+
+            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.Portfolio", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DisplayNameMidSentenceCase")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsInternalGroup")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Portfolios");
                 });
 
             modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.ServiceAssessmentServiceWebAppUser", b =>
@@ -328,6 +466,51 @@ namespace ServiceAssessmentService.Application.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ServiceAssessmentService.Application.Database.Entities.AssessmentRequest", b =>
+                {
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.AssessmentType", "AssessmentTypeRequested")
+                        .WithMany()
+                        .HasForeignKey("AssessmentTypeRequestedId");
+
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.Person", "DeliveryManager")
+                        .WithMany()
+                        .HasForeignKey("DeliveryManagerId");
+
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.Person", "DeputyDirector")
+                        .WithMany()
+                        .HasForeignKey("DeputyDirectorId");
+
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.Phase", "PhaseConcluding")
+                        .WithMany()
+                        .HasForeignKey("PhaseConcludingId");
+
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.Portfolio", "Portfolio")
+                        .WithMany()
+                        .HasForeignKey("PortfolioId");
+
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.Person", "ProductOwnerManager")
+                        .WithMany()
+                        .HasForeignKey("ProductOwnerManagerId");
+
+                    b.HasOne("ServiceAssessmentService.Application.Database.Entities.Person", "SeniorResponsibleOfficer")
+                        .WithMany()
+                        .HasForeignKey("SeniorResponsibleOfficerId");
+
+                    b.Navigation("AssessmentTypeRequested");
+
+                    b.Navigation("DeliveryManager");
+
+                    b.Navigation("DeputyDirector");
+
+                    b.Navigation("PhaseConcluding");
+
+                    b.Navigation("Portfolio");
+
+                    b.Navigation("ProductOwnerManager");
+
+                    b.Navigation("SeniorResponsibleOfficer");
                 });
 #pragma warning restore 612, 618
         }

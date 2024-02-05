@@ -1,0 +1,44 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.Portfolios.ListModel
+
+@{
+    ViewData["Title"] = "Listing portfolios";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">All portfolios</h1>
+            </div>
+        </div>
+
+        @if (!Model.Portfolios.Any())
+        {
+            <p>There are no portfolios to view or manage.</p>
+            <govuk-button-link asp-page="/Admin/Portfolios/Seed">Seed Many</govuk-button-link>
+        }
+        else
+        {
+            <ul>
+                @foreach (var portfolio in Model.Portfolios.OrderBy(p => p.SortOrder))
+                {
+                    <li>
+                        <a
+                            asp-page="/Admin/Portfolios/View"
+                            asp-route-id="@portfolio.Id"
+                            class="govuk-link">
+                            @(string.IsNullOrWhiteSpace(portfolio.Name) ? "Unnamed portfolio" : portfolio.Name)
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+
+        <govuk-button-link asp-page="/Admin/Portfolios/Create">Create New</govuk-button-link>
+
+    </div>
+</div>

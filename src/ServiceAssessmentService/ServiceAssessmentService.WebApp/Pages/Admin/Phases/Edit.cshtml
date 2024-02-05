@@ -1,0 +1,45 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.Phases.EditModel
+@{
+    ViewData["Title"] = "Editing phase";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">Editing phase</h1>
+            </div>
+        </div>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form method="post">
+                    <govuk-input name="Id" value="@Model.Phase.Id" disabled>
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">ID (internal)</govuk-input-label>
+                        <govuk-input-hint>Cannot be modified.</govuk-input-hint>
+                    </govuk-input>
+
+                    <govuk-input name="Name" value="@Model.Phase.Name">
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">Name</govuk-input-label>
+                    </govuk-input>
+
+                    <govuk-input name="DisplayNameMidSentenceCase" value="@(Model.Phase.DisplayNameMidSentenceCase ?? string.Empty)">
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">Display Name (mid-sentence case)</govuk-input-label>
+                    </govuk-input>
+
+                    <govuk-input name="SortOrder" value="@Model.Phase.SortOrder">
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">Sort Order</govuk-input-label>
+                    </govuk-input>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save</govuk-button>
+                        <govuk-button-link asp-page="/Admin/Phases/List">Cancel</govuk-button-link>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

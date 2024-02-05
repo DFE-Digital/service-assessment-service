@@ -16,6 +16,8 @@
             </div>
         </div>
 
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
         <ul>
             @foreach (var assessment in Model.AssessmentRequests)
             {
@@ -25,7 +27,7 @@
                         asp-route-id="@assessment.Id"
                         class="govuk-link">
                         @assessment.Name
-                        (@(assessment.PhaseConcluding ?? "") @(assessment.AssessmentType ?? ""))
+                        (@(assessment.PhaseConcluding?.Name ?? "") @(assessment.AssessmentType?.Name ?? ""))
                     </a>
                 </li>
             }
@@ -33,5 +35,7 @@
 
         <govuk-button-link asp-page="/Book/Create">Create New</govuk-button-link>
 
+            </div>
+        </div>
     </div>
 </div>

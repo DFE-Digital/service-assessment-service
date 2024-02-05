@@ -1,0 +1,35 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.Index
+
+@{
+    ViewData["Title"] = "Viewing assessment";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">Admin Interface</h1>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third">
+                <h1 class="govuk-heading-l">Phases</h1>
+                <a asp-page="/Admin/Phases/List" class="govuk-link">Manage</a>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <h1 class="govuk-heading-l">Assessment Types</h1>
+                <a asp-page="/Admin/AssessmentTypes/List" class="govuk-link">Manage</a>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <h1 class="govuk-heading-l">Portfolios</h1>
+                <a asp-page="/Admin/Portfolios/List" class="govuk-link">Manage</a>
+            </div>
+        </div>
+
+    </div>
+</div>

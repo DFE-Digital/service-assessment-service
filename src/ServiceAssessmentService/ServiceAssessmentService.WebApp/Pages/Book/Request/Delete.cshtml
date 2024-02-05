@@ -1,5 +1,5 @@
 ﻿@page
-@model ServiceAssessmentService.WebApp.Pages.Book.DeleteModel
+@model ServiceAssessmentService.WebApp.Pages.Book.DeletePageModel
 
 @{
     ViewData["Title"] = "Confirmation required: Are you sure you want to withdraw this assessment request?";
@@ -19,9 +19,12 @@
 
 
     <div class="govuk-grid-row">
-        <form asp-page="/Book/Delete" asp-route-id="@Model.AssessmentRequest.Id" method="post">
-            <govuk-button type="submit" prevent-double-click="true" class="govuk-button--warning">Confirm withdrawal of assessment request</govuk-button>
-        </form>
+        <div class="govuk-grid-column-full">
+            @* Omitting the form action/asp-path results in the form being submitted to the same URL (desirable behaviour) *@
+            <form asp-route-id="@Model.AssessmentRequest.Id" method="post">
+                <govuk-button type="submit" prevent-double-click="true" class="govuk-button--warning">Confirm withdrawal of assessment request</govuk-button>
+            </form>
+        </div>
     </div>
 
 </div>

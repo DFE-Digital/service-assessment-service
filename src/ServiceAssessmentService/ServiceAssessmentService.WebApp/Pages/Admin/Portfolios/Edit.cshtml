@@ -1,0 +1,55 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Admin.Portfolios.EditModel
+@{
+    ViewData["Title"] = "Editing portfolio";
+    ViewData["Section"] = SiteSection.Admin;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">Editing portfolio</h1>
+            </div>
+        </div>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form method="post">
+                    <govuk-input name="Id" value="@Model.Portfolio.Id" disabled>
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">ID (internal)</govuk-input-label>
+                        <govuk-input-hint>Cannot be modified.</govuk-input-hint>
+                    </govuk-input>
+
+                    <govuk-radios name="IsInternalGroup" asp-for="@(Model.Portfolio.IsInternalGroup)">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-label--m">Is group internal to DfE?</govuk-radios-fieldset-legend>
+                            <govuk-radios-hint>For example, the Student Loans Company is an external body while the Operations and Infrastructure group are internal.</govuk-radios-hint>
+
+                            <govuk-radios-item value="True">Yes</govuk-radios-item>
+                            <govuk-radios-item value="False">No</govuk-radios-item>
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+                    <govuk-input name="Name" value="@Model.Portfolio.Name">
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">Name</govuk-input-label>
+                    </govuk-input>
+
+                    <govuk-input name="DisplayNameMidSentenceCase" value="@(Model.Portfolio.DisplayNameMidSentenceCase ?? string.Empty)">
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">Display Name (mid-sentence case)</govuk-input-label>
+                    </govuk-input>
+
+                    <govuk-input name="SortOrder" value="@Model.Portfolio.SortOrder">
+                        <govuk-input-label is-page-heading="false" class="govuk-label--m">Sort Order</govuk-input-label>
+                    </govuk-input>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save</govuk-button>
+                        <govuk-button-link asp-page="/Admin/Portfolios/List">Cancel</govuk-button-link>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

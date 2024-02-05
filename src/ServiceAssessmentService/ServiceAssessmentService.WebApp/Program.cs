@@ -46,6 +46,10 @@ builder.Services.AddHealthChecks()
     .AddDbContextCheck<DataContext>();
 
 builder.Services.AddScoped<AssessmentRequestRepository>();
+builder.Services.AddScoped<AssessmentTypeRepository>();
+builder.Services.AddScoped<PortfolioRepository>();
+builder.Services.AddScoped<PhaseRepository>();
+
 builder.Services.AddScoped<GraphUserClient>();
 
 builder.Services.AddApplicationInsightsTelemetry();
