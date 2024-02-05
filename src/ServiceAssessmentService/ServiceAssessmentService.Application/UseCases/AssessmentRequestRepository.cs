@@ -336,7 +336,11 @@ public class AssessmentRequestRepository
     }
 
     private static (DateValidationResult datePartsValidationResult, DateOnly? proposedDate) ValidateDateParts(
-        string? newYear, string? newMonth, string? newDay, DateOnly? proposedDate)
+        string? newYear,
+        string? newMonth,
+        string? newDay,
+        DateOnly? proposedDate
+    )
     {
         // Validate we can parse the new values as a date
         var datePartsValidationResult = new DateValidationResult();
@@ -423,9 +427,10 @@ public class AssessmentRequestRepository
                 ErrorMessage = $"{day}/{month}/{year} is not recognised as a valid day/month/year date",
             });
 
-            return (datePartsValidationResult, proposedDate);
+            return (dateValidationResult, proposedDate);
         }
 
+        // If we got this far, the given date parts have been able to be parsed into a valid date
         return (datePartsValidationResult, proposedDate);
     }
 }

@@ -198,6 +198,10 @@ public class AssessmentRequest
     public bool? IsPhaseEndDateKnown { get; set; } = null;
     public DateOnly? PhaseEndDate { get; set; }
 
+    public static readonly DateOnly EarliestPermittedPhaseEndDate = new(2000, 1, 1); // TODO: Consider making these relative to the current date
+
+    public static readonly DateOnly LatestPermittedPhaseEndDate = new(2050, 1, 1); // TODO: Consider making these relative to the current date
+
     public RadioConditionalValidationResult<DateValidationResult> ValidatePhaseEndDate()
     {
         var radioValidationResult = new RadioConditionalValidationResult<DateValidationResult>()
@@ -237,6 +241,24 @@ public class AssessmentRequest
                 {
                     FieldName = nameof(PhaseEndDate),
                     ErrorMessage = "Phase end date is required if the phase end date is declared as known",
+                });
+            }
+            else if (PhaseEndDate < EarliestPermittedPhaseEndDate)
+            {
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.DateValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(PhaseEndDate),
+                    ErrorMessage = $"Phase end date cannot be before {EarliestPermittedPhaseEndDate}",
+                });
+            }
+            else if (PhaseEndDate > LatestPermittedPhaseEndDate)
+            {
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.DateValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(PhaseEndDate),
+                    ErrorMessage = $"Phase end date cannot be after {LatestPermittedPhaseEndDate}",
                 });
             }
             // else if (PhaseEndDate < DateOnly.FromDateTime(DateTime.UtcNow))
