@@ -123,6 +123,7 @@ public class ProjectCode : PageModel
             return Page();
         }
 
-        return RedirectToPage("/Book/Request/TaskList", new { id });
+        //return RedirectToPage("/Book/Request/TaskList", new { id });
+        return RedirectToPage("/Book/Request/Question/PhaseStartDate", new { id });
     }
 }

@@ -88,6 +88,7 @@ public class DescriptionPageModel : PageModel
             return Page();
         }
 
-        return RedirectToPage("/Book/Request/TaskList", new { id });
+        //return RedirectToPage("/Book/Request/TaskList", new { id });
+        return RedirectToPage("/Book/Request/Question/ProjectCode", new { id });
     }
 }
