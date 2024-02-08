@@ -9,7 +9,7 @@ namespace ServiceAssessmentService.WebApp.Pages;
 
 public class DashboardModel : PageModel
 {
-    public IEnumerable<AssessmentRequest> AllAssessments;
+    public IEnumerable<AssessmentRequest> AllAssessments { get; set; } = new List<AssessmentRequest>();
 
 
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
@@ -27,5 +27,4 @@ public class DashboardModel : PageModel
 
         return Page();
     }
-
 }
