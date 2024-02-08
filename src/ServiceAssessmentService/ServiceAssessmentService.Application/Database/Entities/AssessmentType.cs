@@ -24,6 +24,11 @@ internal class AssessmentType
 
     public static Database.Entities.AssessmentType? FromDomain(Domain.Model.AssessmentType? domainModel)
     {
+        if(domainModel == null)
+        {
+            return null;
+        }
+
         return new Database.Entities.AssessmentType()
         {
             Id = domainModel?.Id ?? Guid.Empty,

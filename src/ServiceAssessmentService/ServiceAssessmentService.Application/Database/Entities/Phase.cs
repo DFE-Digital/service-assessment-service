@@ -23,6 +23,11 @@ internal class Phase
 
     public static Database.Entities.Phase? FromDomain(Domain.Model.Phase? domainModel)
     {
+        if(domainModel == null)
+        {
+            return null;
+        }
+
         return new Database.Entities.Phase()
         {
             Id = domainModel?.Id ?? Guid.Empty,
