@@ -24,7 +24,7 @@ internal class AssessmentType
 
     public static Database.Entities.AssessmentType? FromDomain(Domain.Model.AssessmentType? domainModel)
     {
-        if(domainModel == null)
+        if (domainModel == null)
         {
             return null;
         }

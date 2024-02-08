@@ -23,7 +23,7 @@ internal class Phase
 
     public static Database.Entities.Phase? FromDomain(Domain.Model.Phase? domainModel)
     {
-        if(domainModel == null)
+        if (domainModel == null)
         {
             return null;
         }
