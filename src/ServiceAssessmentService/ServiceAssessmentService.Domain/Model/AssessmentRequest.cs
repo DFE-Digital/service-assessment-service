@@ -15,7 +15,7 @@ public class AssessmentRequest
         {nameof(PhaseStartDate), x => x.IsPhaseStartDateComplete()},
         {nameof(PhaseEndDate), x => x.IsPhaseEndDateComplete()},
         // { nameof(ReviewDates), x => x.IsReviewDatesComplete() },
-        // { nameof(Portfolio), x => x.IsPortfolioComplete() },
+        { nameof(Portfolio), x => x.IsPortfolioComplete() },
         // { nameof(DeputyDirector), x => x.IsDeputyDirectorComplete() },
         // { nameof(SeniorResponsibleOfficer), x => x.IsSeniorResponsibleOfficerComplete() },
         // { nameof(ProductOwnerManager), x => x.IsProductOwnerManagerComplete() },
@@ -25,7 +25,7 @@ public class AssessmentRequest
     public Guid Id { get; set; }
 
 
-    #region Assessment type
+    #region Phase concluding
 
     public Phase? PhaseConcluding { get; set; } = null;
 
@@ -531,6 +531,52 @@ public class AssessmentRequest
 
     #endregion
 
+    #region Portfolio
+
+    public Portfolio? Portfolio { get; set; } = null;
+
+
+    public RadioValidationResult ValidatePortfolio(IEnumerable<Portfolio?> availablePortfolios)
+    {
+        var result = new RadioValidationResult();
+        result.IsValid = true;
+
+        if (Portfolio is null)
+        {
+            result.IsValid = false;
+            result.ValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(Portfolio),
+                ErrorMessage = "Portfolio is required",
+            });
+        }
+        else
+        {
+            if (!availablePortfolios.Select(x => x?.Id).Contains(Portfolio.Id))
+            {
+                result.IsValid = false;
+                result.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(Portfolio),
+                    ErrorMessage = "Portfolio is not valid",
+                });
+            }
+            else
+            {
+                // Portfolio set and no validation errors - valid.
+            }
+        }
+
+        return result;
+    }
+
+    public bool IsPortfolioComplete()
+    {
+        return Portfolio is not null;
+    }
+
+    #endregion
+
 
     public DateTimeOffset CreatedAt { get; set; }
 
@@ -547,11 +593,6 @@ public class AssessmentRequest
     //
     //     // User should be able to select at least one date
     //     return ReviewDates.Any();
-    // }
-
-    // public bool IsPortfolioComplete()
-    // {
-    //     return Portfolio is not null;
     // }
 
     // public bool IsDeputyDirectorComplete()

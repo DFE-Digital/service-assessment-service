@@ -263,32 +263,32 @@
                         @* *@
                         @*             </span> *@
                         @*         </li> *@
-                        @*     </ul> *@
-                        @* </li> *@
-                        @* <li> *@
-                        @*     <h2 class="app-task-list__section"> *@
-                        @*         <span class="app-task-list__section-number">2. </span> Product and delivery *@
-                        @*     </h2> *@
-                        @*     <ul class="app-task-list__items"> *@
-                        @* *@
-                        @*         <li class="app-task-list__item"> *@
-                        @*             <span class="app-task-list__task-name"> *@
-                        @*                 <a asp-page="/Book/Request/Question/Portfolio" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Portfolio</a> *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-value"> *@
-                        @*                 @(Model.AssessmentRequest.Portfolio?.DisplayName ?? notYetSupplied) *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-tag"> *@
-                        @*                 @if (Model.AssessmentRequest.IsPortfolioComplete()) *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag app-task-list__tag">Completed</strong> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*         </li> *@
+                            </ul>
+                        </li>
+                        <li>
+                            <h2 class="app-task-list__section">
+                                <span class="app-task-list__section-number">2. </span> Product and delivery
+                            </h2>
+                            <ul class="app-task-list__items">
+                        
+                                <li class="app-task-list__item">
+                                    <span class="app-task-list__task-name">
+                                        <a asp-page="/Book/Request/Question/Portfolio" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Portfolio</a>
+                                    </span>
+                                    <span class="app-task-list__task-value">
+                                        @(Model.AssessmentRequest.Portfolio?.Name ?? notYetSupplied)
+                                    </span>
+                                    <span class="app-task-list__task-tag">
+                                        @if (Model.AssessmentRequest.IsPortfolioComplete())
+                                        {
+                                            <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                        }
+                                    </span>
+                                </li>
                         @* *@
                         @*         <li class="app-task-list__item"> *@
                         @*             <span class="app-task-list__task-name"> *@
@@ -433,26 +433,26 @@
                         @*                 } *@
                         @*             </span> *@
                         @*         </li> *@
-                        @*     </ul> *@
-                        @* </li> *@
-                        @* *@
-                        @* <li> *@
-                        @*     <h2 class="app-task-list__section"> *@
-                        @*         <span class="app-task-list__section-number">3. </span> Submit *@
-                        @*     </h2> *@
-                        @* *@
-                        @*     <ul class="app-task-list__items"> *@
-                        @*         <li class="app-task-list__item"> *@
-                        @*             <span class="app-task-list__task-value">Submit request</span> *@
-                        @*             @if (Model.AssessmentRequest.IsFullyComplete()) *@
-                        @*             { *@
-                        @*                 <button class="govuk-button" style="display: inline-block; float: right; margin-bottom: 0; margin-top: 0; width: 20%;">Submit</button> *@
-                        @*             } *@
-                        @*             else *@
-                        @*             { *@
-                        @*                 <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="submit-pay-status">Cannot start yet</strong> *@
-                        @*             } *@
-                        @*         </li> *@
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <h2 class="app-task-list__section">
+                                <span class="app-task-list__section-number">3. </span> Submit
+                            </h2>
+                        
+                            <ul class="app-task-list__items">
+                                <li class="app-task-list__item">
+                                    <span class="app-task-list__task-value">Submit request</span>
+                                    @if (Model.AssessmentRequest.IsFullyComplete())
+                                    {
+                                        <button class="govuk-button" style="display: inline-block; float: right; margin-bottom: 0; margin-top: 0; width: 20%;">Submit</button>
+                                    }
+                                    else
+                                    {
+                                        <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="submit-pay-status">Cannot submit yet</strong>
+                                    }
+                                </li>
                             </ul>
                         
                         

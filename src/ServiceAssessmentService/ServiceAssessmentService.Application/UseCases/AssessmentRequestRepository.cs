@@ -574,4 +574,53 @@ public class AssessmentRequestRepository
         return validateDescriptionResult;
     }
 
+    public async Task<RadioValidationResult> UpdatePortfolioAsync(Guid id, string? newPortfolioId)
+    {
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new RadioValidationResult();
+            validationResult.ValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found",
+            });
+            validationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+        var availablePortfolios = await _dbContext.Portfolios.ToListAsync();
+
+        // Do specific update
+        if (newPortfolioId is null)
+        {
+            assessmentRequest.PortfolioId = null;
+            assessmentRequest.Portfolio = null;
+        }
+        else
+        {
+            assessmentRequest.PortfolioId = Guid.Parse(newPortfolioId);
+            assessmentRequest.Portfolio = availablePortfolios.SingleOrDefault(e => e.Id.ToString() == newPortfolioId);
+        }
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateDescriptionResult = domainModel.ValidatePortfolio(availablePortfolios.Select(x => x.ToDomainModel()));
+
+        // If valid, save it to the database
+        if (validateDescriptionResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateDescriptionResult;
+    }
 }
