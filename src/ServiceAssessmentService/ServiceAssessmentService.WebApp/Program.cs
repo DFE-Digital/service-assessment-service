@@ -7,6 +7,8 @@ using Microsoft.Identity.Web.UI;
 using ServiceAssessmentService.Application.Database;
 using ServiceAssessmentService.Application.UseCases;
 using ServiceAssessmentService.WebApp.Models;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using ServiceAssessmentService.WebApp;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +28,13 @@ builder.Services.AddAuthorization(options =>
     // By default, all incoming requests will be authorized according to the default policy.
     options.FallbackPolicy = options.DefaultPolicy;
 });
-builder.Services.AddRazorPages()
+
+builder.Services.AddRazorPages(options =>
+    {
+        // Convert CamelCase to kebab-case for page routes
+        // See also: https://www.gov.uk/guidance/content-design/url-standards-for-gov-uk
+        options.Conventions.Add(new PageRouteTransformerConvention(new SlugifyParameterTransformer()));
+    })
     .AddMicrosoftIdentityUI();
 
 // // Used for local accounts
