@@ -19,13 +19,14 @@ public class StartNewPageModel : PageModel
     public async Task<IActionResult> OnPost()
     {
         _logger.LogInformation("Attempting to create a new assessment request");
-
-        var blankRequest = new Domain.Model.AssessmentRequest()
+        
+        var assessmentRequest = await _assessmentRequestRepository.CreateAsync();
+        if(assessmentRequest is null) 
         {
-            Id = Guid.NewGuid(),
-        };
-
-        var assessmentRequest = await _assessmentRequestRepository.CreateAsync(blankRequest);
+            _logger.LogError("Failed to create a new assessment request");
+            return RedirectToPage("/Error");
+        }
+        
         _logger.LogInformation("Created new assessment request with ID {Id}", assessmentRequest.Id);
 
         return RedirectToPage("/Book/Request/Question/PhaseConcluding", new { assessmentRequest.Id });

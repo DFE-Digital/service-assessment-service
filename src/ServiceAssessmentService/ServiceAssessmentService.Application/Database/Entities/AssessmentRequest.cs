@@ -70,6 +70,23 @@ internal class AssessmentRequest : BaseEntity
 
     public static Database.Entities.AssessmentRequest FromDomain(Domain.Model.AssessmentRequest domainModel)
     {
-        throw new NotImplementedException();
+        var entity = new Database.Entities.AssessmentRequest
+        {
+            Id = domainModel.Id,
+            Name = domainModel.Name,
+            PhaseConcludingId = domainModel.PhaseConcluding?.Id,
+            AssessmentTypeRequestedId = domainModel.AssessmentType?.Id,
+            IsReassessment = domainModel.IsReassessment,
+            IsProjectCodeKnown = domainModel.IsProjectCodeKnown,
+            ProjectCode = domainModel.ProjectCode,
+            PhaseStartDate = domainModel.PhaseStartDate,
+            IsPhaseEndDateKnown = domainModel.IsPhaseEndDateKnown,
+            PhaseEndDate = domainModel.PhaseEndDate,
+            Description = domainModel.Description,
+            CreatedUtc = domainModel.CreatedAt.UtcDateTime,
+            UpdatedUtc = domainModel.UpdatedAt.UtcDateTime,
+        };
+
+        return entity;
     }
 }

@@ -44,23 +44,17 @@ public class AssessmentRequestRepository
         return assessmentRequest;
     }
 
-    public async Task<Domain.Model.AssessmentRequest?> CreateAsync(Domain.Model.AssessmentRequest assessmentRequest)
+    public async Task<Domain.Model.AssessmentRequest?> CreateAsync()
     {
-        var entity = new Database.Entities.AssessmentRequest
+        var entity = Database.Entities.AssessmentRequest.FromDomain(new Domain.Model.AssessmentRequest()
         {
-            Id = assessmentRequest.Id,
-            Name = assessmentRequest.Name,
-            PhaseConcluding = Database.Entities.Phase.FromDomain(assessmentRequest.PhaseConcluding),
-            AssessmentTypeRequested = Database.Entities.AssessmentType.FromDomain(assessmentRequest.AssessmentType),
-            PhaseStartDate = assessmentRequest.PhaseStartDate,
-            PhaseEndDate = assessmentRequest.PhaseEndDate,
-            Description = assessmentRequest.Description,
-        };
+            Id = Guid.NewGuid(),
+        });
 
         _dbContext.AssessmentRequests.Add(entity);
         await _dbContext.SaveChangesAsync();
 
-        return assessmentRequest;
+        return entity.ToDomainModel();
     }
 
     public async Task<Domain.Model.AssessmentRequest?> DeleteAsync(Guid id)
