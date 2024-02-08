@@ -197,6 +197,6 @@ public class PhaseEndDateModel : PageModel
             return Page();
         }
 
-        return RedirectToPage("/Book/Request/TaskList", new { id });
+        return RedirectToPage("/Book/Request/Question/Portfolio", new { id });
     }
 }

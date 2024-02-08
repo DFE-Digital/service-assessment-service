@@ -55,12 +55,13 @@ internal class AssessmentRequest : BaseEntity
             PhaseConcluding = PhaseConcluding?.ToDomainModel(),
             AssessmentType = AssessmentTypeRequested?.ToDomainModel(),
             Name = Name,
+            Description = Description,
             IsProjectCodeKnown = IsProjectCodeKnown,
             ProjectCode = ProjectCode,
             PhaseStartDate = PhaseStartDate,
             IsPhaseEndDateKnown = IsPhaseEndDateKnown,
             PhaseEndDate = PhaseEndDate,
-            Description = Description,
+            Portfolio = Portfolio?.ToDomainModel(),
             CreatedAt = CreatedUtc,
             UpdatedAt = UpdatedUtc,
         };
@@ -74,6 +75,7 @@ internal class AssessmentRequest : BaseEntity
         {
             Id = domainModel.Id,
             Name = domainModel.Name,
+            Description = domainModel.Description,
             PhaseConcludingId = domainModel.PhaseConcluding?.Id,
             AssessmentTypeRequestedId = domainModel.AssessmentType?.Id,
             IsReassessment = domainModel.IsReassessment,
@@ -82,7 +84,7 @@ internal class AssessmentRequest : BaseEntity
             PhaseStartDate = domainModel.PhaseStartDate,
             IsPhaseEndDateKnown = domainModel.IsPhaseEndDateKnown,
             PhaseEndDate = domainModel.PhaseEndDate,
-            Description = domainModel.Description,
+            PortfolioId = domainModel.Portfolio?.Id,
             CreatedUtc = domainModel.CreatedAt.UtcDateTime,
             UpdatedUtc = domainModel.UpdatedAt.UtcDateTime,
         };
