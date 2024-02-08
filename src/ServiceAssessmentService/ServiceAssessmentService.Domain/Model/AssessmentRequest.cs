@@ -15,8 +15,8 @@ public class AssessmentRequest
         {nameof(PhaseStartDate), x => x.IsPhaseStartDateComplete()},
         {nameof(PhaseEndDate), x => x.IsPhaseEndDateComplete()},
         // { nameof(ReviewDates), x => x.IsReviewDatesComplete() },
-        { nameof(Portfolio), x => x.IsPortfolioComplete() },
-        // { nameof(DeputyDirector), x => x.IsDeputyDirectorComplete() },
+        {nameof(Portfolio), x => x.IsPortfolioComplete()},
+        {nameof(DeputyDirector), x => x.IsDeputyDirectorComplete()},
         // { nameof(SeniorResponsibleOfficer), x => x.IsSeniorResponsibleOfficerComplete() },
         // { nameof(ProductOwnerManager), x => x.IsProductOwnerManagerComplete() },
         // { nameof(DeliveryManager), x => x.IsDeliveryManagerComplete() },
@@ -578,6 +578,152 @@ public class AssessmentRequest
     #endregion
 
 
+    #region DeputyDirector
+
+    public Person? DeputyDirector { get; set; }
+
+    public PersonValidationResult ValidateDeputyDirector()
+    {
+        var result = new PersonValidationResult();
+        result.IsValid = true;
+
+        if (DeputyDirector is null)
+        {
+            result.IsValid = false;
+            result.ValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(DeputyDirector),
+                ErrorMessage = "DeputyDirector is required",
+            });
+        }
+        else
+        {
+            if (string.IsNullOrWhiteSpace(DeputyDirector.PersonalName))
+            {
+                result.IsValid = false;
+                result.PersonalNameErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(DeputyDirector.PersonalName),
+                    ErrorMessage = "Please enter the deputy director's personal name.",
+                });
+            }
+            else
+            {
+                if (DeputyDirector.PersonalName.Any(c => c < 32 || 126 < c))
+                {
+                    /*
+                     * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                     * Add a warning if any characters fall outside this range
+                     * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                     */
+                    result.IsValid = false;
+                    result.PersonalNameWarnings.Add(new ValidationWarning
+                    {
+                        FieldName = nameof(DeputyDirector.PersonalName),
+                        WarningMessage =
+                            "The deputy director's personal name contains non-standard ASCII characters -- non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                    });
+                }
+            }
+
+
+            if (string.IsNullOrWhiteSpace(DeputyDirector.FamilyName))
+            {
+                result.IsValid = false;
+                result.FamilyNameErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(DeputyDirector.FamilyName),
+                    ErrorMessage = "Please enter the deputy director's family name.",
+                });
+            }
+            else
+            {
+                if (DeputyDirector.FamilyName.Any(c => c < 32 || 126 < c))
+                {
+                    /*
+                     * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                     * Add a warning if any characters fall outside this range
+                     * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                     */
+                    result.IsValid = false;
+                    result.FamilyNameWarnings.Add(new ValidationWarning
+                    {
+                        FieldName = nameof(DeputyDirector.FamilyName),
+                        WarningMessage =
+                            "The deputy director's family name contains non-standard ASCII characters -- non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                    });
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(DeputyDirector.Email))
+            {
+                result.IsValid = false;
+                result.EmailErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(DeputyDirector.Email),
+                    ErrorMessage = "Please enter the deputy director's email address.",
+                });
+            }
+            else
+            {
+                if (DeputyDirector.Email.Any(c => c < 32 || 126 < c))
+                {
+                    /*
+                     * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                     * Add a warning if any characters fall outside this range
+                     * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                     */
+                    result.IsValid = false;
+                    result.EmailWarnings.Add(new ValidationWarning
+                    {
+                        FieldName = nameof(DeputyDirector.Email),
+                        WarningMessage =
+                            "The deputy director's email address contains non-standard ASCII characters -- non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                    });
+                }
+
+                if (!EmailValidationUtilities.IsValidEmail(DeputyDirector.Email))
+                {
+                    result.IsValid = false;
+                    result.EmailErrors.Add(new ValidationError
+                    {
+                        FieldName = nameof(DeputyDirector.Email),
+                        ErrorMessage = "The deputy director's email address is not recognised as being in a valid email format.",
+                    });
+                }
+
+                if (!EmailValidationUtilities.IsValidDomain(DeputyDirector.Email))
+                {
+                    result.IsValid = false;
+                    result.EmailErrors.Add(new ValidationError
+                    {
+                        FieldName = nameof(DeputyDirector.Email),
+                        ErrorMessage = "The deputy director's email address is not recognised as having a recognised/acceptable domain.",
+                    });
+                }
+
+                // TODO: Validate email format
+                // TODO: Validate email domain is DfE
+            }
+
+
+            // TODO: Consider max length (probably 100 chars?)
+            // TODO: Consider rejecting newlines with an error, as deputyDirector should normally be a short phrase only without newlines.
+            // TODO: Consider handling of accented characters and multi-byte characters (e.g., emoji)
+        }
+
+        return result;
+    }
+
+    public bool IsDeputyDirectorComplete()
+    {
+        return DeputyDirector is not null
+               && DeputyDirector.IsComplete();
+    }
+
+    #endregion
+
+
     public DateTimeOffset CreatedAt { get; set; }
 
     public DateTimeOffset UpdatedAt { get; set; }
@@ -595,13 +741,6 @@ public class AssessmentRequest
     //     return ReviewDates.Any();
     // }
 
-    // public bool IsDeputyDirectorComplete()
-    // {
-    //     return DeputyDirector is not null
-    //            && !string.IsNullOrWhiteSpace(DeputyDirector.Name)
-    //            && !string.IsNullOrWhiteSpace(DeputyDirector.Email);
-    // }
-    //
     // public bool IsSeniorResponsibleOfficerComplete()
     // {
     //     return IsDeputyDirectorTheSeniorResponsibleOfficer switch

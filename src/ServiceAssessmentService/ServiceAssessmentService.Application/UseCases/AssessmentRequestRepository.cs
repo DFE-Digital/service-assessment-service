@@ -25,6 +25,7 @@ public class AssessmentRequestRepository
             .Include(e => e.PhaseConcluding)
             .Include(e => e.AssessmentTypeRequested)
             .Include(e => e.Portfolio)
+            .Include(e => e.DeputyDirector)
             .Select(e => e.ToDomainModel())
             .ToListAsync();
 
@@ -37,6 +38,7 @@ public class AssessmentRequestRepository
             .Include(e => e.PhaseConcluding)
             .Include(e => e.AssessmentTypeRequested)
             .Include(e => e.Portfolio)
+            .Include(e => e.DeputyDirector)
             .Where(e => e.Id == id)
             .Select(e => e.ToDomainModel())
             .SingleOrDefaultAsync();
@@ -608,6 +610,50 @@ public class AssessmentRequestRepository
         // Validate the new value
         var domainModel = assessmentRequest.ToDomainModel();
         var validateDescriptionResult = domainModel.ValidatePortfolio(availablePortfolios.Select(x => x.ToDomainModel()));
+
+        // If valid, save it to the database
+        if (validateDescriptionResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateDescriptionResult;
+    }
+
+    public async Task<PersonValidationResult> UpdateDeputyDirectorAsync(Guid id, string newPersonalName, string newFamilyName, string newEmail)
+    {
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests.SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new PersonValidationResult();
+            validationResult.ValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found",
+            });
+            validationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+        // Do specific update
+        assessmentRequest.DeputyDirector = new Database.Entities.Person()
+        {
+            PersonalName = newPersonalName,
+            FamilyName = newFamilyName,
+            Email = newEmail,
+        };
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateDescriptionResult = domainModel.ValidateDeputyDirector();
 
         // If valid, save it to the database
         if (validateDescriptionResult.IsValid)

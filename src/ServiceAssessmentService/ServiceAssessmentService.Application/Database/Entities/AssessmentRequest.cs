@@ -62,6 +62,7 @@ internal class AssessmentRequest : BaseEntity
             IsPhaseEndDateKnown = IsPhaseEndDateKnown,
             PhaseEndDate = PhaseEndDate,
             Portfolio = Portfolio?.ToDomainModel(),
+            DeputyDirector = DeputyDirector?.ToDomainModel(),
             CreatedAt = CreatedUtc,
             UpdatedAt = UpdatedUtc,
         };
@@ -85,6 +86,7 @@ internal class AssessmentRequest : BaseEntity
             IsPhaseEndDateKnown = domainModel.IsPhaseEndDateKnown,
             PhaseEndDate = domainModel.PhaseEndDate,
             PortfolioId = domainModel.Portfolio?.Id,
+            DeputyDirectorId = domainModel.DeputyDirector?.Id,
             CreatedUtc = domainModel.CreatedAt.UtcDateTime,
             UpdatedUtc = domainModel.UpdatedAt.UtcDateTime,
         };
