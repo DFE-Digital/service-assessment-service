@@ -82,6 +82,7 @@ public class AssessmentRequestPortfolioValidationTests
                 Name = "Test Portfolio 3",
                 DisplayNameMidSentenceCase = "test portfolio 9",
                 SortOrder = 9,
+                IsInternalGroup = false,
             },
         };
 
@@ -92,7 +93,5 @@ public class AssessmentRequestPortfolioValidationTests
         Assert.False(result.IsValid);
         Assert.Empty(result.ValidationWarnings);
         Assert.Contains(result.ValidationErrors, v => v.FieldName == nameof(assessmentRequest.Portfolio));
-
-
     }
 }

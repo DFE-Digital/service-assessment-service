@@ -590,9 +590,9 @@ public class AssessmentRequestRepository
 
             return validationResult;
         }
-        
+
         var availablePortfolios = await _dbContext.Portfolios.ToListAsync();
-        
+
         // Do specific update
         if (newPortfolioId is null)
         {
@@ -604,11 +604,11 @@ public class AssessmentRequestRepository
             assessmentRequest.PortfolioId = Guid.Parse(newPortfolioId);
             assessmentRequest.Portfolio = availablePortfolios.SingleOrDefault(e => e.Id.ToString() == newPortfolioId);
         }
-        
+
         // Validate the new value
         var domainModel = assessmentRequest.ToDomainModel();
         var validateDescriptionResult = domainModel.ValidatePortfolio(availablePortfolios.Select(x => x.ToDomainModel()));
-        
+
         // If valid, save it to the database
         if (validateDescriptionResult.IsValid)
         {
@@ -619,7 +619,7 @@ public class AssessmentRequestRepository
         {
             _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
         }
-        
+
         // Return the result
         return validateDescriptionResult;
     }

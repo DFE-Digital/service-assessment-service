@@ -32,10 +32,21 @@
                                 </govuk-radios-error-message>
                             }
 
-                            @foreach (var radioItem in Model.AvailablePortfolios.OrderBy(x => x.SortOrder))
+                            @foreach (var radioItem in Model.AvailableInternalPortfolios.OrderBy(x => x.SortOrder))
                             {
                             @* <govuk-radios-item value="@radioItem.Id" disabled="@(!radioItem.IsEnabled)">@radioItem.DisplayName</govuk-radios-item> *@
                                 <govuk-radios-item value="@radioItem.Id">@radioItem.DisplayName</govuk-radios-item>
+                            }
+                            
+                            @if (Model.AvailableExternalPortfolios.Any())
+                            {
+                                <govuk-radios-divider>or</govuk-radios-divider>
+
+                                @foreach (var radioItem in Model.AvailableExternalPortfolios.OrderBy(x => x.SortOrder))
+                                {
+                                    @* <govuk-radios-item value="@radioItem.Id" disabled="@(!radioItem.IsEnabled)">@radioItem.DisplayName</govuk-radios-item> *@
+                                    <govuk-radios-item value="@radioItem.Id">@radioItem.DisplayName</govuk-radios-item>
+                                }
                             }
                         </govuk-radios-fieldset>
                     </govuk-radios>

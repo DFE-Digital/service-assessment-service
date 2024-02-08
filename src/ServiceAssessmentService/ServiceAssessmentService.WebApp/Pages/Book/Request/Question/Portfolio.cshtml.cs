@@ -35,7 +35,8 @@ public class PortfolioPageModel : PageModel
 
     public IEnumerable<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
 
-    public IEnumerable<RadioItem> AvailablePortfolios { get; set; } = new List<RadioItem>();
+    public IEnumerable<RadioItem> AvailableInternalPortfolios { get; set; } = new List<RadioItem>();
+    public IEnumerable<RadioItem> AvailableExternalPortfolios { get; set; } = new List<RadioItem>();
 
     [BindProperty]
     public string? SelectedPortfolioId { get; set; } = null;
@@ -61,8 +62,13 @@ public class PortfolioPageModel : PageModel
             return NotFound();
         }
 
-        Portfolios = await _portfolioRepository.GetPortfoliosAsync();
-        AvailablePortfolios = Portfolios.Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
+        Portfolios = (await _portfolioRepository.GetPortfoliosAsync()).ToList();
+        AvailableInternalPortfolios = Portfolios
+            .Where(x => x.IsInternalGroup)
+            .Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
+        AvailableExternalPortfolios = Portfolios
+            .Where(x => !x.IsInternalGroup)
+            .Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
 
         Id = req.Id;
         SelectedPortfolioId = req.Portfolio?.Id.ToString();
@@ -87,8 +93,13 @@ public class PortfolioPageModel : PageModel
         if (!changeResult.IsValid || changeResult.ValidationErrors.Any())
         {
 
-            Portfolios = await _portfolioRepository.GetPortfoliosAsync();
-            AvailablePortfolios = Portfolios.Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
+            Portfolios = (await _portfolioRepository.GetPortfoliosAsync()).ToList();
+            AvailableInternalPortfolios = Portfolios
+                .Where(x => x.IsInternalGroup)
+                .Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
+            AvailableExternalPortfolios = Portfolios
+                .Where(x => !x.IsInternalGroup)
+                .Select(x => new RadioItem(x.Id.ToString(), x.Name, true, x.SortOrder));
 
             Id = req.Id;
             SelectedPortfolioId = req.Portfolio?.Id.ToString(); // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.

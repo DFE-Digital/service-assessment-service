@@ -595,11 +595,6 @@ public class AssessmentRequest
     //     return ReviewDates.Any();
     // }
 
-    // public bool IsPortfolioComplete()
-    // {
-    //     return Portfolio is not null;
-    // }
-
     // public bool IsDeputyDirectorComplete()
     // {
     //     return DeputyDirector is not null
