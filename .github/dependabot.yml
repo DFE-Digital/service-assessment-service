@@ -9,8 +9,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-  - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/src" # Location of package manifests
+  - package-ecosystem: "nuget"
+    directory: "/src/ServiceAssessmentService"
     schedule:
       interval: "daily"
   - package-ecosystem: "npm"
