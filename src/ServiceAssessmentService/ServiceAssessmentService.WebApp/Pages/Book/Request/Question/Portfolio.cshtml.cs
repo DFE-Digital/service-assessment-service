@@ -108,8 +108,8 @@ public class PortfolioPageModel : PageModel
             return Page();
         }
 
-        return RedirectToPage("/Book/Request/TaskList", new { id });
-        // return RedirectToPage("/Book/Request/Question/ProjectCode", new { id });
+        // return RedirectToPage("/Book/Request/TaskList", new { id });
+        return RedirectToPage("/Book/Request/Question/DeputyDirector", new { id });
     }
 
 }

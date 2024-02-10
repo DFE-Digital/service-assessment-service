@@ -316,49 +316,49 @@
                                     </span>
                                 </li>
                         
-                        @*         <li class="app-task-list__item"> *@
-                        @*             <span class="app-task-list__task-name"> *@
-                        @*                 <a asp-page="/Book/Request/Question/SeniorResponsibleOfficer" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Senior responsible officer</a> *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-value"> *@
-                        @*                 @if (Model.AssessmentRequest.IsDeputyDirectorTheSeniorResponsibleOfficer == true) *@
-                        @*                 { *@
-                        @*                     if (Model.AssessmentRequest.DeputyDirector is null) *@
-                        @*                     { *@
-                        @*                         <span>Deputy Director (@notYetSupplied)</span> *@
-                        @*                     } *@
-                        @*                     else *@
-                        @*                     { *@
-                        @*                         <span>Deputy Director (@Model.AssessmentRequest.DeputyDirector.Name, @Model.AssessmentRequest.DeputyDirector.Email)</span> *@
-                        @*                     } *@
-                        @*                 } *@
-                        @*                 else if (Model.AssessmentRequest.IsDeputyDirectorTheSeniorResponsibleOfficer == false) *@
-                        @*                 { *@
-                        @*                     if (Model.AssessmentRequest.SeniorResponsibleOfficer is null) *@
-                        @*                     { *@
-                        @*                         <span>@notYetSupplied</span> *@
-                        @*                     } *@
-                        @*                     else *@
-                        @*                     { *@
-                        @*                         <span>@Model.AssessmentRequest.SeniorResponsibleOfficer.Name (@Model.AssessmentRequest.SeniorResponsibleOfficer.Email)</span> *@
-                        @*                     } *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     @notYetSupplied *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-tag"> *@
-                        @*                 @if (Model.AssessmentRequest.IsSeniorResponsibleOfficerComplete()) *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag app-task-list__tag">Completed</strong> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*         </li> *@
+                                <li class="app-task-list__item">
+                                    <span class="app-task-list__task-name">
+                                        <a asp-page="/Book/Request/Question/SeniorResponsibleOfficer" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Senior responsible officer</a>
+                                    </span>
+                                    <span class="app-task-list__task-value">
+                                        @if (Model.AssessmentRequest.IsDeputyDirectorTheSeniorResponsibleOfficer == true)
+                                        {
+                                            if (Model.AssessmentRequest.DeputyDirector is null)
+                                            {
+                                                <span>Deputy Director (@notYetSupplied)</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Deputy Director (@Model.AssessmentRequest.DeputyDirector.FullName(), @Model.AssessmentRequest.DeputyDirector.Email)</span>
+                                            }
+                                        }
+                                        else if (Model.AssessmentRequest.IsDeputyDirectorTheSeniorResponsibleOfficer == false)
+                                        {
+                                            if (Model.AssessmentRequest.SeniorResponsibleOfficer is null)
+                                            {
+                                                <span>@notYetSupplied</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@Model.AssessmentRequest.SeniorResponsibleOfficer.FullName() (@Model.AssessmentRequest.SeniorResponsibleOfficer.Email)</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @notYetSupplied
+                                        }
+                                    </span>
+                                    <span class="app-task-list__task-tag">
+                                        @if (Model.AssessmentRequest.IsSeniorResponsibleOfficerComplete())
+                                        {
+                                            <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                        }
+                                    </span>
+                                </li>
                         @*         <li class="app-task-list__item"> *@
                         @*             <span class="app-task-list__task-name"> *@
                         @*                 <a asp-page="/Book/Request/Question/ProductOwnerManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Product manager</a> *@

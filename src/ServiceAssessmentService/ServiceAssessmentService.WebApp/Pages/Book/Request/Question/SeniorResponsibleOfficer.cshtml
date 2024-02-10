@@ -1,0 +1,103 @@
+﻿@page
+@model ServiceAssessmentService.WebApp.Pages.Book.Request.Question.SeniorResponsibleOfficerPageModel
+@{
+    ViewData["Title"] = Model.RadioQuestionText;
+    ViewData["Section"] = SiteSection.BookingRequest;
+}
+
+<div class="pre--content"></div>
+<div class="main--content">
+
+    <div class="main--inside-container">
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-two-thirds">
+                @* Omitting the form action/asp-path results in the form being submitted to the same URL (desirable behaviour) *@
+                <form asp-route-id="@Model.Id">
+
+
+                    <govuk-radios name="@Model.IsDdTheSroFormElementName" id-prefix="@Model.IsDdTheSroRadioPrefix" asp-for="@Model.IsDdTheSroValue">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                                @Model.RadioQuestionText
+                            </govuk-radios-fieldset-legend>
+
+                            <govuk-radios-hint>@Model.RadioQuestionHint</govuk-radios-hint>
+
+
+                            @if (Model.RadioErrors.Any())
+                            {
+                                <govuk-radios-error-message error-items="Model.ErrorItems">@(string.Join(", ", Model.RadioErrors))</govuk-radios-error-message>
+                            }
+
+                            <govuk-radios-item value="@Model.IsDdTheSroValueYes">
+                                Yes
+                            </govuk-radios-item>
+
+                            <govuk-radios-item value="@Model.IsDdTheSroValueNo">
+                                No
+                                <govuk-radios-item-conditional>
+
+                                    <govuk-input name="@(Model.FormElementNameSeniorResponsibleOfficerPersonalName)" asp-for="@(Model.SeniorResponsibleOfficerPersonalName)">
+                                        <govuk-input-label is-page-heading="false" class="govuk-label--s">@Model.PersonalNameQuestionText</govuk-input-label>
+                                        @if (!string.IsNullOrWhiteSpace(Model.PersonalNameQuestionHint))
+                                        {
+                                            <govuk-input-hint>@Model.PersonalNameQuestionHint</govuk-input-hint>
+                                        }
+
+                                        @if (Model.PersonalNameErrors.Any())
+                                        {
+                                            @* string.Join here is a workaround, to allow for there to be multiple potential error messages, but the govuk-frontend-taghelpers library permits only one error message entry *@
+                                            <govuk-input-error-message>
+                                                @string.Join(", ", Model.PersonalNameErrors)
+                                            </govuk-input-error-message>
+                                        }
+                                    </govuk-input>
+
+                                    <govuk-input name="@(Model.FormElementNameSeniorResponsibleOfficerFamilyName)" asp-for="@(Model.SeniorResponsibleOfficerFamilyName)">
+                                        <govuk-input-label is-page-heading="false" class="govuk-label--s">@Model.FamilyNameQuestionText</govuk-input-label>
+                                        @if (!string.IsNullOrWhiteSpace(Model.FamilyNameQuestionHint))
+                                        {
+                                            <govuk-input-hint>@Model.FamilyNameQuestionHint</govuk-input-hint>
+                                        }
+
+                                        @if (Model.FamilyNameErrors.Any())
+                                        {
+                                            @* string.Join here is a workaround, to allow for there to be multiple potential error messages, but the govuk-frontend-taghelpers library permits only one error message entry *@
+                                            <govuk-input-error-message>
+                                                @string.Join(", ", Model.FamilyNameErrors)
+                                            </govuk-input-error-message>
+                                        }
+                                    </govuk-input>
+
+                                    <govuk-input name="@(Model.FormElementNameSeniorResponsibleOfficerEmail)" asp-for="@(Model.SeniorResponsibleOfficerEmail)">
+                                        <govuk-input-label is-page-heading="false" class="govuk-label--s">@Model.EmailQuestionText</govuk-input-label>
+                                        @if (!string.IsNullOrWhiteSpace(Model.EmailQuestionHint))
+                                        {
+                                            <govuk-input-hint>@Model.EmailQuestionHint</govuk-input-hint>
+                                        }
+
+                                        @if (Model.EmailErrors.Any())
+                                        {
+                                            @* string.Join here is a workaround, to allow for there to be multiple potential error messages, but the govuk-frontend-taghelpers library permits only one error message entry *@
+                                            <govuk-input-error-message>
+                                                @string.Join(", ", Model.EmailErrors)
+                                            </govuk-input-error-message>
+                                        }
+                                    </govuk-input>
+                                </govuk-radios-item-conditional>
+                            </govuk-radios-item>
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit">Save and continue</govuk-button>
+                        <a asp-page="/Book/Request/TaskList" asp-route-id="@Model.Id" class="govuk-link">Skip and return to later</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
