@@ -2,7 +2,7 @@
 
 namespace ServiceAssessmentService.Domain.Test;
 
-public class AssessmentRequestProductManagerCompletenessTests
+public class AssessmentRequestDeliveryManagerCompletenessTests
 {
     private static Person ArbitraryValidPerson => new Person
     {
@@ -20,9 +20,9 @@ public class AssessmentRequestProductManagerCompletenessTests
     public static TheoryData<bool?, Person?> CompleteCombinations => new()
     {
         // Complete scenarios
-        // - Declares Product Manager is known, Product Manager details provided
+        // - Declares Delivery Manager is known, Delivery Manager details provided
         {true, ArbitraryValidPerson},
-        // - Declares Product Manager is not known, no Product Manager details provided
+        // - Declares Delivery Manager is not known, no Delivery Manager details provided
         {false, null},
 
     };
@@ -47,20 +47,20 @@ public class AssessmentRequestProductManagerCompletenessTests
 
     [Theory]
     [MemberData(nameof(CompleteCombinations))]
-    public void IsProductManagerComplete_WHEN_CompleteCombinationOfValues_THEN_IsComplete(
-        bool? hasProductManager,
-        Person? productManager
+    public void IsDeliveryManagerComplete_WHEN_CompleteCombinationOfValues_THEN_IsComplete(
+        bool? hasDeliveryManager,
+        Person? deliveryManager
     )
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            HasProductOwnerManager = hasProductManager,
-            ProductOwnerManager = productManager,
+            HasDeliveryManager = hasDeliveryManager,
+            DeliveryManager = deliveryManager,
         };
 
         // Act
-        var result = assessmentRequest.IsProductOwnerManagerComplete();
+        var result = assessmentRequest.IsDeliveryManagerComplete();
 
         // Assert
         Assert.True(result);
@@ -68,25 +68,25 @@ public class AssessmentRequestProductManagerCompletenessTests
 
     [Theory]
     [MemberData(nameof(IncompleteCombinations))]
-    public void IsProductManagerComplete_WHEN_IncompleteCombinationOfValues_THEN_IsComplete(
-        bool? hasProductManager,
-        Person? productManager
+    public void IsDeliveryManagerComplete_WHEN_IncompleteCombinationOfValues_THEN_IsComplete(
+        bool? hasDeliveryManager,
+        Person? deliveryManager
     )
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            HasProductOwnerManager = hasProductManager,
-            ProductOwnerManager = productManager,
+            HasDeliveryManager = hasDeliveryManager,
+            DeliveryManager = deliveryManager,
         };
 
         // Act
-        var result = assessmentRequest.IsProductOwnerManagerComplete();
+        var result = assessmentRequest.IsDeliveryManagerComplete();
 
         // Assert
-        string productManagerString = productManager?.ToString() ?? "null";
+        string deliveryManagerString = deliveryManager?.ToString() ?? "null";
 
         Assert.False(result, $"Expected to be incomplete: " +
-                             $"\n- ProductManager: {productManagerString}");
+                             $"\n- DeliveryManager: {deliveryManagerString}");
     }
 }
