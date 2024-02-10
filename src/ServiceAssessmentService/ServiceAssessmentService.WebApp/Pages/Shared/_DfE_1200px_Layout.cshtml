@@ -113,7 +113,7 @@
                             </a>
                         </li>
                     }
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <li class="dfe-header__navigation-item @(siteSection is SiteSection.Dashboard ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Dashboard">
@@ -126,7 +126,7 @@
                             </a>
                         </li>
                     }
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         @* <li class="dfe-header__navigation-item @(isAreaDefault ? "dfe-header__navigation-item--current" : "")"> *@
                         @*     <a class="dfe-header__navigation-link" asp-page="/Book/Index"> *@
@@ -139,7 +139,7 @@
                         @*     </a> *@
                         @* </li> *@
                     }
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <li class="dfe-header__navigation-item @(siteSection is SiteSection.BookingRequest ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Book/Index">
@@ -152,7 +152,7 @@
                             </a>
                         </li>
                     }
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <li class="dfe-header__navigation-item @(siteSection is SiteSection.MyAccount ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Me/Index">
@@ -165,7 +165,7 @@
                             </a>
                         </li>
                     }
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <li class="dfe-header__navigation-item @(siteSection is SiteSection.Admin ? "dfe-header__navigation-item--current" : "")">
                             <a class="dfe-header__navigation-link" asp-page="/Admin/Index">

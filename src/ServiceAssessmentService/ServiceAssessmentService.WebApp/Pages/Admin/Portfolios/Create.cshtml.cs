@@ -17,7 +17,7 @@ public class CreateModel : PageModel
     }
 
     [BindProperty]
-    public Portfolio? Portfolio { get; set; }
+    public Portfolio Portfolio { get; set; } = null!; // Must initialise within the OnGet/OnPost/etc handlers.
 
     public IActionResult OnGet()
     {

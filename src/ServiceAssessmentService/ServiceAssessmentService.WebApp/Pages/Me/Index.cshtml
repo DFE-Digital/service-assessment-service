@@ -17,9 +17,16 @@
 
                 <ul>
                     <li>@ViewData["GraphApiResult"]</li>
-                    <li>@graphUser.GivenName</li>
-                    <li>@graphUser.Surname</li>
-                    <li>@graphUser.Mail</li>
+                    @if(graphUser is not null)
+                    {
+                        <li>@graphUser.GivenName</li>
+                        <li>@graphUser.Surname</li>
+                        <li>@graphUser.Mail</li>
+                    }
+                    else
+                    {
+                        <li>Additional details not available as graph user is null</li>
+                    }
                 </ul>
             </div>
         </div>
@@ -69,25 +76,32 @@
             <div class="govuk-grid-column">
                 <h3 class="govuk-heading-m">User Properties</h3>
 
-                <dl class="govuk-summary-list">
-                    @foreach (var property in graphUser.GetType().GetProperties())
-                    {
-                        var value = property.GetValue(graphUser);
-                        if (value is null)
+                @if (graphUser is null)
+                {
+                    <govuk-warning-text>Additional details not available, as graph user is null.</govuk-warning-text>
+                }
+                else
+                {
+                    <dl class="govuk-summary-list">
+                        @foreach (var property in graphUser.GetType().GetProperties())
                         {
-                            continue;
+                            var value = property.GetValue(graphUser);
+                            if (value is null)
+                            {
+                                continue;
+                            }
+
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @property.Name
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @value
+                                </dd>
+                            </div>
                         }
-                        
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                @property.Name
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                @value
-                            </dd>
-                        </div>
-                    }
-                </dl>
+                    </dl>
+                }
             </div>
         </div>
 

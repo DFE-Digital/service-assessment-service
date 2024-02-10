@@ -59,6 +59,8 @@ public class PhaseRepository
 
         var entityPhases = domainPhases
             .Select(Database.Entities.Phase.FromDomain)
+            .Where(e => e != null)
+            .Select(e => e!)
             .ToList();
 
         _dbContext.Phases.AddRange(entityPhases);

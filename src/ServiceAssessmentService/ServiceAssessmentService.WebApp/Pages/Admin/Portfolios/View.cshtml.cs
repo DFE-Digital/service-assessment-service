@@ -17,15 +17,18 @@ public class ViewModel : PageModel
     }
 
     [BindProperty]
-    public Portfolio? Portfolio { get; set; }
+    public Portfolio Portfolio { get; set; } = null!; // Must initialise within the OnGet/OnPost/etc handlers.
 
     public async Task<IActionResult> OnGet(Guid id)
     {
-        Portfolio = await _portfolioRepository.GetPortfolioByIdAsync(id);
-        if (Portfolio is null)
+        var portfolio = await _portfolioRepository.GetPortfolioByIdAsync(id);
+        if (portfolio is null)
         {
-            return NotFound($"Portfolio with ID {id} not found");
+            _logger.LogWarning("Attempting to view Portfolio with ID {Id}, but it is not recognised", id);
+            return NotFound($"Attempting to view Portfolio with ID {id}, but it is not recognised");
         }
+
+        Portfolio = portfolio;
 
         return new PageResult();
     }

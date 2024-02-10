@@ -8,8 +8,6 @@ namespace ServiceAssessmentService.WebApp.Pages.Book;
 
 public class DeletePageModel : PageModel
 {
-    public AssessmentRequest AssessmentRequest { get; set; }
-
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly ILogger<DeletePageModel> _logger;
 
@@ -19,6 +17,7 @@ public class DeletePageModel : PageModel
         _logger = logger;
     }
 
+    public AssessmentRequest AssessmentRequest { get; set; } = null!; // Must initialise within the OnGet/OnPost/etc handlers.
 
     public async Task<IActionResult> OnGet(Guid id)
     {

@@ -17,28 +17,33 @@ public class DeleteModel : PageModel
     }
 
     [BindProperty]
-    public AssessmentType? AssessmentType { get; set; }
+    public AssessmentType AssessmentType { get; set; } = null!; // Must initialise within the OnGet/OnPost/etc handlers.
 
     public async Task<IActionResult> OnGet(Guid id)
     {
-        AssessmentType = await _assessmentTypeRepository.GetAssessmentTypeByIdAsync(id);
-        if (AssessmentType is null)
+        var assessmentType = await _assessmentTypeRepository.GetAssessmentTypeByIdAsync(id);
+        if (assessmentType is null)
         {
-            return NotFound($"AssessmentType with ID {id} not found");
+            _logger.LogWarning("Attempting to view AssessmentType with ID {Id}, but it is not recognised", id);
+            return NotFound($"Attempting to view AssessmentType with ID {id}, but it is not recognised");
         }
+
+        AssessmentType = assessmentType;
 
         return new PageResult();
     }
 
     public async Task<IActionResult> OnPost(Guid id)
     {
-        AssessmentType = await _assessmentTypeRepository.GetAssessmentTypeByIdAsync(id);
-        if (AssessmentType is null)
+        var assessmentType = await _assessmentTypeRepository.GetAssessmentTypeByIdAsync(id);
+        if (assessmentType is null)
         {
-            return NotFound($"AssessmentType with ID {id} not found");
+            _logger.LogWarning("Attempting to delete AssessmentType with ID {Id}, but it is not recognised", id);
+            return NotFound($"Attempting to delete AssessmentType with ID {id}, but it is not recognised");
         }
 
         await _assessmentTypeRepository.DeleteAssessmentTypeAsync(id);
+
         return RedirectToPage("List");
     }
 }

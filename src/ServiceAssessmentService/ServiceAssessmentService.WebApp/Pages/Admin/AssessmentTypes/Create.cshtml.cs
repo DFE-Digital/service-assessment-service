@@ -17,7 +17,7 @@ public class CreateModel : PageModel
     }
 
     [BindProperty]
-    public AssessmentType? AssessmentType { get; set; }
+    public AssessmentType AssessmentType { get; set; } = null!; // Must initialise within the OnGet/OnPost/etc handlers.
 
     public IActionResult OnGet()
     {

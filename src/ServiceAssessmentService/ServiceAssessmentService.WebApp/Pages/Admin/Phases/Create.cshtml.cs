@@ -20,7 +20,7 @@ public class CreateModel : PageModel
 
 
     [BindProperty]
-    public Phase? Phase { get; set; }
+    public Phase Phase { get; set; } = null!; // Must initialise within the OnGet/OnPost/etc handlers.
 
 
     public IActionResult OnGet()

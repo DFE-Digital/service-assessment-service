@@ -17,25 +17,29 @@ public class EditModel : PageModel
     }
 
     [BindProperty]
-    public Phase? Phase { get; set; }
+    public Phase Phase { get; set; } = null!; // Must initialise within the OnGet/OnPost/etc handlers.
 
     public async Task<IActionResult> OnGet(Guid id)
     {
-        Phase = await _phaseRepository.GetPhaseByIdAsync(id);
-        if (Phase is null)
+        var phase = await _phaseRepository.GetPhaseByIdAsync(id);
+        if (phase is null)
         {
-            return NotFound($"Phase with ID {id} not found");
+            _logger.LogWarning("Attempting to view Phase with ID {Id}, but it is not recognised", id);
+            return NotFound($"Attempting to view Phase with ID {id}, but it is not recognised");
         }
+
+        Phase = phase;
 
         return new PageResult();
     }
 
     public async Task<IActionResult> OnPost(Guid id, Phase newPhase)
     {
-        Phase = await _phaseRepository.GetPhaseByIdAsync(id);
-        if (Phase is null)
+        var phase = await _phaseRepository.GetPhaseByIdAsync(id);
+        if (phase is null)
         {
-            return NotFound($"Phase with ID {id} not found - cannot edit a phase which does not exist.");
+            _logger.LogWarning("Attempting to edit Phase with ID {Id}, but it is not recognised", id);
+            return NotFound($"Attempting to edit Phase with ID {id}, but it is not recognised");
         }
 
         await _phaseRepository.UpdatePhaseAsync(newPhase);

@@ -17,14 +17,6 @@ public class DataContext : IdentityDbContext<ServiceAssessmentServiceWebAppUser>
     internal DbSet<Entities.Person> People { get; set; } = null!;
     internal DbSet<Entities.Portfolio> Portfolios { get; set; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-
-        builder
-            .Entity<Entities.AssessmentRequest>()
-            .ToTable("AssessmentRequests", b => b.IsTemporal());
-    }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

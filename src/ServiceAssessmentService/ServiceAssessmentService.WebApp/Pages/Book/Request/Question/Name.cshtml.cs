@@ -35,7 +35,7 @@ public class NamePageModel : PageModel
     public Phase? Phase { get; set; } = null;
 
     [BindProperty]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
 
     public List<string> Errors { get; set; } = new();

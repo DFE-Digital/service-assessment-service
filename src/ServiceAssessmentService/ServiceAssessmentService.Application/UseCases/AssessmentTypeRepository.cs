@@ -58,6 +58,8 @@ public class AssessmentTypeRepository
 
         var entityAssessmentTypes = domainAssessmentTypes
             .Select(Database.Entities.AssessmentType.FromDomain)
+            .Where(e => e != null)
+            .Select(e => e!)
             .ToList();
 
         _dbContext.AssessmentTypes.AddRange(entityAssessmentTypes);
