@@ -359,43 +359,43 @@
                                         }
                                     </span>
                                 </li>
-                        @*         <li class="app-task-list__item"> *@
-                        @*             <span class="app-task-list__task-name"> *@
-                        @*                 <a asp-page="/Book/Request/Question/ProductOwnerManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Product manager</a> *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-value"> *@
-                        @*                 @if (Model.AssessmentRequest.HasProductOwnerManager == true) *@
-                        @*                 { *@
-                        @*                     if (Model.AssessmentRequest.ProductOwnerManager is null) *@
-                        @*                     { *@
-                        @*                         <text>@notYetSupplied</text> *@
-                        @*                         ; *@
-                        @*                     } *@
-                        @*                     else *@
-                        @*                     { *@
-                        @*                         <text>@Model.AssessmentRequest.ProductOwnerManager.Name (@Model.AssessmentRequest.ProductOwnerManager.Email)</text> *@
-                        @*                     } *@
-                        @*                 } *@
-                        @*                 else if (Model.AssessmentRequest.HasProductOwnerManager == false) *@
-                        @*                 { *@
-                        @*                     <span>Not known</span> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <span>@notYetSupplied</span> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-tag"> *@
-                        @*                 @if (Model.AssessmentRequest.IsProductOwnerManagerComplete()) *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag app-task-list__tag">Completed</strong> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*         </li> *@
+                        <li class="app-task-list__item">
+                            <span class="app-task-list__task-name">
+                                <a asp-page="/Book/Request/Question/ProductOwnerManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Product manager</a>
+                            </span>
+                            <span class="app-task-list__task-value">
+                                @if (Model.AssessmentRequest.HasProductOwnerManager == true)
+                                {
+                                    if (Model.AssessmentRequest.ProductOwnerManager is null)
+                                    {
+                                        <text>@notYetSupplied</text>
+                                        ;
+                                    }
+                                    else
+                                    {
+                                        <text>@Model.AssessmentRequest.ProductOwnerManager.FullName() (@Model.AssessmentRequest.ProductOwnerManager.Email)</text>
+                                    }
+                                }
+                                else if (Model.AssessmentRequest.HasProductOwnerManager == false)
+                                {
+                                    <span>Not known</span>
+                                }
+                                else
+                                {
+                                    <span>@notYetSupplied</span>
+                                }
+                            </span>
+                            <span class="app-task-list__task-tag">
+                                @if (Model.AssessmentRequest.IsProductOwnerManagerComplete())
+                                {
+                                    <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                }
+                                else
+                                {
+                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                }
+                            </span>
+                        </li>
                         @*         <li class="app-task-list__item"> *@
                         @*             <span class="app-task-list__task-name"> *@
                         @*                 <a asp-page="/Book/Request/Question/DeliveryManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Delivery manager</a> *@

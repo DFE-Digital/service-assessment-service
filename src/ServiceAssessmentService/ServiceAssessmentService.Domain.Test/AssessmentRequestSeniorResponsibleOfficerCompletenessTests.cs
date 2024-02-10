@@ -61,7 +61,7 @@ public class AssessmentRequestSeniorResponsibleOfficerCompletenessTests
 
     [Theory]
     [MemberData(nameof(CompleteCombinations))]
-    public void IsPhaseSeniorResponsibleOfficerComplete_WHEN_CompleteCombinationOfValues_THEN_IsComplete(
+    public void IsSeniorResponsibleOfficerComplete_WHEN_CompleteCombinationOfValues_THEN_IsComplete(
         bool? isDdTheSro,
         Person? deputyDirector,
         Person? seniorResponsibleOfficer
@@ -84,7 +84,7 @@ public class AssessmentRequestSeniorResponsibleOfficerCompletenessTests
 
     [Theory]
     [MemberData(nameof(IncompleteCombinations))]
-    public void IsPhaseSeniorResponsibleOfficerComplete_WHEN_IncompleteCombinationOfValues_THEN_IsComplete(
+    public void IsSeniorResponsibleOfficerComplete_WHEN_IncompleteCombinationOfValues_THEN_IsComplete(
         bool? isDdTheSro,
         Person? deputyDirector,
         Person? seniorResponsibleOfficer
