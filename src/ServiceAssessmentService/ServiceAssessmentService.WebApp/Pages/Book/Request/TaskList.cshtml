@@ -26,7 +26,7 @@
                     <h2 class="govuk-heading-l">
                         @(Model.AssessmentRequest.Name ?? "Untitled") <small>(@(Model.AssessmentRequest.PhaseConcluding?.DisplayNameMidSentenceCase ?? "unknown phase") @(Model.AssessmentRequest.AssessmentType?.DisplayNameMidSentenceCase ?? "unknown assessment type"))</small>
                     </h2>
-                    <h2 class="govuk-heading-s govuk-!-margin-bottom-2"> Request incomplete</h2>
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">@Model.AssessmentRequest.GetOverallCompletionStatusDescription()</h2>
                 <p class="govuk-body govuk-!-margin-bottom-7">
                     You have completed 
                     @Model.AssessmentRequest.CountOfCompleted()
@@ -150,7 +150,7 @@
                                         }
                                     </span>
                                 </li>
-                        
+                                    
                                 <li class="app-task-list__item">
                                     <span class="app-task-list__task-name">
                                         <a asp-page="/Book/Request/Question/ProjectCode" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Project code</a>
@@ -182,7 +182,7 @@
                                         }
                                     </span>
                                 </li>
-                        
+                                    
                                 <li class="app-task-list__item">
                                     <span class="app-task-list__task-name">
                                         <a asp-page="/Book/Request/Question/PhaseStartDate" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Start date</a>
@@ -201,7 +201,7 @@
                                         }
                                     </span>
                                 </li>
-                        
+                                    
                                 <li class="app-task-list__item">
                                     <span class="app-task-list__task-name">
                                         <a asp-page="/Book/Request/Question/PhaseEndDate" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">End date</a>
@@ -220,51 +220,52 @@
                                         }
                                     </span>
                                 </li>
-                        
-                        @*         <li class="app-task-list__item"> *@
-                        @*             <span class="app-task-list__task-name"> *@
-                        @*                 <a asp-page="/Book/Request/Question/ReviewDates" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Requested review weeks</a> *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-value"> *@
-                        @*                 @* *@
-                        @*             TODO: Consider scenario where user might: *@
-                        @*             1. select an end date, *@
-                        @*             2. then select review dates, *@
-                        @*             3. then time passes and the end date is now within the next five weeks, and previously selected values are now invalid *@
-                        @*             *@
-                        @* *@
-                        @*                 @if (Model.AssessmentRequest.IsEndDateWithinNextFiveWeeks) *@
-                        @*                 { *@
-                        @*                     <span>None available as end date is within next 5 weeks</span> *@
-                        @*                 } *@
-                        @*                 else if ( /*Model.AssessmentRequest.IsEndDateKnown == true &&*/ Model.AssessmentRequest.ReviewDates.Any()) *@
-                        @*                 { *@
-                        @*                     <ul class="govuk-list govuk-list--bullet"> *@
-                        @*                         @foreach (var date in Model.AssessmentRequest.ReviewDates) *@
-                        @*                         { *@
-                        @*                             <li>@date</li> *@
-                        @*                         } *@
-                        @*                     </ul> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <span>@notYetSupplied</span> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-tag"> *@
-                        @*                 @if (Model.AssessmentRequest.IsReviewDatesComplete()) *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag app-task-list__tag">Completed</strong> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong> *@
-                        @*                 } *@
-                        @* *@
-                        @*             </span> *@
-                        @*         </li> *@
+                                    
+                                @*         <li class="app-task-list__item"> *@
+                                @*             <span class="app-task-list__task-name"> *@
+                                @*                 <a asp-page="/Book/Request/Question/ReviewDates" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Requested review weeks</a> *@
+                                @*             </span> *@
+                                @*             <span class="app-task-list__task-value"> *@
+                                @*                 @* *@
+                                @*             TODO: Consider scenario where user might: *@
+                                @*             1. select an end date, *@
+                                @*             2. then select review dates, *@
+                                @*             3. then time passes and the end date is now within the next five weeks, and previously selected values are now invalid *@
+                                @*             *@
+                                @* *@
+                                @*                 @if (Model.AssessmentRequest.IsEndDateWithinNextFiveWeeks) *@
+                                @*                 { *@
+                                @*                     <span>None available as end date is within next 5 weeks</span> *@
+                                @*                 } *@
+                                @*                 else if ( /*Model.AssessmentRequest.IsEndDateKnown == true &&*/ Model.AssessmentRequest.ReviewDates.Any()) *@
+                                @*                 { *@
+                                @*                     <ul class="govuk-list govuk-list--bullet"> *@
+                                @*                         @foreach (var date in Model.AssessmentRequest.ReviewDates) *@
+                                @*                         { *@
+                                @*                             <li>@date</li> *@
+                                @*                         } *@
+                                @*                     </ul> *@
+                                @*                 } *@
+                                @*                 else *@
+                                @*                 { *@
+                                @*                     <span>@notYetSupplied</span> *@
+                                @*                 } *@
+                                @*             </span> *@
+                                @*             <span class="app-task-list__task-tag"> *@
+                                @*                 @if (Model.AssessmentRequest.IsReviewDatesComplete()) *@
+                                @*                 { *@
+                                @*                     <strong class="govuk-tag app-task-list__tag">Completed</strong> *@
+                                @*                 } *@
+                                @*                 else *@
+                                @*                 { *@
+                                @*                     <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong> *@
+                                @*                 } *@
+                                @* *@
+                                @*             </span> *@
+                                @*         </li> *@
                             </ul>
                         </li>
+                                
                         <li>
                             <h2 class="app-task-list__section">
                                 <span class="app-task-list__section-number">2. </span> Product and delivery
@@ -359,83 +360,85 @@
                                         }
                                     </span>
                                 </li>
-                        <li class="app-task-list__item">
-                            <span class="app-task-list__task-name">
-                                <a asp-page="/Book/Request/Question/ProductOwnerManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Product manager</a>
-                            </span>
-                            <span class="app-task-list__task-value">
-                                @if (Model.AssessmentRequest.HasProductOwnerManager == true)
-                                {
-                                    if (Model.AssessmentRequest.ProductOwnerManager is null)
-                                    {
-                                        <text>@notYetSupplied</text>
-                                        ;
-                                    }
-                                    else
-                                    {
-                                        <text>@Model.AssessmentRequest.ProductOwnerManager.FullName() (@Model.AssessmentRequest.ProductOwnerManager.Email)</text>
-                                    }
-                                }
-                                else if (Model.AssessmentRequest.HasProductOwnerManager == false)
-                                {
-                                    <span>Not known</span>
-                                }
-                                else
-                                {
-                                    <span>@notYetSupplied</span>
-                                }
-                            </span>
-                            <span class="app-task-list__task-tag">
-                                @if (Model.AssessmentRequest.IsProductOwnerManagerComplete())
-                                {
-                                    <strong class="govuk-tag app-task-list__tag">Completed</strong>
-                                }
-                                else
-                                {
-                                    <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
-                                }
-                            </span>
-                        </li>
-                        @*         <li class="app-task-list__item"> *@
-                        @*             <span class="app-task-list__task-name"> *@
-                        @*                 <a asp-page="/Book/Request/Question/DeliveryManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Delivery manager</a> *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-value"> *@
-                        @*                 @if (Model.AssessmentRequest.HasDeliveryManager == true) *@
-                        @*                 { *@
-                        @*                     if (Model.AssessmentRequest.DeliveryManager is null) *@
-                        @*                     { *@
-                        @*                         <text>@notYetSupplied</text> *@
-                        @*                         ; *@
-                        @*                     } *@
-                        @*                     else *@
-                        @*                     { *@
-                        @*                         <text>@Model.AssessmentRequest.DeliveryManager.Name (@Model.AssessmentRequest.DeliveryManager.Email)</text> *@
-                        @*                     } *@
-                        @*                 } *@
-                        @*                 else if (Model.AssessmentRequest.HasDeliveryManager == false) *@
-                        @*                 { *@
-                        @*                     <span>Not known</span> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <span>@notYetSupplied</span> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*             <span class="app-task-list__task-tag"> *@
-                        @*                 @if (Model.AssessmentRequest.IsDeliveryManagerComplete()) *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag app-task-list__tag">Completed</strong> *@
-                        @*                 } *@
-                        @*                 else *@
-                        @*                 { *@
-                        @*                     <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong> *@
-                        @*                 } *@
-                        @*             </span> *@
-                        @*         </li> *@
+                                
+                                <li class="app-task-list__item">
+                                    <span class="app-task-list__task-name">
+                                        <a asp-page="/Book/Request/Question/ProductOwnerManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Product owner/manager</a>
+                                    </span>
+                                    <span class="app-task-list__task-value">
+                                        @if (Model.AssessmentRequest.HasProductOwnerManager == true)
+                                        {
+                                            if (Model.AssessmentRequest.ProductOwnerManager is null)
+                                            {
+                                                <text>@notYetSupplied</text>
+                                                ;
+                                            }
+                                            else
+                                            {
+                                                <text>@Model.AssessmentRequest.ProductOwnerManager.FullName() (@Model.AssessmentRequest.ProductOwnerManager.Email)</text>
+                                            }
+                                        }
+                                        else if (Model.AssessmentRequest.HasProductOwnerManager == false)
+                                        {
+                                            <span>Not known</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@notYetSupplied</span>
+                                        }
+                                    </span>
+                                    <span class="app-task-list__task-tag">
+                                        @if (Model.AssessmentRequest.IsProductOwnerManagerComplete())
+                                        {
+                                            <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                        }
+                                    </span>
+                                </li>
+                                
+                                <li class="app-task-list__item">
+                                    <span class="app-task-list__task-name">
+                                        <a asp-page="/Book/Request/Question/DeliveryManager" asp-route-id="@Model.AssessmentRequest.Id" aria-describedby="read-declaration-status">Delivery manager</a>
+                                    </span>
+                                    <span class="app-task-list__task-value">
+                                        @if (Model.AssessmentRequest.HasDeliveryManager == true)
+                                        {
+                                            if (Model.AssessmentRequest.DeliveryManager is null)
+                                            {
+                                                <text>@notYetSupplied</text>
+                                                ;
+                                            }
+                                            else
+                                            {
+                                                <text>@Model.AssessmentRequest.DeliveryManager.FullName() (@Model.AssessmentRequest.DeliveryManager.Email)</text>
+                                            }
+                                        }
+                                        else if (Model.AssessmentRequest.HasDeliveryManager == false)
+                                        {
+                                            <span>Not known</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@notYetSupplied</span>
+                                        }
+                                    </span>
+                                    <span class="app-task-list__task-tag">
+                                        @if (Model.AssessmentRequest.IsDeliveryManagerComplete())
+                                        {
+                                            <strong class="govuk-tag app-task-list__tag">Completed</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong class="govuk-tag govuk-tag--grey app-task-list__tag">Not started</strong>
+                                        }
+                                    </span>
+                                </li>
                             </ul>
                         </li>
-                        
+
                         <li>
                             <h2 class="app-task-list__section">
                                 <span class="app-task-list__section-number">3. </span> Submit
@@ -454,7 +457,6 @@
                                     }
                                 </li>
                             </ul>
-                        
                         
                         </li>
                     </ol>

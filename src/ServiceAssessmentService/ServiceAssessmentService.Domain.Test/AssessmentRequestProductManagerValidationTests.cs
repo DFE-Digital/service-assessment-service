@@ -8,7 +8,7 @@ namespace ServiceAssessmentService.Domain.Test;
 /// - When yes, must provide Product Manager details
 /// - When no, Product Manager details must be absent
 /// </summary>
-public class AssessmentRequestProductManagerValidationTests
+public class AssessmentRequestProductOwnerManagerValidationTests
 {
 
     private static Person ArbitraryValidPerson => new Person
@@ -22,7 +22,7 @@ public class AssessmentRequestProductManagerValidationTests
 
 
     [Fact]
-    public void HappyPath_WHEN_HasProductManager_False_AND_ProductManager_Null_THEN_RadioIsValid_AND_NestedIsValid()
+    public void HappyPath_WHEN_HasProductOwnerManager_False_AND_ProductOwnerManager_Null_THEN_RadioIsValid_AND_NestedIsValid()
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -32,7 +32,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(
@@ -47,7 +47,7 @@ public class AssessmentRequestProductManagerValidationTests
     }
 
     [Fact]
-    public void HappyPath_WHEN_HasProductManager_True_AND_ProductManager_Valid_THEN_RadioIsValid_AND_NestedIsValid()
+    public void HappyPath_WHEN_HasProductOwnerManager_True_AND_ProductOwnerManager_Valid_THEN_RadioIsValid_AND_NestedIsValid()
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -57,7 +57,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(
@@ -73,7 +73,7 @@ public class AssessmentRequestProductManagerValidationTests
 
 
     [Fact]
-    public void WHEN_HasProductManager_Null_AND_ProductManager_Null_THEN_RadioIsInvalid_AND_NestedIsValid()
+    public void WHEN_HasProductOwnerManager_Null_AND_ProductOwnerManager_Null_THEN_RadioIsInvalid_AND_NestedIsValid()
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -83,7 +83,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(
@@ -98,7 +98,7 @@ public class AssessmentRequestProductManagerValidationTests
     }
 
     [Fact]
-    public void WHEN_HasProductManager_True_AND_ProductManager_Null_THEN_RadioIsInvalid_AND_NestedIsValid()
+    public void WHEN_HasProductOwnerManager_True_AND_ProductOwnerManager_Null_THEN_RadioIsInvalid_AND_NestedIsValid()
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -108,7 +108,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(
@@ -132,8 +132,8 @@ public class AssessmentRequestProductManagerValidationTests
     // [InlineData(true, "Arbitrary Personal Name",null, "arbitrary@example.com")]
     // [InlineData(true, "Arbitrary Personal Name","Arbitrary Family Name", null)]
     // // [InlineData(true, "Arbitrary Personal Name","Arbitrary Family Name", "arbitrary@example.com")] // ignore - valid
-    // public void WHEN_HasProductManager_True_AND_ProductManager_Invalid_THEN_RadioIsValid_AND_NestedIsInvalid(
-    //     bool hasProductManager,
+    // public void WHEN_HasProductOwnerManager_True_AND_ProductOwnerManager_Invalid_THEN_RadioIsValid_AND_NestedIsInvalid(
+    //     bool hasProductOwnerManager,
     //     string? personalName,
     //     string? familyName,
     //     string? email
@@ -142,8 +142,8 @@ public class AssessmentRequestProductManagerValidationTests
     //     // Arrange
     //     var assessmentRequest = new AssessmentRequest
     //     {
-    //         HasProductManager = hasProductManager,
-    //         ProductManager = new Person
+    //         HasProductOwnerManager = hasProductOwnerManager,
+    //         ProductOwnerManager = new Person
     //         {
     //             PersonalName = personalName,
     //             FamilyName = familyName,
@@ -152,7 +152,7 @@ public class AssessmentRequestProductManagerValidationTests
     //     };
     //
     //     // Act
-    //     var result = assessmentRequest.ValidateProductManager();
+    //     var result = assessmentRequest.ValidateProductOwnerManager();
     //
     //     // Assert
     //     Assert.Multiple(
@@ -161,7 +161,7 @@ public class AssessmentRequestProductManagerValidationTests
     //         () => { Assert.Empty(result.RadioQuestionValidationWarnings); },
     //
     //         () => { Assert.False(result.NestedValidationResult.IsValid); },
-    //         () => { Assert.Contains(result.NestedValidationResult.ValidationErrors, v => v.FieldName == nameof(assessmentRequest.ProductManager)); },
+    //         () => { Assert.Contains(result.NestedValidationResult.ValidationErrors, v => v.FieldName == nameof(assessmentRequest.ProductOwnerManager)); },
     //         () => { Assert.Empty(result.NestedValidationResult.ValidationWarnings); }
     //     );
     // }
@@ -172,7 +172,7 @@ public class AssessmentRequestProductManagerValidationTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData("\t")]
-    public void WHEN_HasProductManager_True_AND_ProductManager_InvalidPersonalName_THEN_RadioIsValid_AND_NestedIsInvalid(string? personalName)
+    public void WHEN_HasProductOwnerManager_True_AND_ProductOwnerManager_InvalidPersonalName_THEN_RadioIsValid_AND_NestedIsInvalid(string? personalName)
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -187,7 +187,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(
@@ -207,7 +207,7 @@ public class AssessmentRequestProductManagerValidationTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData("\t")]
-    public void WHEN_HasProductManager_True_AND_ProductManager_InvalidFamilyName_THEN_RadioIsValid_AND_NestedIsInvalid(string? familyName)
+    public void WHEN_HasProductOwnerManager_True_AND_ProductOwnerManager_InvalidFamilyName_THEN_RadioIsValid_AND_NestedIsInvalid(string? familyName)
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -222,7 +222,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(
@@ -244,7 +244,7 @@ public class AssessmentRequestProductManagerValidationTests
     [InlineData("\t")]
     [InlineData("invalid-email")]
     [InlineData("invalid-email@")]
-    public void WHEN_HasProductManager_True_AND_ProductManager_InvalidEmail_THEN_RadioIsValid_AND_NestedIsInvalid(string? email)
+    public void WHEN_HasProductOwnerManager_True_AND_ProductOwnerManager_InvalidEmail_THEN_RadioIsValid_AND_NestedIsInvalid(string? email)
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -259,7 +259,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(
@@ -275,7 +275,7 @@ public class AssessmentRequestProductManagerValidationTests
 
     // has product manager false, product manager valid, radio invalid, nested invalid
     [Fact]
-    public void WHEN_HasProductManager_False_AND_ProductManager_Valid_THEN_RadioIsInvalid_AND_NestedIsValid()
+    public void WHEN_HasProductOwnerManager_False_AND_ProductOwnerManager_Valid_THEN_RadioIsInvalid_AND_NestedIsValid()
     {
         // Arrange
         var assessmentRequest = new AssessmentRequest
@@ -285,7 +285,7 @@ public class AssessmentRequestProductManagerValidationTests
         };
 
         // Act
-        var result = assessmentRequest.ValidateProductManager();
+        var result = assessmentRequest.ValidateProductOwnerManager();
 
         // Assert
         Assert.Multiple(

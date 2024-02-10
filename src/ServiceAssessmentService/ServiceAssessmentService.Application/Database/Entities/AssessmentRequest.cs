@@ -67,6 +67,8 @@ internal class AssessmentRequest : BaseEntity
             SeniorResponsibleOfficer = SeniorResponsibleOfficer?.ToDomainModel(),
             HasProductOwnerManager = HasProductOwnerManager,
             ProductOwnerManager = ProductOwnerManager?.ToDomainModel(),
+            HasDeliveryManager = HasDeliveryManager,
+            DeliveryManager = DeliveryManager?.ToDomainModel(),
             CreatedAt = CreatedUtc,
             UpdatedAt = UpdatedUtc,
         };
@@ -95,6 +97,8 @@ internal class AssessmentRequest : BaseEntity
             SeniorResponsibleOfficerId = domainModel.SeniorResponsibleOfficer?.Id,
             HasProductOwnerManager = domainModel.HasProductOwnerManager,
             ProductOwnerManagerId = domainModel.ProductOwnerManager?.Id,
+            HasDeliveryManager = domainModel.HasDeliveryManager,
+            DeliveryManagerId = domainModel.DeliveryManager?.Id,
             CreatedUtc = domainModel.CreatedAt.UtcDateTime,
             UpdatedUtc = domainModel.UpdatedAt.UtcDateTime,
         };

@@ -5,21 +5,21 @@ using ServiceAssessmentService.Domain.Model;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book.Request.Question;
 
-public class ProductOwnerManagerPageModel : PageModel
+public class DeliveryManagerPageModel : PageModel
 {
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly PhaseRepository _phaseRepository;
     private readonly PortfolioRepository _portfolioRepository;
 
-    private readonly ILogger<ProductOwnerManagerPageModel> _logger;
+    private readonly ILogger<DeliveryManagerPageModel> _logger;
 
-    public ProductOwnerManagerPageModel(
+    public DeliveryManagerPageModel(
         AssessmentRequestRepository assessmentRequestRepository
         , AssessmentTypeRepository assessmentTypeRepository
         , PhaseRepository phaseRepository
         , PortfolioRepository portfolioRepository
-        , ILogger<ProductOwnerManagerPageModel> logger
+        , ILogger<DeliveryManagerPageModel> logger
     )
     {
         _assessmentRequestRepository = assessmentRequestRepository;
@@ -33,14 +33,14 @@ public class ProductOwnerManagerPageModel : PageModel
     public Guid? Id { get; set; } = Guid.Empty;
 
     [BindProperty]
-    public string? HasProductOwnerManagerValue { get; set; }
+    public string? HasDeliveryManagerValue { get; set; }
 
     [BindProperty]
-    public string? ProductOwnerManagerPersonalName { get; set; }
+    public string? DeliveryManagerPersonalName { get; set; }
     [BindProperty]
-    public string? ProductOwnerManagerFamilyName { get; set; }
+    public string? DeliveryManagerFamilyName { get; set; }
     [BindProperty]
-    public string? ProductOwnerManagerEmail { get; set; }
+    public string? DeliveryManagerEmail { get; set; }
 
 
     public List<string> RadioErrors { get; set; } = new();
@@ -60,31 +60,31 @@ public class ProductOwnerManagerPageModel : PageModel
 
 
 
-    public const string _hasProductOwnerManagerValueYes = "yes";
-    public String HasProductOwnerManagerValueYes => _hasProductOwnerManagerValueYes;
+    public const string _hasDeliveryManagerValueYes = "yes";
+    public String HasDeliveryManagerValueYes => _hasDeliveryManagerValueYes;
 
-    public const string _hasProductOwnerManagerValueNo = "no";
-    public String HasProductOwnerManagerValueNo => _hasProductOwnerManagerValueNo;
+    public const string _hasDeliveryManagerValueNo = "no";
+    public String HasDeliveryManagerValueNo => _hasDeliveryManagerValueNo;
 
-    private const string _hasProductOwnerManagerFormElementName = "service-has-product-owner-manager";
-    public string HasProductOwnerManagerFormElementName => _hasProductOwnerManagerFormElementName;
+    private const string _hasDeliveryManagerFormElementName = "service-has-delivery-manager";
+    public string HasDeliveryManagerFormElementName => _hasDeliveryManagerFormElementName;
 
-    private const string _hasProductOwnerManagerRadioPrefix = "has-product-owner-manager";
-    public string HasProductOwnerManagerRadioPrefix => _hasProductOwnerManagerRadioPrefix;
+    private const string _hasDeliveryManagerRadioPrefix = "has-delivery-manager";
+    public string HasDeliveryManagerRadioPrefix => _hasDeliveryManagerRadioPrefix;
 
-    private const string _formElementNameProductOwnerManagerPersonalName = "service-product-owner-manager-personal-name";
-    public string FormElementNameProductOwnerManagerPersonalName => _formElementNameProductOwnerManagerPersonalName;
+    private const string _formElementNameDeliveryManagerPersonalName = "service-delivery-manager-personal-name";
+    public string FormElementNameDeliveryManagerPersonalName => _formElementNameDeliveryManagerPersonalName;
 
-    private const string _formElementNameProductOwnerManagerFamilyName = "service-product-owner-manager-family-name";
-    public string FormElementNameProductOwnerManagerFamilyName => _formElementNameProductOwnerManagerFamilyName;
+    private const string _formElementNameDeliveryManagerFamilyName = "service-delivery-manager-family-name";
+    public string FormElementNameDeliveryManagerFamilyName => _formElementNameDeliveryManagerFamilyName;
 
-    private const string _formElementNameProductOwnerManagerEmail = "service-product-owner-manager-email";
-    public string FormElementNameProductOwnerManagerEmail => _formElementNameProductOwnerManagerEmail;
-
-
+    private const string _formElementNameDeliveryManagerEmail = "service-delivery-manager-email";
+    public string FormElementNameDeliveryManagerEmail => _formElementNameDeliveryManagerEmail;
 
 
-    public string RadioQuestionText => $"Does the team have a product owner or product manager?";
+
+
+    public string RadioQuestionText => $"Does the team have a delivery manager?";
     public string? RadioQuestionHint => "Select one option.";
 
     public string PersonalNameQuestionText => $"Personal name";
@@ -108,26 +108,26 @@ public class ProductOwnerManagerPageModel : PageModel
 
         Id = id;
 
-        HasProductOwnerManagerValue = req.HasProductOwnerManager switch
+        HasDeliveryManagerValue = req.HasDeliveryManager switch
         {
-            true => _hasProductOwnerManagerValueYes,
-            false => _hasProductOwnerManagerValueNo,
+            true => _hasDeliveryManagerValueYes,
+            false => _hasDeliveryManagerValueNo,
             _ => null,
         };
 
-        ProductOwnerManagerPersonalName = req.ProductOwnerManager?.PersonalName ?? string.Empty;
-        ProductOwnerManagerFamilyName = req.ProductOwnerManager?.FamilyName ?? string.Empty;
-        ProductOwnerManagerEmail = req.ProductOwnerManager?.Email ?? string.Empty;
+        DeliveryManagerPersonalName = req.DeliveryManager?.PersonalName ?? string.Empty;
+        DeliveryManagerFamilyName = req.DeliveryManager?.FamilyName ?? string.Empty;
+        DeliveryManagerEmail = req.DeliveryManager?.Email ?? string.Empty;
 
         return Page();
     }
 
     public async Task<IActionResult> OnPost(
         Guid id,
-        [FromForm(Name = _hasProductOwnerManagerFormElementName), AllowEmpty] string? newHasProductOwnerManager,
-        [FromForm(Name = _formElementNameProductOwnerManagerPersonalName), AllowEmpty] string newPersonalName,
-        [FromForm(Name = _formElementNameProductOwnerManagerFamilyName), AllowEmpty] string newFamilyName,
-        [FromForm(Name = _formElementNameProductOwnerManagerEmail), AllowEmpty] string newEmail
+        [FromForm(Name = _hasDeliveryManagerFormElementName), AllowEmpty] string? newHasDeliveryManager,
+        [FromForm(Name = _formElementNameDeliveryManagerPersonalName), AllowEmpty] string newPersonalName,
+        [FromForm(Name = _formElementNameDeliveryManagerFamilyName), AllowEmpty] string newFamilyName,
+        [FromForm(Name = _formElementNameDeliveryManagerEmail), AllowEmpty] string newEmail
     )
     {
         var req = await _assessmentRequestRepository.GetByIdAsync(id);
@@ -138,23 +138,23 @@ public class ProductOwnerManagerPageModel : PageModel
         }
 
 
-        bool? hasProductOwnerManager = newHasProductOwnerManager switch
+        bool? hasDeliveryManager = newHasDeliveryManager switch
         {
-            _hasProductOwnerManagerValueYes => true,
-            _hasProductOwnerManagerValueNo => false,
+            _hasDeliveryManagerValueYes => true,
+            _hasDeliveryManagerValueNo => false,
             _ => null,
         };
 
-        var changeResult = await _assessmentRequestRepository.UpdateProductOwnerManagerAsync(id, hasProductOwnerManager, newPersonalName, newFamilyName, newEmail);
+        var changeResult = await _assessmentRequestRepository.UpdateDeliveryManagerAsync(id, hasDeliveryManager, newPersonalName, newFamilyName, newEmail);
         if (!changeResult.IsValid)
         {
             Id = id;
 
-            HasProductOwnerManagerValue = newHasProductOwnerManager; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            HasDeliveryManagerValue = newHasDeliveryManager; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
 
-            ProductOwnerManagerPersonalName = newPersonalName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
-            ProductOwnerManagerFamilyName = newFamilyName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
-            ProductOwnerManagerEmail = newEmail; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            DeliveryManagerPersonalName = newPersonalName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            DeliveryManagerFamilyName = newFamilyName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            DeliveryManagerEmail = newEmail; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
 
             RadioWarnings = changeResult.RadioQuestionValidationWarnings.Select(e => e.WarningMessage).ToList();
             RadioErrors = changeResult.RadioQuestionValidationErrors.Select(e => e.ErrorMessage).ToList();
@@ -171,7 +171,7 @@ public class ProductOwnerManagerPageModel : PageModel
             return Page();
         }
 
-        // return RedirectToPage("/Book/Request/TaskList", new { id });
-        return RedirectToPage("/Book/Request/Question/DeliveryManager", new { id });
+        return RedirectToPage("/Book/Request/TaskList", new { id });
+        // return RedirectToPage("/Book/Request/Question/DeliveryManager", new { id });
     }
 }
