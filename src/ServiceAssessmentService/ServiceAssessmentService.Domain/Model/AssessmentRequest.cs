@@ -18,7 +18,7 @@ public class AssessmentRequest
         {nameof(Portfolio), x => x.IsPortfolioComplete()},
         {nameof(DeputyDirector), x => x.IsDeputyDirectorComplete()},
         { nameof(SeniorResponsibleOfficer), x => x.IsSeniorResponsibleOfficerComplete() },
-        // { nameof(ProductOwnerManager), x => x.IsProductOwnerManagerComplete() },
+        { nameof(ProductOwnerManager), x => x.IsProductOwnerManagerComplete() },
         // { nameof(DeliveryManager), x => x.IsDeliveryManagerComplete() },
     };
 
@@ -940,6 +940,219 @@ public class AssessmentRequest
             false =>
                 // SRO declared as different to DD, thus SRO details required.
                 (SeniorResponsibleOfficer is not null && SeniorResponsibleOfficer.IsComplete()),
+        };
+    }
+
+    #endregion
+
+
+
+    #region ProductManager
+
+    public bool? HasProductOwnerManager { get; set; } = null;
+
+    public Person? ProductOwnerManager { get; set; }
+
+    public RadioConditionalValidationResult<PersonValidationResult> ValidateProductManager()
+    {
+
+        var radioValidationResult = new RadioConditionalValidationResult<PersonValidationResult>()
+        {
+            IsValid = true,
+            NestedValidationResult = new PersonValidationResult()
+            {
+                IsValid = true,
+            }
+        };
+
+
+        if (HasProductOwnerManager == null)
+        {
+            // Not yet declared if has a Product Manager - incomplete
+            radioValidationResult.IsValid = false;
+            radioValidationResult.RadioQuestionValidationErrors.Add(new ValidationError
+            {
+                FieldName = nameof(HasProductOwnerManager),
+                ErrorMessage = "Please select whether the team has a product owner or product manager",
+            });
+        }
+        else if (HasProductOwnerManager == true)
+        {
+            if (ProductOwnerManager is null)
+            {
+                radioValidationResult.IsValid = false;
+                radioValidationResult.RadioQuestionValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(HasProductOwnerManager),
+                    ErrorMessage = "When declaring the project has a product owner or product manager, please provide their details.",
+                });
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(ProductOwnerManager),
+                    ErrorMessage = "When declaring the project has a product owner or product manager, please provide their details.",
+                });
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(ProductOwnerManager.PersonalName))
+                {
+                    radioValidationResult.NestedValidationResult.IsValid = false;
+                    radioValidationResult.NestedValidationResult.PersonalNameErrors.Add(new ValidationError
+                    {
+                        FieldName = nameof(ProductOwnerManager.PersonalName),
+                        ErrorMessage = "Please enter the product manager's personal name.",
+                    });
+                }
+                else
+                {
+                    if (ProductOwnerManager.PersonalName.Any(c => c < 32 || 126 < c))
+                    {
+                        /*
+                         * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                         * Add a warning if any characters fall outside this range
+                         * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                         */
+                        radioValidationResult.NestedValidationResult.IsValid = false;
+                        radioValidationResult.NestedValidationResult.PersonalNameWarnings.Add(new ValidationWarning
+                        {
+                            FieldName = nameof(ProductOwnerManager.PersonalName),
+                            WarningMessage =
+                                "The product manager's personal name contains non-standard ASCII characters -- non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                        });
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(ProductOwnerManager.FamilyName))
+                {
+                    radioValidationResult.NestedValidationResult.IsValid = false;
+                    radioValidationResult.NestedValidationResult.FamilyNameErrors.Add(new ValidationError
+                    {
+                        FieldName = nameof(ProductOwnerManager.FamilyName),
+                        ErrorMessage = "Please enter the product manager's family name.",
+                    });
+                }
+                else
+                {
+                    if (ProductOwnerManager.FamilyName.Any(c => c < 32 || 126 < c))
+                    {
+                        /*
+                         * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                         * Add a warning if any characters fall outside this range
+                         * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                         */
+                        radioValidationResult.NestedValidationResult.IsValid = false;
+                        radioValidationResult.NestedValidationResult.FamilyNameWarnings.Add(new ValidationWarning
+                        {
+                            FieldName = nameof(ProductOwnerManager.FamilyName),
+                            WarningMessage =
+                                "The product manager's family name contains non-standard ASCII characters -- non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                        });
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(ProductOwnerManager.Email))
+                {
+                    radioValidationResult.NestedValidationResult.IsValid = false;
+                    radioValidationResult.NestedValidationResult.EmailErrors.Add(new ValidationError
+                    {
+                        FieldName = nameof(ProductOwnerManager.Email),
+                        ErrorMessage = "Please enter the product manager's email address.",
+                    });
+                }
+                else
+                {
+                    if (ProductOwnerManager.Email.Any(c => c < 32 || 126 < c))
+                    {
+                        /*
+                         * ASCII char codes 32-126 are standard printable characters (upper and lower case letters, numbers, typical punctuation, etc)
+                         * Add a warning if any characters fall outside this range
+                         * Note not an error as it may be desirable to use non-standard characters (e.g., accented characters or emoji)
+                         */
+                        radioValidationResult.NestedValidationResult.IsValid = false;
+                        radioValidationResult.NestedValidationResult.EmailWarnings.Add(new ValidationWarning
+                        {
+                            FieldName = nameof(ProductOwnerManager.Email),
+                            WarningMessage =
+                                "The product manager's email address contains non-standard ASCII characters -- non-standard characters (e.g., \"smart quotes\" copy/pasted from MS Word) may not be intentional and may cause errors with values not be displayed correctly",
+                        });
+                    }
+
+                    if (!EmailValidationUtilities.IsValidEmail(ProductOwnerManager.Email))
+                    {
+                        radioValidationResult.NestedValidationResult.IsValid = false;
+                        radioValidationResult.NestedValidationResult.EmailErrors.Add(new ValidationError
+                        {
+                            FieldName = nameof(ProductOwnerManager.Email),
+                            ErrorMessage =
+                                "The product manager's email address is not recognised as being in a valid email format.",
+                        });
+                    }
+
+                    if (!EmailValidationUtilities.IsValidDomain(ProductOwnerManager.Email))
+                    {
+                        radioValidationResult.NestedValidationResult.IsValid = false;
+                        radioValidationResult.NestedValidationResult.EmailErrors.Add(new ValidationError
+                        {
+                            FieldName = nameof(ProductOwnerManager.Email),
+                            ErrorMessage =
+                                "The product manager's email address is not recognised as having a recognised/acceptable domain.",
+                        });
+                    }
+
+                    // TODO: Validate email format
+                    // TODO: Validate email domain is DfE
+                }
+
+
+                // TODO: Consider max length (probably 100 chars?)
+                // TODO: Consider rejecting newlines with an error, as productManager should normally be a short phrase only without newlines.
+                // TODO: Consider handling of accented characters and multi-byte characters (e.g., emoji)
+
+            }
+        }
+        else if (HasProductOwnerManager == false)
+        {
+
+            if (ProductOwnerManager is not null)
+            {
+                radioValidationResult.IsValid = false;
+                radioValidationResult.RadioQuestionValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(HasProductOwnerManager),
+                    ErrorMessage = "When declaring the project has no product owner or product manager, please do not provide the product owner or product manager's details.",
+                });
+                radioValidationResult.NestedValidationResult.IsValid = false;
+                radioValidationResult.NestedValidationResult.ValidationErrors.Add(new ValidationError
+                {
+                    FieldName = nameof(ProductOwnerManager),
+                    ErrorMessage = "When declaring the project has no product owner or product manager, please do not provide the product owner or product manager's details.",
+                });
+            }
+            else
+            {
+                // No product manager declared, and no details provided -- valid.
+            }
+        }
+
+        return radioValidationResult;
+    }
+
+
+
+    public bool IsProductOwnerManagerComplete()
+    {
+        return HasProductOwnerManager switch
+        {
+            null =>
+                // Not yet declared if project code is known, thus is incomplete.
+                false,
+            true =>
+                // Declared as known, and present - complete.
+                (ProductOwnerManager is not null && ProductOwnerManager.IsComplete()),
+            false =>
+                // Declared as not known, and no details provided - complete.
+                (ProductOwnerManager is null),
         };
     }
 

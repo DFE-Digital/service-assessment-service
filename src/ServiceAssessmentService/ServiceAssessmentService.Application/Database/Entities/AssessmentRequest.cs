@@ -65,6 +65,8 @@ internal class AssessmentRequest : BaseEntity
             DeputyDirector = DeputyDirector?.ToDomainModel(),
             IsDeputyDirectorTheSeniorResponsibleOfficer = IsDeputyDirectorTheSeniorResponsibleOfficer,
             SeniorResponsibleOfficer = SeniorResponsibleOfficer?.ToDomainModel(),
+            HasProductOwnerManager = HasProductOwnerManager,
+            ProductOwnerManager = ProductOwnerManager?.ToDomainModel(),
             CreatedAt = CreatedUtc,
             UpdatedAt = UpdatedUtc,
         };
@@ -91,6 +93,8 @@ internal class AssessmentRequest : BaseEntity
             DeputyDirectorId = domainModel.DeputyDirector?.Id,
             IsDeputyDirectorTheSeniorResponsibleOfficer = domainModel.IsDeputyDirectorTheSeniorResponsibleOfficer,
             SeniorResponsibleOfficerId = domainModel.SeniorResponsibleOfficer?.Id,
+            HasProductOwnerManager = domainModel.HasProductOwnerManager,
+            ProductOwnerManagerId = domainModel.ProductOwnerManager?.Id,
             CreatedUtc = domainModel.CreatedAt.UtcDateTime,
             UpdatedUtc = domainModel.UpdatedAt.UtcDateTime,
         };

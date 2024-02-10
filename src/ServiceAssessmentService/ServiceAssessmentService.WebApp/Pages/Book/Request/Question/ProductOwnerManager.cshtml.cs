@@ -5,21 +5,21 @@ using ServiceAssessmentService.Domain.Model;
 
 namespace ServiceAssessmentService.WebApp.Pages.Book.Request.Question;
 
-public class SeniorResponsibleOfficerPageModel : PageModel
+public class ProductOwnerManagerPageModel : PageModel
 {
     private readonly AssessmentRequestRepository _assessmentRequestRepository;
     private readonly AssessmentTypeRepository _assessmentTypeRepository;
     private readonly PhaseRepository _phaseRepository;
     private readonly PortfolioRepository _portfolioRepository;
 
-    private readonly ILogger<SeniorResponsibleOfficerPageModel> _logger;
+    private readonly ILogger<ProductOwnerManagerPageModel> _logger;
 
-    public SeniorResponsibleOfficerPageModel(
+    public ProductOwnerManagerPageModel(
         AssessmentRequestRepository assessmentRequestRepository
         , AssessmentTypeRepository assessmentTypeRepository
         , PhaseRepository phaseRepository
         , PortfolioRepository portfolioRepository
-        , ILogger<SeniorResponsibleOfficerPageModel> logger
+        , ILogger<ProductOwnerManagerPageModel> logger
     )
     {
         _assessmentRequestRepository = assessmentRequestRepository;
@@ -33,14 +33,14 @@ public class SeniorResponsibleOfficerPageModel : PageModel
     public Guid? Id { get; set; } = Guid.Empty;
 
     [BindProperty]
-    public string? IsDdTheSroValue { get; set; }
+    public string? HasProductOwnerManagerValue { get; set; }
 
     [BindProperty]
-    public string? SeniorResponsibleOfficerPersonalName { get; set; }
+    public string? ProductOwnerManagerPersonalName { get; set; }
     [BindProperty]
-    public string? SeniorResponsibleOfficerFamilyName { get; set; }
+    public string? ProductOwnerManagerFamilyName { get; set; }
     [BindProperty]
-    public string? SeniorResponsibleOfficerEmail { get; set; }
+    public string? ProductOwnerManagerEmail { get; set; }
 
 
     public List<string> RadioErrors { get; set; } = new();
@@ -60,31 +60,31 @@ public class SeniorResponsibleOfficerPageModel : PageModel
 
 
 
-    public const string _isDdTheSroValueYes = "yes";
-    public String IsDdTheSroValueYes => _isDdTheSroValueYes;
+    public const string _hasProductOwnerManagerValueYes = "yes";
+    public String HasProductOwnerManagerValueYes => _hasProductOwnerManagerValueYes;
 
-    public const string _isDdTheSroValueNo = "no";
-    public String IsDdTheSroValueNo => _isDdTheSroValueNo;
+    public const string _hasProductOwnerManagerValueNo = "no";
+    public String HasProductOwnerManagerValueNo => _hasProductOwnerManagerValueNo;
 
-    private const string _isDdTheSroFormElementName = "service-is-dd-the-sro";
-    public string IsDdTheSroFormElementName => _isDdTheSroFormElementName;
+    private const string _hasProductOwnerManagerFormElementName = "service-has-product-owner-manager";
+    public string HasProductOwnerManagerFormElementName => _hasProductOwnerManagerFormElementName;
 
-    private const string _isDdTheSroRadioPrefix = "is-dd-the-sro";
-    public string IsDdTheSroRadioPrefix => _isDdTheSroRadioPrefix;
+    private const string _hasProductOwnerManagerRadioPrefix = "has-product-owner-manager";
+    public string HasProductOwnerManagerRadioPrefix => _hasProductOwnerManagerRadioPrefix;
 
-    private const string _formElementNameSeniorResponsibleOfficerPersonalName = "service-senior-responsible-officer-personal-name";
-    public string FormElementNameSeniorResponsibleOfficerPersonalName => _formElementNameSeniorResponsibleOfficerPersonalName;
+    private const string _formElementNameProductOwnerManagerPersonalName = "service-product-owner-manager-personal-name";
+    public string FormElementNameProductOwnerManagerPersonalName => _formElementNameProductOwnerManagerPersonalName;
 
-    private const string _formElementNameSeniorResponsibleOfficerFamilyName = "service-senior-responsible-officer-family-name";
-    public string FormElementNameSeniorResponsibleOfficerFamilyName => _formElementNameSeniorResponsibleOfficerFamilyName;
+    private const string _formElementNameProductOwnerManagerFamilyName = "service-product-owner-manager-family-name";
+    public string FormElementNameProductOwnerManagerFamilyName => _formElementNameProductOwnerManagerFamilyName;
 
-    private const string _formElementNameSeniorResponsibleOfficerEmail = "service-senior-responsible-officer-email";
-    public string FormElementNameSeniorResponsibleOfficerEmail => _formElementNameSeniorResponsibleOfficerEmail;
-
-
+    private const string _formElementNameProductOwnerManagerEmail = "service-product-owner-manager-email";
+    public string FormElementNameProductOwnerManagerEmail => _formElementNameProductOwnerManagerEmail;
 
 
-    public string RadioQuestionText => $"Is your deputy director also the senior responsible officer (SRO)?";
+
+
+    public string RadioQuestionText => $"Does the team have a product owner or product manager?";
     public string? RadioQuestionHint => "Select one option.";
 
     public string PersonalNameQuestionText => $"Personal name";
@@ -108,26 +108,26 @@ public class SeniorResponsibleOfficerPageModel : PageModel
 
         Id = id;
 
-        IsDdTheSroValue = req.IsDeputyDirectorTheSeniorResponsibleOfficer switch
+        HasProductOwnerManagerValue = req.HasProductOwnerManager switch
         {
-            true => _isDdTheSroValueYes,
-            false => _isDdTheSroValueNo,
+            true => _hasProductOwnerManagerValueYes,
+            false => _hasProductOwnerManagerValueNo,
             _ => null,
         };
 
-        SeniorResponsibleOfficerPersonalName = req.SeniorResponsibleOfficer?.PersonalName ?? string.Empty;
-        SeniorResponsibleOfficerFamilyName = req.SeniorResponsibleOfficer?.FamilyName ?? string.Empty;
-        SeniorResponsibleOfficerEmail = req.SeniorResponsibleOfficer?.Email ?? string.Empty;
+        ProductOwnerManagerPersonalName = req.ProductOwnerManager?.PersonalName ?? string.Empty;
+        ProductOwnerManagerFamilyName = req.ProductOwnerManager?.FamilyName ?? string.Empty;
+        ProductOwnerManagerEmail = req.ProductOwnerManager?.Email ?? string.Empty;
 
         return Page();
     }
 
     public async Task<IActionResult> OnPost(
         Guid id,
-        [FromForm(Name = _isDdTheSroFormElementName), AllowEmpty] string? newIsDdTheSro,
-        [FromForm(Name = _formElementNameSeniorResponsibleOfficerPersonalName), AllowEmpty] string newPersonalName,
-        [FromForm(Name = _formElementNameSeniorResponsibleOfficerFamilyName), AllowEmpty] string newFamilyName,
-        [FromForm(Name = _formElementNameSeniorResponsibleOfficerEmail), AllowEmpty] string newEmail
+        [FromForm(Name = _hasProductOwnerManagerFormElementName), AllowEmpty] string? newHasProductOwnerManager,
+        [FromForm(Name = _formElementNameProductOwnerManagerPersonalName), AllowEmpty] string newPersonalName,
+        [FromForm(Name = _formElementNameProductOwnerManagerFamilyName), AllowEmpty] string newFamilyName,
+        [FromForm(Name = _formElementNameProductOwnerManagerEmail), AllowEmpty] string newEmail
     )
     {
         var req = await _assessmentRequestRepository.GetByIdAsync(id);
@@ -138,23 +138,23 @@ public class SeniorResponsibleOfficerPageModel : PageModel
         }
 
 
-        bool? isDdTheSro = newIsDdTheSro switch
+        bool? hasProductOwnerManager = newHasProductOwnerManager switch
         {
-            _isDdTheSroValueYes => true,
-            _isDdTheSroValueNo => false,
+            _hasProductOwnerManagerValueYes => true,
+            _hasProductOwnerManagerValueNo => false,
             _ => null,
         };
 
-        var changeResult = await _assessmentRequestRepository.UpdateSeniorResponsibleOfficerAsync(id, isDdTheSro, newPersonalName, newFamilyName, newEmail);
+        var changeResult = await _assessmentRequestRepository.UpdateProductOwnerManagerAsync(id, hasProductOwnerManager, newPersonalName, newFamilyName, newEmail);
         if (!changeResult.IsValid)
         {
             Id = id;
 
-            IsDdTheSroValue = newIsDdTheSro; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            HasProductOwnerManagerValue = newHasProductOwnerManager; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
 
-            SeniorResponsibleOfficerPersonalName = newPersonalName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
-            SeniorResponsibleOfficerFamilyName = newFamilyName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
-            SeniorResponsibleOfficerEmail = newEmail; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            ProductOwnerManagerPersonalName = newPersonalName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            ProductOwnerManagerFamilyName = newFamilyName; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
+            ProductOwnerManagerEmail = newEmail; // Update the page model to use the user-supplied value, allowing them to edit it on the next page rather than losing their input.
 
             RadioWarnings = changeResult.RadioQuestionValidationWarnings.Select(e => e.WarningMessage).ToList();
             RadioErrors = changeResult.RadioQuestionValidationErrors.Select(e => e.ErrorMessage).ToList();
@@ -171,7 +171,7 @@ public class SeniorResponsibleOfficerPageModel : PageModel
             return Page();
         }
 
-        // return RedirectToPage("/Book/Request/TaskList", new { id });
-        return RedirectToPage("/Book/Request/Question/ProductOwnerManager", new { id });
+        return RedirectToPage("/Book/Request/TaskList", new { id });
+        // return RedirectToPage("/Book/Request/Question/DeliveryManager", new { id });
     }
 }
