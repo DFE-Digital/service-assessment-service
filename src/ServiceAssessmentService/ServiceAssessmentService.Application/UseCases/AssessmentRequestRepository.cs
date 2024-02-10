@@ -26,6 +26,7 @@ public class AssessmentRequestRepository
             .Include(e => e.AssessmentTypeRequested)
             .Include(e => e.Portfolio)
             .Include(e => e.DeputyDirector)
+            .Include(e => e.SeniorResponsibleOfficer)
             .Select(e => e.ToDomainModel())
             .ToListAsync();
 
@@ -39,6 +40,7 @@ public class AssessmentRequestRepository
             .Include(e => e.AssessmentTypeRequested)
             .Include(e => e.Portfolio)
             .Include(e => e.DeputyDirector)
+            .Include(e => e.SeniorResponsibleOfficer)
             .Where(e => e.Id == id)
             .Select(e => e.ToDomainModel())
             .SingleOrDefaultAsync();
@@ -654,6 +656,75 @@ public class AssessmentRequestRepository
         // Validate the new value
         var domainModel = assessmentRequest.ToDomainModel();
         var validateDescriptionResult = domainModel.ValidateDeputyDirector();
+
+        // If valid, save it to the database
+        if (validateDescriptionResult.IsValid)
+        {
+            _dbContext.AssessmentRequests.Update(assessmentRequest);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation("Attempted to update assessment request with ID {Id}, but it was not valid", id);
+        }
+
+        // Return the result
+        return validateDescriptionResult;
+    }
+
+    public async Task<RadioConditionalValidationResult<PersonValidationResult>> UpdateSeniorResponsibleOfficerAsync(Guid id, bool? isDdTheSro, string newPersonalName, string newFamilyName, string newEmail)
+    {
+
+        // Validate the assessment request being edited, exists
+        var assessmentRequest = await _dbContext.AssessmentRequests
+            .Include(e => e.DeputyDirector)
+            .Include(e => e.SeniorResponsibleOfficer)
+            .SingleOrDefaultAsync(e => e.Id == id);
+        if (assessmentRequest is null)
+        {
+            var validationResult = new RadioConditionalValidationResult<PersonValidationResult>
+            {
+                NestedValidationResult = new()
+                {
+                    IsValid = true,
+                },
+            };
+            validationResult.RadioQuestionValidationErrors.Add(new()
+            {
+                FieldName = nameof(assessmentRequest.Id),
+                ErrorMessage = $"Assessment request with ID {id} not found",
+            });
+            validationResult.IsValid = false;
+
+            return validationResult;
+        }
+
+        // Do specific update
+        assessmentRequest.IsDeputyDirectorTheSeniorResponsibleOfficer = isDdTheSro;
+
+        if (
+            string.IsNullOrWhiteSpace(newPersonalName)
+            && string.IsNullOrWhiteSpace(newFamilyName)
+            && string.IsNullOrWhiteSpace(newEmail)
+        )
+        {
+            // No person details provided, therefore declaring that the SRO is null.
+            assessmentRequest.SeniorResponsibleOfficer = null;
+        }
+        else
+        {
+            // At least one detail about the SRO has been provided, therefore...
+            // Either use the existing SRO (fetched via query above) and overwrite details, or create a new one and supply details for the first time.
+            assessmentRequest.SeniorResponsibleOfficer ??= new Database.Entities.Person();
+            assessmentRequest.SeniorResponsibleOfficer.PersonalName = newPersonalName;
+            assessmentRequest.SeniorResponsibleOfficer.FamilyName = newFamilyName;
+            assessmentRequest.SeniorResponsibleOfficer.Email = newEmail;
+        }
+
+
+        // Validate the new value
+        var domainModel = assessmentRequest.ToDomainModel();
+        var validateDescriptionResult = domainModel.ValidateSeniorResponsibleOfficer();
 
         // If valid, save it to the database
         if (validateDescriptionResult.IsValid)

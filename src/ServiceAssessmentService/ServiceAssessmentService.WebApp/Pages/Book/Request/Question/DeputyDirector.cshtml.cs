@@ -129,6 +129,6 @@ public class DeputyDirectorPageModel : PageModel
         }
 
         //return RedirectToPage("/Book/Request/TaskList", new { id });
-        return RedirectToPage("/Book/Request/Question/Description", new { id });
+        return RedirectToPage("/Book/Request/Question/SeniorResponsibleOfficer", new { id });
     }
 }

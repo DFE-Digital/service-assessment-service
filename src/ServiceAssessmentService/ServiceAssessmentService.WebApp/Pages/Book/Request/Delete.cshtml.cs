@@ -43,6 +43,6 @@ public class DeletePageModel : PageModel
             return NotFound();
         }
 
-        return RedirectToPage("/Book");
+        return RedirectToPage("/Book/Index");
     }
 }

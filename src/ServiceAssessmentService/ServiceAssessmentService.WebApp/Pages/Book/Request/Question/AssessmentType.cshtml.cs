@@ -100,7 +100,7 @@ public class AssessmentTypePageModel : PageModel
         }
 
         //return RedirectToPage("/Book/Request/TaskList", new { id });
-        return RedirectToPage("/Book/Request/Question/ProjectCode", new { id });
+        return RedirectToPage("/Book/Request/Question/Name", new { id });
     }
 
 }

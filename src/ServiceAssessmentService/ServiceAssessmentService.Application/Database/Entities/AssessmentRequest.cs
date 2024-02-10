@@ -63,6 +63,8 @@ internal class AssessmentRequest : BaseEntity
             PhaseEndDate = PhaseEndDate,
             Portfolio = Portfolio?.ToDomainModel(),
             DeputyDirector = DeputyDirector?.ToDomainModel(),
+            IsDeputyDirectorTheSeniorResponsibleOfficer = IsDeputyDirectorTheSeniorResponsibleOfficer,
+            SeniorResponsibleOfficer = SeniorResponsibleOfficer?.ToDomainModel(),
             CreatedAt = CreatedUtc,
             UpdatedAt = UpdatedUtc,
         };
@@ -87,6 +89,8 @@ internal class AssessmentRequest : BaseEntity
             PhaseEndDate = domainModel.PhaseEndDate,
             PortfolioId = domainModel.Portfolio?.Id,
             DeputyDirectorId = domainModel.DeputyDirector?.Id,
+            IsDeputyDirectorTheSeniorResponsibleOfficer = domainModel.IsDeputyDirectorTheSeniorResponsibleOfficer,
+            SeniorResponsibleOfficerId = domainModel.SeniorResponsibleOfficer?.Id,
             CreatedUtc = domainModel.CreatedAt.UtcDateTime,
             UpdatedUtc = domainModel.UpdatedAt.UtcDateTime,
         };
