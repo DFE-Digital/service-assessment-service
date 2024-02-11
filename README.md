@@ -20,7 +20,7 @@ This project is a web application which supports the service assessment process 
 
 A service assessment is a peer review of a transactional service to check it meets
 the [14 points of the Service Standard](https://www.gov.uk/service-manual/service-standard).
-Service assessments happen at the end of alpha, private beta and live phases. If you are in the discovery phase, you can
+Service assessments happen at the end of alpha, beta and live phases. If you are in the discovery phase, you can
 have a discovery peer review.
 
 Additional information about service assessments, and the service standards to which services are assessed against, can
