@@ -41,7 +41,7 @@ Note that this service is under active development and will change based on ongo
 This means screenshots below may include features/pages that are not yet implemented, and are subject to change based on ongoing feedback.
 
 - Screenshot of the prototype website, showing the task-list of complete/optional/in-progress tasks for an in-progress "discovery peer review":
-  - ![Screenshot showing a prototype website, with Department for Education blue branding and the page content showing the task-list of complete/optional/in-progress tasks for an in-progress "discovery peer review".](docs/images/prototype--assure-service--screenshot-of-in-progress-assessment--page-task-list.png)
+  - ![Screenshot showing a prototype website, with Department for Education blue branding and the page content showing the task-list of complete/optional/in-progress tasks for an in-progress "discovery peer review".](docs/images/prototype--assure-service--screenshot-of-in-progress-assessment--page-task-list--full.png)
 
 ## Documentation for _using_ the system
 
