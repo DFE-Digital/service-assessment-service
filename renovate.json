@@ -13,7 +13,7 @@
   "vulnerabilityAlerts": {
     "labels": ["security"],
     "automerge": true
-  }
+  },
   "automergeType": "pr",
   "semanticCommits": true,
   "dependencyDashboard": true,
