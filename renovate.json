@@ -1,8 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices"
-  ],
+  "extends": ["config:best-practices"],
   "packageRules": [
     {
       "description": "Automatically merge minor and patch-level updates",
@@ -10,16 +8,14 @@
       "automerge": true
     }
   ],
-  "vulnerabilityAlerts": {
-    "labels": ["security"],
-    "automerge": true
-  },
   "automergeType": "pr",
-  "semanticCommits": true,
+  "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "labels": ["dependencies"],
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
-    "enabled": true
+    "enabled": true,
+    "labels": ["security"],
+    "automerge": true
   }
 }
