@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ServiceAssessmentService.WebApp.Pages.Page_Models.Account
 {
-    public class LoginModel : PageModel
+    public class RegisterUserModel : PageModel
     {
-        private readonly IUserService _userService;
+        private readonly ICreateUserService _CreateUserService;
 
-        public LoginModel(IUserService userService)
+        public RegisterUserModel(ICreateUserService CreateUserService)
         {
-            _userService = userService;
+            _CreateUserService = CreateUserService;
         }
 
         [BindProperty]
@@ -32,7 +32,7 @@ namespace ServiceAssessmentService.WebApp.Pages.Page_Models.Account
             }
 
             // Call your user service to handle login logic
-            bool isMagicLinkSent = await _userService.SendEmailAsync(Login.Email, Login.ID);
+            bool isMagicLinkSent = await _CreateUserService.SendEmailAsync(Login.Email, Login.ID);
 
             if (isMagicLinkSent)
             {

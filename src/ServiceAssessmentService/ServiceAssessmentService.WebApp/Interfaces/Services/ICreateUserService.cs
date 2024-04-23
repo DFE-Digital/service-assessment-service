@@ -3,10 +3,10 @@ using ServiceAssessmentService.WebApp.Models;
 
 namespace ServiceAssessmentService.WebApp.Interfaces
 {
-    public interface IUserService
+    public interface ICreateUserService
     {
-        Task<string> RegisterUserAsync(UserModel user);
-        Task<bool> VerifyMagicLinkAsync(UserModel user, string magicLink);
+        Task<string> RegisterUserAsync(SignUpModel person);
+        Task<bool> VerifyMagicLinkAsync(User person, string magicLink);
         Task<bool> SendEmailAsync(string email, string userId);
 
     }

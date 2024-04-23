@@ -1,8 +1,8 @@
 ﻿namespace ServiceAssessmentService.Domain.Model;
 
-public class Person
+public class PersonModel
 {
-    public Guid Id { get; set; }
+    public Guid ID { get; set; }
     public string? PersonalName { get; set; }
     public string? FamilyName { get; set; }
 

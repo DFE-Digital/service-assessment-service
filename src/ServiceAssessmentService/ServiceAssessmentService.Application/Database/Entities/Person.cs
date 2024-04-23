@@ -1,7 +1,7 @@
 ﻿
 namespace ServiceAssessmentService.Application.Database.Entities;
 
-internal class Person
+public class Person
 {
     public Guid Id { get; set; } = Guid.Empty;
 
@@ -11,22 +11,22 @@ internal class Person
 
     public string? Email { get; set; } = string.Empty;
 
-    internal Domain.Model.Person ToDomainModel()
+    public Domain.Model.PersonModel ToDomainModel()
     {
-        return new Domain.Model.Person
+        return new Domain.Model.PersonModel
         {
-            Id = Id,
+            ID = Id,
             PersonalName = PersonalName,
             FamilyName = FamilyName,
             Email = Email
         };
     }
 
-    internal static Person FromDomainModel(Domain.Model.Person person)
+    public static Person FromDomainModel(Domain.Model.PersonModel person)
     {
         return new Person
         {
-            Id = person.Id,
+            Id = person.ID,
             PersonalName = person.PersonalName,
             FamilyName = person.FamilyName,
             Email = person.Email

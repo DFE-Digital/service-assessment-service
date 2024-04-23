@@ -23,11 +23,11 @@ namespace ServiceAssessmentService.WebApp
             services.AddControllers();
 
             // Add your service here
-            services.AddScoped<IUserService, UserService>(); // Example assuming IMyService is your service interface and MyService is its implementation
+            services.AddScoped<ICreateUserService, CreateUserService>(); // Example assuming IMyService is your service interface and MyService is its implementation
             services.AddScoped<IMagicLinkService, MagicLinkService>(); // Example assuming IMagicLinkService is your service interface and MagicLinkService is its implementation
             services.AddScoped<IEmailService, EmailService>(); // Example assuming INotificationService is your service interface and NotificationService is its implementation
             // Other services can be added here
-
+            services.AddAutoMapper(typeof(Startup)); // Add AutoMapper
             // Example: Add a database context
             // services.AddDbContext<YourDbContext>(options =>
             //     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
