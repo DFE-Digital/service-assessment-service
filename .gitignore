@@ -7,7 +7,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # Environment specific files
-appsettings*.json
+appsettings.Development.json
 
 # User-specific files
 *.rsuser
@@ -481,3 +481,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+src/ServiceAssessmentService/ServiceAssessmentService.WebApp/appsettings.Development.json
+src/ServiceAssessmentService/ServiceAssessmentService.WebApp/appsettings.Development.json

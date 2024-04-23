@@ -1,26 +1,38 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
-namespace ServiceAssessmentService.Application.Database;
-
-/// <summary>
-/// This class is used by the EF Core tools to create a DbContext for migrations.
-///
-/// If we do not use this class, the initialisation of this class (e.g., via another project's Program.cs) is required to run migrations.
-///
-/// See also:
-/// https://learn.microsoft.com/en-gb/ef/core/cli/dbcontext-creation?tabs=dotnet-core-cli#from-a-design-time-factory
-/// </summary>
-public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
+namespace ServiceAssessmentService.Application.Database
 {
-    private const string ConnectionString = "Server=localhost;Database=ServiceAssessmentPlus-local;Trusted_Connection=True;TrustServerCertificate=True;";
-    // private const string ConnectionString = "Server=serviceassessmentplus-dev.database.windows.net;Database=ServiceAssessmentPlus-dev;Authentication=Active Directory Integrated;";
-
-    public DataContext CreateDbContext(string[] args)
+    public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
     {
-        var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
-        optionsBuilder.UseSqlServer(ConnectionString);
+        public DataContext CreateDbContext(string[] args)
+        {
+            // // Determine the base path for the configuration file
+            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "ServiceAssessmentService.WebApp");
 
-        return new DataContext(optionsBuilder.Options);
+            // Build the configuration
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.development.json")
+                .Build();
+
+            // Initialize the connection string from the configuration
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            // Check if connection string is null or empty
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Connection string is null or empty.");
+            }
+
+            // Setup DbContext options with SQL Server provider
+            var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            // Create and return the DbContext instance
+            return new DataContext(optionsBuilder.Options);
+        }
     }
 }
