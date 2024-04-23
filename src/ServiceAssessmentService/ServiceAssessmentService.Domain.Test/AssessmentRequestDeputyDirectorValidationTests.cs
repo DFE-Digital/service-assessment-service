@@ -11,7 +11,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = "Alex",
                 FamilyName = "Smith",
@@ -52,7 +52,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = "Alex",
                 FamilyName = null,
@@ -88,7 +88,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = personalName,
                 FamilyName = null,
@@ -146,7 +146,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = personalName,
                 FamilyName = null,
@@ -170,7 +170,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = "Alex",
@@ -206,7 +206,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = familyName,
@@ -264,7 +264,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = familyName,
@@ -287,7 +287,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = null,
@@ -323,7 +323,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = null,
@@ -380,7 +380,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = null,
@@ -409,7 +409,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = null,
@@ -433,7 +433,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = null,
@@ -459,7 +459,7 @@ public class AssessmentRequestPersonalNameValidationTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person()
+            DeputyDirector = new PersonModel()
             {
                 PersonalName = null,
                 FamilyName = null,

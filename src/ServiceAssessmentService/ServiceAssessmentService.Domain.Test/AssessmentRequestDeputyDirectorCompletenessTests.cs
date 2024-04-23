@@ -30,7 +30,7 @@ public class AssessmentRequestDeputyDirectorCompletenessTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person
+            DeputyDirector = new PersonModel
             {
                 PersonalName = ArbitraryValidPersonalName,
                 FamilyName = ArbitraryValidFamilyName,
@@ -72,7 +72,7 @@ public class AssessmentRequestDeputyDirectorCompletenessTests
         // Arrange
         var assessmentRequest = new AssessmentRequest
         {
-            DeputyDirector = new Person
+            DeputyDirector = new PersonModel
             {
                 PersonalName = personalName,
                 FamilyName = familyName,

@@ -4,20 +4,20 @@ namespace ServiceAssessmentService.Domain.Test;
 
 public class AssessmentRequestProductOwnerManagerCompletenessTests
 {
-    private static Person ArbitraryValidPerson => new Person
+    private static PersonModel ArbitraryValidPerson => new PersonModel
     {
         PersonalName = "Arbitrary Personal Name",
         FamilyName = "Arbitrary Family Name",
         Email = "arbitrary@example.com",
     };
-    private static Person ArbitraryIncompletePerson => new Person
+    private static PersonModel ArbitraryIncompletePerson => new PersonModel
     {
         PersonalName = null,
         FamilyName = null,
         Email = null,
     };
 
-    public static TheoryData<bool?, Person?> CompleteCombinations => new()
+    public static TheoryData<bool?, PersonModel?> CompleteCombinations => new()
     {
         // Complete scenarios
         // - Declares Product Owner/Manager is known, Product Owner/Manager details provided
@@ -27,7 +27,7 @@ public class AssessmentRequestProductOwnerManagerCompletenessTests
 
     };
 
-    public static TheoryData<bool?, Person?> IncompleteCombinations => new()
+    public static TheoryData<bool?, PersonModel?> IncompleteCombinations => new()
     {
         // All other combinations are incomplete/invalid
         {null, null},
@@ -49,7 +49,7 @@ public class AssessmentRequestProductOwnerManagerCompletenessTests
     [MemberData(nameof(CompleteCombinations))]
     public void IsProductOwnerManagerComplete_WHEN_CompleteCombinationOfValues_THEN_IsComplete(
         bool? hasProductOwnerManager,
-        Person? productOwnerManager
+        PersonModel? productOwnerManager
     )
     {
         // Arrange
@@ -70,7 +70,7 @@ public class AssessmentRequestProductOwnerManagerCompletenessTests
     [MemberData(nameof(IncompleteCombinations))]
     public void IsProductOwnerManagerComplete_WHEN_IncompleteCombinationOfValues_THEN_IsComplete(
         bool? hasProductOwnerManager,
-        Person? productOwnerManager
+        PersonModel? productOwnerManager
     )
     {
         // Arrange

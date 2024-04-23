@@ -4,20 +4,19 @@ namespace ServiceAssessmentService.Domain.Test;
 
 public class AssessmentRequestSeniorResponsibleOfficerCompletenessTests
 {
-    private static Person ArbitraryValidPerson => new Person
-    {
+    private static PersonModel ArbitraryValidPerson => new PersonModel {
         PersonalName = "Arbitrary Personal Name",
         FamilyName = "Arbitrary Family Name",
         Email = "arbitrary@example.com",
     };
-    private static Person ArbitraryIncompletePerson => new Person
+    private static PersonModel ArbitraryIncompletePerson => new PersonModel
     {
         PersonalName = null,
         FamilyName = null,
         Email = null,
     };
 
-    public static TheoryData<bool?, Person?, Person?> CompleteCombinations => new()
+    public static TheoryData<bool?, PersonModel?, PersonModel?> CompleteCombinations => new()
     {
         // Complete scenarios
         // - Declares DD as SRO, SRO details (correctly) absent and DD details provided
@@ -29,7 +28,7 @@ public class AssessmentRequestSeniorResponsibleOfficerCompletenessTests
 
     };
 
-    public static TheoryData<bool?, Person?, Person?> IncompleteCombinations => new()
+    public static TheoryData<bool?, PersonModel?, PersonModel?> IncompleteCombinations => new()
     {
         // All other combinations are incomplete/invalid
         {null, null, null},
@@ -63,8 +62,8 @@ public class AssessmentRequestSeniorResponsibleOfficerCompletenessTests
     [MemberData(nameof(CompleteCombinations))]
     public void IsSeniorResponsibleOfficerComplete_WHEN_CompleteCombinationOfValues_THEN_IsComplete(
         bool? isDdTheSro,
-        Person? deputyDirector,
-        Person? seniorResponsibleOfficer
+        PersonModel? deputyDirector,
+        PersonModel? seniorResponsibleOfficer
     )
     {
         // Arrange
@@ -86,8 +85,8 @@ public class AssessmentRequestSeniorResponsibleOfficerCompletenessTests
     [MemberData(nameof(IncompleteCombinations))]
     public void IsSeniorResponsibleOfficerComplete_WHEN_IncompleteCombinationOfValues_THEN_IsComplete(
         bool? isDdTheSro,
-        Person? deputyDirector,
-        Person? seniorResponsibleOfficer
+        PersonModel? deputyDirector,
+        PersonModel? seniorResponsibleOfficer
     )
     {
         // Arrange

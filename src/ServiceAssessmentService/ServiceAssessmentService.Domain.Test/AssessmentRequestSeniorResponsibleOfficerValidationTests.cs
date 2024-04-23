@@ -11,7 +11,7 @@ namespace ServiceAssessmentService.Domain.Test;
 public class AssessmentRequestSeniorResponsibleOfficerValidationTests
 {
 
-    private static Person ArbitraryValidPerson => new Person
+    private static PersonModel ArbitraryValidPerson => new PersonModel
     {
         PersonalName = "Arbitrary Personal Name",
         FamilyName = "Arbitrary Family Name",

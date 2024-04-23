@@ -1,0 +1,31 @@
+@page
+@model ServiceAssessmentService.WebApp.Pages.Page_Models.Account.RegisterUserModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="govuk-width-container">
+    <h1 class="govuk-heading-l">Sign Up</h1>
+
+    <form method="post" class="govuk-form-group">
+        <div class="govuk-form-group">
+            <label class="govuk-label" asp-for="RegisterUser.FirstName">First Name</label>
+            <input class="govuk-input" asp-for="RegisterUser.FirstName">
+            <span asp-validation-for="RegisterUser.FirstName" class="govuk-error-message"></span>
+        </div>
+
+        <div class="govuk-form-group">
+            <label class="govuk-label" asp-for="RegisterUser.LastName">Last Name</label>
+            <input class="govuk-input" asp-for="RegisterUser.LastName">
+            <span asp-validation-for="RegisterUser.LastName" class="govuk-error-message"></span>
+        </div>
+
+        <div class="govuk-form-group">
+            <label class="govuk-label" asp-for="RegisterUser.Email">Email Address</label>
+            <input class="govuk-input" asp-for="RegisterUser.Email">
+            <span asp-validation-for="RegisterUser.Email" class="govuk-error-message"></span>
+        </div>
+
+        <button class="govuk-button" type="submit">Sign Up</button>
+    </form>
+</div>

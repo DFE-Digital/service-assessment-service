@@ -4,20 +4,20 @@ namespace ServiceAssessmentService.Domain.Test;
 
 public class AssessmentRequestDeliveryManagerCompletenessTests
 {
-    private static Person ArbitraryValidPerson => new Person
+    private static PersonModel ArbitraryValidPerson => new PersonModel
     {
         PersonalName = "Arbitrary Personal Name",
         FamilyName = "Arbitrary Family Name",
         Email = "arbitrary@example.com",
     };
-    private static Person ArbitraryIncompletePerson => new Person
+    private static PersonModel ArbitraryIncompletePerson => new PersonModel
     {
         PersonalName = null,
         FamilyName = null,
         Email = null,
     };
 
-    public static TheoryData<bool?, Person?> CompleteCombinations => new()
+    public static TheoryData<bool?, PersonModel?> CompleteCombinations => new()
     {
         // Complete scenarios
         // - Declares Delivery Manager is known, Delivery Manager details provided
@@ -27,7 +27,7 @@ public class AssessmentRequestDeliveryManagerCompletenessTests
 
     };
 
-    public static TheoryData<bool?, Person?> IncompleteCombinations => new()
+    public static TheoryData<bool?, PersonModel?> IncompleteCombinations => new()
     {
         // All other combinations are incomplete/invalid
         {null, null},
@@ -49,7 +49,7 @@ public class AssessmentRequestDeliveryManagerCompletenessTests
     [MemberData(nameof(CompleteCombinations))]
     public void IsDeliveryManagerComplete_WHEN_CompleteCombinationOfValues_THEN_IsComplete(
         bool? hasDeliveryManager,
-        Person? deliveryManager
+        PersonModel? deliveryManager
     )
     {
         // Arrange
@@ -70,7 +70,7 @@ public class AssessmentRequestDeliveryManagerCompletenessTests
     [MemberData(nameof(IncompleteCombinations))]
     public void IsDeliveryManagerComplete_WHEN_IncompleteCombinationOfValues_THEN_IsComplete(
         bool? hasDeliveryManager,
-        Person? deliveryManager
+        PersonModel? deliveryManager
     )
     {
         // Arrange

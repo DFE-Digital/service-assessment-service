@@ -8,7 +8,7 @@ public class PersonTest
     public void FullName_WhenAllPropertiesAreValid_IsComplete()
     {
         // Arrange
-        var person = new Person
+        var person = new PersonModel
         {
             PersonalName = "Alex",
             FamilyName = "Doe",
@@ -26,7 +26,7 @@ public class PersonTest
     public void FullName_WhenNoFamilyName_IsIncomplete()
     {
         // Arrange
-        var person = new Person
+        var person = new PersonModel
         {
             PersonalName = "Alex",
             FamilyName = null,
@@ -44,7 +44,7 @@ public class PersonTest
     public void FullName_WhenNoPersonalName_IsIncomplete()
     {
         // Arrange
-        var person = new Person
+        var person = new PersonModel
         {
             PersonalName = null,
             FamilyName = "Doe",
@@ -62,7 +62,7 @@ public class PersonTest
     public void FullName_WhenNoPersonalNameAndNoFamilyName_IsIncomplete()
     {
         // Arrange
-        var person = new Person
+        var person = new PersonModel
         {
             PersonalName = null,
             FamilyName = null,

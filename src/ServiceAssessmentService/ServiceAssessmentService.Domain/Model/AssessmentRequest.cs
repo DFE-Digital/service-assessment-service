@@ -563,7 +563,7 @@ public class AssessmentRequest
 
     #region DeputyDirector
 
-    public Person? DeputyDirector { get; set; }
+    public PersonModel? DeputyDirector { get; set; }
 
     public PersonValidationResult ValidateDeputyDirector()
     {
@@ -711,7 +711,7 @@ public class AssessmentRequest
 
     public bool? IsDeputyDirectorTheSeniorResponsibleOfficer { get; set; } = null;
 
-    public Person? SeniorResponsibleOfficer { get; set; }
+    public PersonModel? SeniorResponsibleOfficer { get; set; }
 
     public RadioConditionalValidationResult<PersonValidationResult> ValidateSeniorResponsibleOfficer()
     {
@@ -934,7 +934,7 @@ public class AssessmentRequest
 
     public bool? HasProductOwnerManager { get; set; } = null;
 
-    public Person? ProductOwnerManager { get; set; }
+    public PersonModel? ProductOwnerManager { get; set; }
 
     public RadioConditionalValidationResult<PersonValidationResult> ValidateProductOwnerManager()
     {
@@ -1146,7 +1146,7 @@ public class AssessmentRequest
 
     public bool? HasDeliveryManager { get; set; } = null;
 
-    public Person? DeliveryManager { get; set; }
+    public PersonModel? DeliveryManager { get; set; }
 
     public RadioConditionalValidationResult<PersonValidationResult> ValidateDeliveryManager()
     {

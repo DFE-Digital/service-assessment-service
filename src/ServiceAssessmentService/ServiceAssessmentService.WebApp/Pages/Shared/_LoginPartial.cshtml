@@ -1,21 +1,21 @@
-﻿@using GovUk.Frontend.AspNetCore.TagHelpers
-
-<ul class="dfe-header__action-links">
+﻿<ul class="dfe-header__sign_inlinks">
     @if (User?.Identity?.IsAuthenticated ?? false)
     {
         <li class="nav-item">
             <span class="govuk-link govuk-link--inverse">Hello @User.Identity.Name!</span>
         </li>
         <li class="nav-item">
-            @* ReSharper disable once Mvc.AreaNotResolved -- https://youtrack.jetbrains.com/issue/RSRP-493782 *@
-            <a class="govuk-link govuk-link--inverse" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
+            " ReSharper disable once Mvc.AreaNotResolved -- https://youtrack.jetbrains.com/issue/RSRP-493782 <a class="govuk-link
+govuk-link--inverse" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>"
         </li>
     }
     else
     {
         <li class="nav-item">
-            @* ReSharper disable once Mvc.AreaNotResolved -- https://youtrack.jetbrains.com/issue/RSRP-493782 *@
-            <a class="govuk-link govuk-link--inverse" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
+            <a href="/public/Sign_up/Signup">Sign Up</a>
+        </li>
+        <li class="nav-item">
+            <a href="/public/Sign_in/Signin">Sign In</a>
         </li>
     }
 </ul>

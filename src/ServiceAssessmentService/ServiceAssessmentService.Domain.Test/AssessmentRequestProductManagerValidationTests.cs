@@ -11,7 +11,7 @@ namespace ServiceAssessmentService.Domain.Test;
 public class AssessmentRequestProductOwnerManagerValidationTests
 {
 
-    private static Person ArbitraryValidPerson => new Person
+    private static PersonModel ArbitraryValidPerson => new PersonModel
     {
         PersonalName = "Arbitrary Personal Name",
         FamilyName = "Arbitrary Family Name",
@@ -178,7 +178,7 @@ public class AssessmentRequestProductOwnerManagerValidationTests
         var assessmentRequest = new AssessmentRequest
         {
             HasProductOwnerManager = true,
-            ProductOwnerManager = new Person
+            ProductOwnerManager = new PersonModel
             {
                 PersonalName = personalName,
                 FamilyName = "Arbitrary Family Name",
@@ -213,7 +213,7 @@ public class AssessmentRequestProductOwnerManagerValidationTests
         var assessmentRequest = new AssessmentRequest
         {
             HasProductOwnerManager = true,
-            ProductOwnerManager = new Person
+            ProductOwnerManager = new PersonModel
             {
                 PersonalName = "Arbitrary Personal Name",
                 FamilyName = familyName,
@@ -250,7 +250,7 @@ public class AssessmentRequestProductOwnerManagerValidationTests
         var assessmentRequest = new AssessmentRequest
         {
             HasProductOwnerManager = true,
-            ProductOwnerManager = new Person
+            ProductOwnerManager = new PersonModel
             {
                 PersonalName = "Arbitrary Personal Name",
                 FamilyName = "Arbitrary Family Name",

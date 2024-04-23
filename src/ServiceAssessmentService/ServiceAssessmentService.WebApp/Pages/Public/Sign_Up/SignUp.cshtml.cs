@@ -1,23 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ServiceAssessmentService.WebApp.Interfaces;
 using ServiceAssessmentService.WebApp.Models;
 using ServiceAssessmentService.WebApp.Services;
-using ServiceAssessmentService.WebApp.Interfaces;
 using System.Threading.Tasks;
 
 namespace ServiceAssessmentService.WebApp.Pages.Page_Models.Account
 {
     public class RegisterUserModel : PageModel
     {
-        private readonly ICreateUserService _CreateUserService;
+        private readonly ICreateUserService _createUserService;
 
-        public RegisterUserModel(ICreateUserService CreateUserService)
+        public RegisterUserModel(ICreateUserService createUserService)
         {
-            _CreateUserService = CreateUserService;
+            _createUserService = createUserService;
         }
 
         [BindProperty]
-        public LoginViewModel Login { get; set; }
+        public SignUpModel RegisterUser { get; set; }
 
         public IActionResult OnGet()
         {
@@ -31,26 +31,20 @@ namespace ServiceAssessmentService.WebApp.Pages.Page_Models.Account
                 return Page();
             }
 
-            // Call your user service to handle login logic
-            bool isMagicLinkSent = await _CreateUserService.SendEmailAsync(Login.Email, Login.ID);
+            // Call the CreateUserService to register the user
+            var response = await _createUserService.RegisterUserAsync(RegisterUser);
 
-            if (isMagicLinkSent)
+            if (response != null)
             {
                 // Redirect to a page indicating that the magic link has been sent
                 return RedirectToPage("/MagicLinkSent");
             }
             else
             {
-                // Display an error message if sending the magic link fails
-                ModelState.AddModelError(string.Empty, "Failed to send magic link. Please try again.");
+                // Display an error message if registration fails
+                ModelState.AddModelError(string.Empty, "Failed to register user. Please try again.");
                 return Page();
             }
-        }
-
-        private string GenerateUserID()
-        {
-            // Generate a unique user ID using the email for simplicity
-            return Login.Email.ToLowerInvariant();
         }
     }
 }
