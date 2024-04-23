@@ -1,0 +1,23 @@
+@page
+@model ServiceAssessmentService.WebApp.Pages.Page_Models.Account.LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="govuk-width-container">
+    <h1 class="govuk-heading-l">Log in</h1>
+
+    <form method="post">
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="email">Email address</label>
+            <input class="govuk-input" id="email" name="Email" type="email" asp-for="Email">
+        </div>
+
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="password">Password</label>
+            <input class="govuk-input" id="password" name="Password" type="password" asp-for="Password">
+        </div>
+
+        <button class="govuk-button" type="submit">Log in</button>
+    </form>
+</div>

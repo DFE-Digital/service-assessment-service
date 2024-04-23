@@ -1,11 +1,12 @@
-using ServiceAssessmentService.WebApp.Controllers;
-using ServiceAssessmentService.WebApp.Model;
-using Xunit;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Threading.Tasks;
+using ServiceAssessmentService.WebApp.Controllers;
 using ServiceAssessmentService.WebApp.Interfaces;
+using ServiceAssessmentService.WebApp.Models;
+using System.Threading.Tasks;
+using Xunit;
 
-namespace ServiceAssessmentService.WebApp.Test
+namespace ServiceAssessmentService.WebApp.Test.Controllers
 {
     public class SignupControllerTest
     {
@@ -15,34 +16,20 @@ namespace ServiceAssessmentService.WebApp.Test
             // Arrange
             var userServiceMock = new Mock<IUserService>();
             userServiceMock.Setup(repo => repo.RegisterUserAsync(It.IsAny<UserModel>()))
-                           .ReturnsAsync(true);
+                           .ReturnsAsync("testMagicLink");
             var controller = new SignupController(userServiceMock.Object);
-            var userModel = new UserModel { Email = "test@example.com", Name = "Test User" };
+            var signupRequest = new SignupRequest { Email = "test@example.com", Name = "Test User" };
 
             // Act
-            var result = await controller.Signup(userModel);
+            var result = await controller.Signup(signupRequest);
 
             // Assert
-            var okResult = Assert.IsType<OkResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResultValue = okResult.Value;
             Assert.Equal(200, okResult.StatusCode);
+            Assert.Equal("testMagicLink", okResultValue.GetType().GetProperty("MagicLink").GetValue(okResultValue));
         }
-    }
 
-    public class UserServiceTests
-    {
-        [Fact]
-        public async Task RegisterUserAsync_ValidInput_ReturnsTrue()
-        {
-            // Arrange
-            var magicLinkServiceMock = new Mock<IMagicLinkService>();
-            var userService = new UserService(magicLinkServiceMock.Object);
-            var userModel = new UserModel { Email = "test@example.com", Name = "Test User" };
-
-            // Act
-            var result = await userService.RegisterUserAsync(userModel);
-
-            // Assert
-            Assert.True(result);
-        }
+        // Add more test methods for other scenarios like invalid input, error handling, etc.
     }
 }

@@ -18,7 +18,7 @@ namespace ServiceAssessmentService.WebApp.Services
             return magicLink;
         }
 
-        public async Task<bool> VerifyMagicLinkAsync(string magicLink, string userId)
+        public async Task<bool> VerifyMagicLinkAsync(string magicLink)
         {
             // Here you would implement your logic to verify the magic link.
             // For now, let's assume any magic link with a valid format is considered valid.

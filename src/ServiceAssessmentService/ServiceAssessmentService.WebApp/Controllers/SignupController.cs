@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceAssessmentService.WebApp.Interfaces;
+using ServiceAssessmentService.WebApp.Models;
 using System.Threading.Tasks;
 
 namespace ServiceAssessmentService.WebApp.Controllers
@@ -24,7 +25,11 @@ namespace ServiceAssessmentService.WebApp.Controllers
             }
 
             // Call the UserService to register the user
-            string magicLink = await _userService.RegisterUserAsync(request.Email, request.Name);
+            string magicLink = await _userService.RegisterUserAsync(new UserModel
+            {
+                Email = request.Email,
+                Name = request.Name
+            });
 
             // Return the magic link to the client
             return Ok(new { MagicLink = magicLink });
